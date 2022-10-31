@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.thiagocordeiro.orm.ClausesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-10-31T19:06:19" hostname="thiago-cordeiro" time="0.065">
+  <properties/>
+  <testcase name="is not null()" classname="br.com.thiagocordeiro.orm.ClausesTest" time="0.041"/>
+  <testcase name="is between()" classname="br.com.thiagocordeiro.orm.ClausesTest" time="0.003"/>
+  <testcase name="name equals to()" classname="br.com.thiagocordeiro.orm.ClausesTest" time="0.003"/>
+  <testcase name="name like()" classname="br.com.thiagocordeiro.orm.ClausesTest" time="0.001"/>
+  <testcase name="is null()" classname="br.com.thiagocordeiro.orm.ClausesTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
