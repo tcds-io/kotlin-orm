@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.tcds.orm.column.IntegerColumnTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-11-02T15:05:01" hostname="thiago-cordeiro" time="3.679">
+  <properties/>
+  <testcase name="when binding params are given then set into the statement ()" classname="io.tcds.orm.column.IntegerColumnTest" time="3.679"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

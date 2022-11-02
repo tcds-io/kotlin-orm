@@ -27,7 +27,7 @@ class WhereTests {
             name like "Arthur Dent"
         )
 
-        Assertions.assertEquals("WHERE id = ? AND name LIKE ?", where.toWhereStatement())
+        Assertions.assertEquals("WHERE age = ? AND name LIKE ?", where.toWhereStatement())
         Assertions.assertEquals(listOf(Param(age, 123), Param(name, "Arthur Dent")), where.toParams())
     }
 }

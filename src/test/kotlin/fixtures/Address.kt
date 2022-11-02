@@ -8,5 +8,4 @@ data class Address(
     val number: String,
     val main: Boolean,
     val createdAt: LocalDateTime,
-    val deletedAt: LocalDateTime?,
 )

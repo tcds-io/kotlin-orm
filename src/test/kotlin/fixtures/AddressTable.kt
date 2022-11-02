@@ -8,18 +8,16 @@ class AddressTable : EntityTable<Address, String>(
     table = "addresses",
     id = StringColumn("id") { it.id },
 ) {
-    private val street = varchar("street") { it.street }
-    private val number = varchar("number") { it.number }
-    private val main = bool("main") { it.main }
-    private val createdAt = datetime("created_at") { it.createdAt }
-    private val deletedAt = datetime("deleted_at") { it.deletedAt }
+    val street = varchar("street") { it.street }
+    val number = varchar("number") { it.number }
+    val main = bool("main") { it.main }
+    val createdAt = datetime("created_at") { it.createdAt }
 
     override fun entity(row: OrmResultSet): Address = Address(
-        id = row.get(id),
-        street = row.get(street),
-        number = row.get(number),
-        main = row.get(main),
+        id = row.get(id)!!,
+        street = row.get(street)!!,
+        number = row.get(number)!!,
+        main = row.get(main)!!,
         createdAt = row.get(createdAt)!!,
-        deletedAt = row.get(deletedAt),
     )
 }

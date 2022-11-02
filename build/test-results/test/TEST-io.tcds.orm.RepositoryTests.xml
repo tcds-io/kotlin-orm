@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.tcds.orm.RepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-11-02T13:03:24" hostname="thiago-cordeiro" time="0.088">
-  <properties/>
-  <testcase name="when then()" classname="io.tcds.orm.RepositoryTests" time="0.088"/>
-  <system-out><![CDATA[User(id=arthur-dent, name=Arthur Dent, email=arthur.dent@galaxy.org, height=1.78, age=42, active=true, address=Address(id=arthur-dent-address, street=Galaxy Avenue, number=124T, main=true, createdAt=1995-04-15T09:15:33, deletedAt=2022-11-02T09:48:33))
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
