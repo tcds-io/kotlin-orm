@@ -4,7 +4,7 @@ import fixtures.User
 import io.tcds.orm.Param
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.column.StringColumn
-import io.tcds.orm.statement.Clause
+import io.tcds.orm.statement.Condition
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -14,7 +14,7 @@ class WhereTests {
 
     @Test
     fun `when order maps is empty then order statement is empty`() {
-        val where = emptyList<Clause>()
+        val where = emptyList<Condition>()
 
         Assertions.assertEquals("", where.toWhereStatement())
         Assertions.assertEquals(emptyList<Param<User, *>>(), where.toParams())

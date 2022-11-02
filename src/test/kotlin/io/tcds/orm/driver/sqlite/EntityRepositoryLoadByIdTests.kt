@@ -49,7 +49,7 @@ class EntityRepositoryLoadByIdTests : TestCase() {
     }
 
     @Test
-    fun `given and user id when user exists then loadByUd returns an user entity`() {
+    fun `given and user id when user exists then loadById returns an user entity`() {
         val id = "arthur-dent"
 
         val arthur = userRepository.loadById(id)

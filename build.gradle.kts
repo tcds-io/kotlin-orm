@@ -5,6 +5,7 @@ val jUnitVersion: String by project
 val mockkVersion: String by project
 val postgresVersion: String by project
 val sqliteVersion: String by project
+val kotlinLoggingVersion: String by project
 
 plugins {
     `kotlin-dsl`
@@ -22,6 +23,8 @@ dependencies {
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
+
+    implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")

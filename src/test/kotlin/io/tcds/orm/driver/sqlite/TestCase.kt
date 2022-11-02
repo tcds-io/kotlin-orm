@@ -2,6 +2,7 @@ package io.tcds.orm.driver.sqlite
 
 import io.tcds.orm.driver.Connection
 import io.tcds.orm.driver.SqliteConnection
+import mu.KotlinLogging
 import org.gradle.internal.impldep.org.jetbrains.annotations.MustBeInvokedByOverriders
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -46,6 +47,11 @@ open class TestCase {
     }
 
     fun connection(): Connection {
-        if (connection === null) connection = SqliteConnection("jdbc:sqlite::memory:"); return connection!!
+        if (connection === null) connection = SqliteConnection(
+            "jdbc:sqlite::memory:",
+            KotlinLogging.logger("io.tcds.orm")
+        )
+
+        return connection!!
     }
 }

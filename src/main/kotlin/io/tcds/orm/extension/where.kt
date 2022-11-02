@@ -1,16 +1,16 @@
 package io.tcds.orm.extension
 
 import io.tcds.orm.Param
-import io.tcds.orm.statement.Clause
+import io.tcds.orm.statement.Condition
 
-fun List<Clause>.toWhereStatement(): String {
+fun List<Condition>.toWhereStatement(): String {
     return when (isEmpty()) {
         true -> ""
         false -> "WHERE " + joinToString(" AND ") { it.toString() }
     }
 }
 
-fun List<Clause>.toParams(): List<Param<*, *>> {
+fun List<Condition>.toParams(): List<Param<*, *>> {
     val params = mutableListOf<Param<*, *>>()
 
     forEach { params.addAll(it.params()) }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.tcds.orm.driver.sqlite.EntityRepositoryLoadByIdTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-11-02T15:05:01" hostname="thiago-cordeiro" time="0.11">
-  <properties/>
-  <testcase name="given and user id when user does not exist then loadById returns null()" classname="io.tcds.orm.driver.sqlite.EntityRepositoryLoadByIdTests" time="0.086"/>
-  <testcase name="given and user id when user exists then loadByUd returns an user entity()" classname="io.tcds.orm.driver.sqlite.EntityRepositoryLoadByIdTests" time="0.021"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

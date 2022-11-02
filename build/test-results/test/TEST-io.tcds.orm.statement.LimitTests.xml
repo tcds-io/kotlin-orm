@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.tcds.orm.statement.LimitTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-11-02T15:05:05" hostname="thiago-cordeiro" time="0.016">
-  <properties/>
-  <testcase name="when limit is given and offset is null then string has limit()" classname="io.tcds.orm.statement.LimitTests" time="0.004"/>
-  <testcase name="when limit is null then string is empty()" classname="io.tcds.orm.statement.LimitTests" time="0.004"/>
-  <testcase name="when limit and offset are given then string has limit and offset()" classname="io.tcds.orm.statement.LimitTests" time="0.002"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
