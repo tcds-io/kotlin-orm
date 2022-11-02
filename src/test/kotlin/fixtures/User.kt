@@ -1,3 +1,11 @@
 package fixtures
 
-class User(val id: String, name: String)
+data class User(
+    val id: String,
+    val name: String,
+    val email: String,
+    val height: Double,
+    val age: Int,
+    val active: Boolean,
+    val address: Address,
+)

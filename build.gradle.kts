@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val jUnitVersion: String by project
 val mockkVersion: String by project
 val postgresVersion: String by project
+val sqliteVersion: String by project
 
 plugins {
     `kotlin-dsl`
@@ -20,6 +21,7 @@ dependencies {
     api(kotlin("stdlib"))
 
     implementation("org.postgresql:postgresql:$postgresVersion")
+    implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
