@@ -8,4 +8,5 @@ data class User(
     val age: Int,
     val active: Boolean,
     val address: Address,
+    val status: List<UserStatus>,
 )

@@ -5,6 +5,7 @@ import fixtures.AddressTable
 import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -48,7 +49,7 @@ class EntityRepositoryDeleteTests : TestCase() {
             0,
             connection().select(
                 table = addressTable.table,
-                conditions = listOf(addressTable.id equalsTo "arthur-dent-address"),
+                where = where(addressTable.id equalsTo "arthur-dent-address"),
                 order = mapOf(addressTable.id to Order.ASC),
             ).count()
         )

@@ -3,10 +3,12 @@ package io.tcds.orm.driver
 import io.tcds.orm.Column
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
-import io.tcds.orm.extension.*
-import io.tcds.orm.statement.Condition
+import io.tcds.orm.extension.columns
+import io.tcds.orm.extension.marks
+import io.tcds.orm.extension.toOrderByStatement
 import io.tcds.orm.statement.Limit
 import io.tcds.orm.statement.Order
+import io.tcds.orm.statement.Statement
 import org.slf4j.Logger
 import java.sql.PreparedStatement
 import java.sql.Connection as JdbcConnection
@@ -18,19 +20,19 @@ interface Connection {
 
     fun <E> select(
         table: String,
-        conditions: List<Condition>,
+        where: Statement,
         order: Map<Column<E, *>, Order>,
         limit: Int? = null,
         offset: Int? = null,
     ): Sequence<OrmResultSet> {
         val sql = """
             SELECT * FROM $table
-                ${conditions.toWhereStatement()}
+                ${where.toSql()}
                 ${order.toOrderByStatement()}
                 ${Limit(limit, offset)}
         """.trimIndent()
 
-        return select(sql, conditions.toParams())
+        return select(sql, where.params())
     }
 
     fun select(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet> {
@@ -54,10 +56,10 @@ interface Connection {
         execute(sql, params)
     }
 
-    fun delete(table: String, conditions: List<Condition>) {
-        val sql = "DELETE FROM $table ${conditions.toWhereStatement()}"
+    fun delete(table: String, where: Statement) {
+        val sql = "DELETE FROM $table ${where.toSql()}"
 
-        execute(sql, conditions.toParams())
+        execute(sql, where.params())
     }
 
     fun execute(sql: String, params: List<Param<*, *>> = emptyList()): Boolean {

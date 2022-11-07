@@ -1,11 +1,9 @@
 package io.tcds.orm.driver.sqlite
 
-import fixtures.Address
-import fixtures.AddressTable
-import fixtures.User
-import fixtures.UserTable
+import fixtures.*
 import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
+import io.tcds.orm.Repository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,9 +12,11 @@ import java.time.Month
 
 class EntityRepositoryLoadByIdTests : TestCase() {
     private val addressTable = AddressTable()
+    private val statusTable = UserStatusTable()
     private val addressRepository = EntityRepository(addressTable, connection())
+    private val statusRepository = Repository(statusTable, connection())
 
-    private val userTable = UserTable(addressRepository)
+    private val userTable = UserTable(addressRepository, statusRepository)
     private val userRepository = EntityRepository(userTable, connection())
 
     @BeforeEach
@@ -46,6 +46,21 @@ class EntityRepositoryLoadByIdTests : TestCase() {
                 Param(userTable.addressId, "arthur-dent-address"),
             )
         )
+
+        connection().execute(
+            "INSERT INTO user_status VALUES (?,?,?), (?,?,?)",
+            listOf(
+                // Status.ACTIVE
+                Param(statusTable.userId, "arthur-dent"),
+                Param(statusTable.status, Status.INACTIVE),
+                Param(statusTable.at, LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10)),
+
+                // Status.INACTIVE
+                Param(statusTable.userId, "arthur-dent"),
+                Param(statusTable.status, Status.ACTIVE),
+                Param(statusTable.at, LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11)),
+            )
+        )
     }
 
     @Test
@@ -69,6 +84,18 @@ class EntityRepositoryLoadByIdTests : TestCase() {
                     main = true,
                     createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
                 ),
+                status = listOf(
+                    UserStatus(
+                        userId = "arthur-dent",
+                        status = Status.INACTIVE,
+                        at = LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10),
+                    ),
+                    UserStatus(
+                        userId = "arthur-dent",
+                        status = Status.ACTIVE,
+                        at = LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11),
+                    ),
+                )
             ),
             arthur,
         )

@@ -6,6 +6,7 @@ import io.tcds.orm.Column
 import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -57,11 +58,11 @@ class RepositorySelectByQueryTests : TestCase() {
 
     @Test
     fun `given a condition and ASC order when entries exist then select into the database`() {
-        val conditions = listOf(addressTable.main equalsTo true)
+        val where = where(addressTable.main equalsTo true)
         val order = mapOf<Column<Address, *>, Order>(addressTable.id to Order.ASC)
         val limit = 2
 
-        val addresses = addressRepository.select(conditions, order, limit)
+        val addresses = addressRepository.select(where, order, limit)
 
         Assertions.assertEquals(
             listOf("another-address", "arthur-dent-address"),

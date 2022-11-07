@@ -35,6 +35,14 @@ open class TestCase {
                 address_id VARCHAR(255) NOT NULL
             );
         """.trimIndent())
+
+        connection().execute("""
+            CREATE TABLE user_status (
+                user_id    VARCHAR(255) NOT NULL,
+                status     VARCHAR(255) NOT NULL,
+                at         DATETIME     NOT NULL
+            );
+        """.trimIndent())
     }
 
     @AfterEach

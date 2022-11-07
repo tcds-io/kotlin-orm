@@ -3,7 +3,9 @@ package io.tcds.orm.driver.sqlite
 import fixtures.AddressTable
 import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
+import io.tcds.orm.extension.emptyWhere
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -44,15 +46,15 @@ class RepositoryDeleteTests : TestCase() {
 
     @Test
     fun `given an entity when delete gets called then the entry gets deleted`() {
-        val conditions = listOf(addressTable.main equalsTo true)
+        val where = where(addressTable.main equalsTo true)
 
-        addressRepository.delete(conditions)
+        addressRepository.delete(where)
 
         Assertions.assertEquals(
             0,
             connection().select(
                 table = addressTable.table,
-                conditions = listOf(),
+                where = emptyWhere(),
                 order = mapOf(addressTable.id to Order.ASC),
             ).count()
         )

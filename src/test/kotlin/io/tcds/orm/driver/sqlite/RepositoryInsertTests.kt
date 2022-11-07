@@ -4,6 +4,7 @@ import fixtures.Address
 import fixtures.AddressTable
 import io.tcds.orm.EntityRepository
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -30,9 +31,9 @@ class RepositoryInsertTests : TestCase() {
             listOf(address),
             connection().select(
                 table = addressTable.table,
-                conditions = listOf(addressTable.id equalsTo "arthur-dent-address-new-address-for-test"),
+                where = where(addressTable.id equalsTo "arthur-dent-address-new-address-for-test"),
                 order = mapOf(addressTable.id to Order.ASC),
-            ).map { addressTable.entity(it) }.toList()
+            ).map { addressTable.entry(it) }.toList()
         )
     }
 }

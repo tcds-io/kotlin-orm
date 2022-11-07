@@ -13,7 +13,7 @@ class AddressTable : EntityTable<Address, String>(
     val main = bool("main") { it.main }
     val createdAt = datetime("created_at") { it.createdAt }
 
-    override fun entity(row: OrmResultSet): Address = Address(
+    override fun entry(row: OrmResultSet): Address = Address(
         id = row.get(id)!!,
         street = row.get(street)!!,
         number = row.get(number)!!,

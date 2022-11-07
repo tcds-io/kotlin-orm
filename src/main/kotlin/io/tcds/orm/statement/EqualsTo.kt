@@ -1,9 +1,10 @@
 package io.tcds.orm.statement
 
 import io.tcds.orm.Column
+import io.tcds.orm.Condition
 import io.tcds.orm.Param
 
-class EqualsTo<E, T>(override val column: Column<E, T>, private val value: T) : Condition {
-    override fun toString(): String = "${column.name} = ?"
+class EqualsTo<E, T>(val column: Column<E, T>, private val value: T) : Condition {
+    override fun toSql(): String = "${column.name} = ?"
     override fun params(): List<Param<E, T>> = listOf(Param(column, value))
 }

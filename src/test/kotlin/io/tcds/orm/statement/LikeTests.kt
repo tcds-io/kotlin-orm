@@ -14,7 +14,7 @@ class LikeTests {
     fun `create infix like statement and params`() {
         val clause = column like "123"
 
-        Assertions.assertEquals("name LIKE ?", clause.toString())
+        Assertions.assertEquals("name LIKE ?", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "123")), clause.params())
     }
 
@@ -22,7 +22,7 @@ class LikeTests {
     fun `create fun like statement and params`() {
         val clause = column.like("345")
 
-        Assertions.assertEquals("name LIKE ?", clause.toString())
+        Assertions.assertEquals("name LIKE ?", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "345")), clause.params())
     }
 }
