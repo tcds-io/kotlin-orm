@@ -7,9 +7,12 @@ val postgresVersion: String by project
 val sqliteVersion: String by project
 val kotlinLoggingVersion: String by project
 
+val buildVersion = System.getenv("VERSION") ?: "dev"
+
 plugins {
-    `kotlin-dsl`
     application
+    `kotlin-dsl`
+    `maven-publish`
 }
 
 repositories {
@@ -21,7 +24,7 @@ dependencies {
     gradleApi()
     api(kotlin("stdlib"))
 
-    implementation("org.postgresql:postgresql:$postgresVersion")
+    // implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
 
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
@@ -45,5 +48,21 @@ tasks.test {
         showCauses = true
         showStackTraces = true
         showStandardStreams = true
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            group = "io.tcds"
+            version = buildVersion
+            url = uri("https://maven.pkg.github.com/tcds-io/kotlin-orm")
+
+            credentials {
+                username = System.getenv("GPR_USERNAME")
+                password = System.getenv("GPR_TOKEN")
+            }
+        }
     }
 }

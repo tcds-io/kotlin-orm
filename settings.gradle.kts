@@ -1,1 +1,1 @@
-rootProject.name = "io.tcds.orm"
+rootProject.name = "orm"
