@@ -7,7 +7,9 @@ abstract class Table<E>(open val table: String) {
     private val columns = mutableListOf<Column<E, *>>()
 
     fun integer(name: String, value: (E) -> Int?) = column(IntegerColumn(name = name, value = value))
-    fun float(name: String, value: (E) -> Double?) = column(DoubleColumn(name = name, value = value))
+    fun long(name: String, value: (E) -> Long?) = column(LongColumn(name = name, value = value))
+    fun float(name: String, value: (E) -> Float?) = column(FloatColumn(name = name, value = value))
+    fun double(name: String, value: (E) -> Double?) = column(DoubleColumn(name = name, value = value))
     fun varchar(name: String, value: (E) -> String?) = column(StringColumn(name = name, value = value))
     fun bool(name: String, value: (E) -> Boolean?) = column(BooleanColumn(name = name, value = value))
     fun datetime(name: String, value: (E) -> LocalDateTime?) = column(DateTimeColumn(name = name, value = value))

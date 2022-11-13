@@ -40,7 +40,7 @@ class EntityRepositoryLoadByIdTests : TestCase() {
                 Param(userTable.id, "arthur-dent"),
                 Param(userTable.name, "Arthur Dent"),
                 Param(userTable.email, "arthur.dent@galaxy.org"),
-                Param(userTable.height, 1.78),
+                Param(userTable.height, 1.78.toFloat()),
                 Param(userTable.age, 42),
                 Param(userTable.active, true),
                 Param(userTable.addressId, "arthur-dent-address"),
@@ -74,7 +74,7 @@ class EntityRepositoryLoadByIdTests : TestCase() {
                 id = "arthur-dent",
                 name = "Arthur Dent",
                 email = "arthur.dent@galaxy.org",
-                height = 1.78,
+                height = 1.78.toFloat(),
                 age = 42,
                 active = true,
                 address = Address(

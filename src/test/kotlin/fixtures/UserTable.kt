@@ -6,6 +6,7 @@ import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Repository
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.get
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 

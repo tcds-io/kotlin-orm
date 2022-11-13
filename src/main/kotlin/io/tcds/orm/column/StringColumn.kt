@@ -7,7 +7,7 @@ import java.sql.Types
 class StringColumn<Entity>(name: String, value: (Entity) -> String?) : Column<Entity, String?>(name, value) {
     override fun bind(stmt: PreparedStatement, index: Int, value: String?) {
         when (value) {
-            null -> stmt.setNull(index, Types.BOOLEAN)
+            null -> stmt.setNull(index, Types.VARCHAR)
             else -> stmt.setString(index, value)
         }
     }

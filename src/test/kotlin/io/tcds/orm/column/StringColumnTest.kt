@@ -1,19 +1,31 @@
 package io.tcds.orm.column
 
-import fixtures.User
+import fixtures.ColumnTypes
 import io.mockk.*
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
+import java.sql.Types
 
 class StringColumnTest {
-    @Test
-    fun `when binding params are given then set into the statement `() {
-        val stmt: PreparedStatement = mockk()
-        every { stmt.setString(any(), any()) } just runs
+    private val stmt: PreparedStatement = mockk()
 
-        val column = StringColumn<User>("name") { it.name }
+    @Test
+    fun `given a string value when it is not null then set the value into the statement`() {
+        every { stmt.setString(any(), any()) } just runs
+        val column = StringColumn<ColumnTypes>("string") { it.string }
 
         column.bind(stmt, 6, "Arthur Dent")
+
         verify(exactly = 1) { stmt.setString(6, "Arthur Dent") }
+    }
+
+    @Test
+    fun `given a string value when it is null then set null value into the statement`() {
+        every { stmt.setNull(any(), any()) } just runs
+        val column = StringColumn<ColumnTypes>("string") { it.string }
+
+        column.bind(stmt, 3, null)
+
+        verify(exactly = 1) { stmt.setNull(3, Types.VARCHAR) }
     }
 }
