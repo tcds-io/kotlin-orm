@@ -29,8 +29,8 @@ class RepositoryInsertTests : TestCase() {
 
         Assertions.assertEquals(
             listOf(address),
-            connection().select(
-                table = addressTable.table,
+            connection().query(
+                table = addressTable,
                 where = where(addressTable.id equalsTo "arthur-dent-address-new-address-for-test"),
                 order = mapOf(addressTable.id to Order.ASC),
             ).map { addressTable.entry(it) }.toList()

@@ -47,8 +47,8 @@ class EntityRepositoryDeleteTests : TestCase() {
 
         Assertions.assertEquals(
             0,
-            connection().select(
-                table = addressTable.table,
+            connection().query(
+                table = addressTable,
                 where = where(addressTable.id equalsTo "arthur-dent-address"),
                 order = mapOf(addressTable.id to Order.ASC),
             ).count()

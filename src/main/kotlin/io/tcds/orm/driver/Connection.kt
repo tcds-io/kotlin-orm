@@ -3,6 +3,7 @@ package io.tcds.orm.driver
 import io.tcds.orm.Column
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
+import io.tcds.orm.Table
 import io.tcds.orm.extension.columns
 import io.tcds.orm.extension.marks
 import io.tcds.orm.extension.toOrderByStatement
@@ -18,24 +19,57 @@ interface Connection {
     val readWrite: JdbcConnection
     val logger: Logger?
 
-    fun <E> select(
-        table: String,
+    fun <E> query(
+        table: Table<E>,
         where: Statement,
         order: Map<Column<E, *>, Order>,
         limit: Int? = null,
         offset: Int? = null,
     ): Sequence<OrmResultSet> {
+        val tableWhere = if (table.softDelete) where.getSoftDeleteStatement<E>() else where
+
         val sql = """
-            SELECT * FROM $table
-                ${where.toSql()}
+            SELECT * FROM ${table.tableName}
+                ${tableWhere.toSql()}
                 ${order.toOrderByStatement()}
                 ${Limit(limit, offset)}
-        """.trimIndent()
+        """.trimIndent().trim()
 
-        return select(sql, where.params())
+        return query(sql, tableWhere.params())
     }
 
-    fun select(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet> {
+    fun <E> insert(table: Table<E>, params: List<Param<*, *>> = emptyList()) {
+        val sql = """
+            INSERT INTO ${table.tableName} (${params.columns()})
+                VALUES (${params.marks()})
+        """.trimIndent()
+
+        execute(sql, params)
+    }
+
+    fun <E> delete(table: Table<E>, where: Statement) {
+        when (table.softDelete) {
+            false -> {
+                val sql = """
+                    DELETE FROM ${table.tableName}
+                        ${where.toSql()}
+                """.trimIndent()
+
+                execute(sql, where.params())
+            }
+            true -> {
+                val sql = """
+                    UPDATE ${table.tableName}
+                        SET deleted_at = ?
+                        ${where.toSql()}
+                """.trimIndent()
+
+                execute(sql, where.getSoftDeleteQueryParams<E>())
+            }
+        }
+    }
+
+    fun query(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet> {
         val stmt = prepare(readOnly, sql, params)
         val result = stmt.executeQuery()
         if (logger !== null) ConnectionLogger.select(logger!!, sql, params)
@@ -45,21 +79,6 @@ interface Connection {
                 yield(OrmResultSet(result))
             }
         }
-    }
-
-    fun insert(table: String, params: List<Param<*, *>> = emptyList()) {
-        val sql = """
-            INSERT INTO $table (${params.columns()})
-                VALUES (${params.marks()})
-        """.trimIndent()
-
-        execute(sql, params)
-    }
-
-    fun delete(table: String, where: Statement) {
-        val sql = "DELETE FROM $table ${where.toSql()}"
-
-        execute(sql, where.params())
     }
 
     fun execute(sql: String, params: List<Param<*, *>> = emptyList()): Boolean {

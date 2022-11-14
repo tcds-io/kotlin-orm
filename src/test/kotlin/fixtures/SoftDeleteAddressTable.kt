@@ -5,9 +5,10 @@ import io.tcds.orm.OrmResultSet
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.get
 
-class AddressTable : EntityTable<Address, String>(
+class SoftDeleteAddressTable : EntityTable<Address, String>(
     tableName = "addresses",
     id = StringColumn("id") { it.id },
+    softDelete = true
 ) {
     val street = varchar("street") { it.street }
     val number = varchar("number") { it.number }

@@ -14,7 +14,7 @@ class UserTable(
     private val addresses: EntityRepository<Address, String>,
     private val statusList: Repository<UserStatus>,
 ) : EntityTable<User, String>(
-    table = "users",
+    tableName = "users",
     id = StringColumn("id") { it.id },
 ) {
     private val statusTable = UserStatusTable()

@@ -52,8 +52,8 @@ class RepositoryDeleteTests : TestCase() {
 
         Assertions.assertEquals(
             0,
-            connection().select(
-                table = addressTable.table,
+            connection().query(
+                table = addressTable,
                 where = emptyWhere(),
                 order = mapOf(addressTable.id to Order.ASC),
             ).count()

@@ -53,7 +53,7 @@ class RepositoryLoadByQueryTests : TestCase() {
 
     @Test
     fun `given a sql query and ASC order when entry exists then load into the entity`() {
-        val sql = "SELECT * FROM ${addressTable.table} ORDER BY id ASC LIMIT 1"
+        val sql = "SELECT * FROM ${addressTable.tableName} ORDER BY id ASC LIMIT 1"
 
         val address = addressRepository.loadByQuery(sql)
 
@@ -62,7 +62,7 @@ class RepositoryLoadByQueryTests : TestCase() {
 
     @Test
     fun `given a sql and a condition when entry exists then load into the entity`() {
-        val sql = "SELECT * FROM ${addressTable.table} ORDER BY id DESC LIMIT 1"
+        val sql = "SELECT * FROM ${addressTable.tableName} ORDER BY id DESC LIMIT 1"
 
         val address = addressRepository.loadByQuery(sql)
 
@@ -71,7 +71,7 @@ class RepositoryLoadByQueryTests : TestCase() {
 
     @Test
     fun `given a sql query and DESC order when entry exists then load into the entity`() {
-        val sql = "SELECT * FROM ${addressTable.table} WHERE number = ? ORDER BY id DESC LIMIT 1"
+        val sql = "SELECT * FROM ${addressTable.tableName} WHERE number = ? ORDER BY id DESC LIMIT 1"
         val params = listOf(Param(addressTable.number, "124T"))
 
         val address = addressRepository.loadByQuery(sql, params)

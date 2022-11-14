@@ -46,4 +46,23 @@ class StatementTests {
             where.params(),
         )
     }
+
+    @Test
+    fun `given where conditions when converting to soft delete then rearrange statements`() {
+        val where = where(age equalsTo 32) or (age greaterThen 50)
+
+        val sfWhere = where.getSoftDeleteStatement<User>()
+
+        Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toSql())
+        Assertions.assertEquals(listOf(Param(age, 32), Param(age, 50)), where.params())
+    }
+
+    @Test
+    fun `given an empty where when converting to soft delete then rearrange statements`() {
+        val where = emptyWhere()
+
+        val sfWhere = where.getSoftDeleteStatement<User>()
+
+        Assertions.assertEquals("WHERE deleted_at IS NULL", sfWhere.toSql())
+    }
 }

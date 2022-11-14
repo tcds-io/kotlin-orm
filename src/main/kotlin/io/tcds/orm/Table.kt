@@ -3,7 +3,10 @@ package io.tcds.orm
 import io.tcds.orm.column.*
 import java.time.LocalDateTime
 
-abstract class Table<E>(open val table: String) {
+abstract class Table<E>(
+    open val tableName: String,
+    open val softDelete: Boolean = false,
+) {
     private val columns = mutableListOf<Column<E, *>>()
 
     fun integer(name: String, value: (E) -> Int?) = column(IntegerColumn(name = name, value = value))

@@ -72,7 +72,7 @@ class RepositorySelectByQueryTests : TestCase() {
 
     @Test
     fun `given a condition and ASC order and limit and offset when entries exist then select into the database`() {
-        val sql = "SELECT * FROM ${addressTable.table} ORDER BY id ASC"
+        val sql = "SELECT * FROM ${addressTable.tableName} ORDER BY id ASC"
 
         val addresses = addressRepository.selectByQuery(sql)
 
