@@ -4,7 +4,7 @@ import org.slf4j.Logger
 import java.sql.DriverManager
 import java.sql.Connection as JdbcConnection
 
-class MysqlConnectionConnection(
+class MysqlConnection(
     jdbcReadUrl: String,
     jdbcReadWriteUrl: String,
     override val logger: Logger?,

@@ -114,7 +114,7 @@ class ConnectionTest {
 
     @Test
     fun `given a soft delete table when delete gets called then run update statement`() {
-        freezeClockAt("2022-11-14T18:25:10.000-00:00")
+        freezeClockAt("2022-11-14T18:25:10.000Z")
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.setTimestamp(any(), any()) } just runs
         every { stmt.setString(any(), any()) } just runs
@@ -130,7 +130,7 @@ class ConnectionTest {
             """.trimIndent())
         }
 
-        verify(exactly = 1) { stmt.setTimestamp(1, Timestamp(1668461110000)) }
+        verify(exactly = 1) { stmt.setTimestamp(1, Timestamp.valueOf(("2022-11-14 18:25:10"))) }
         verify(exactly = 1) { stmt.setString(2, "address-id") }
         verify(exactly = 1) { stmt.execute() }
     }
