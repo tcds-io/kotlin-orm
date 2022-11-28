@@ -1,16 +1,16 @@
-package io.tcds.orm.driver
+package io.tcds.orm.driver.pgsql
 
+import io.tcds.orm.driver.Connection
 import org.slf4j.Logger
 import java.sql.DriverManager
-import java.sql.Connection as JdbcConnection
 
-class MysqlConnection(
+class PgsqlConnection(
     jdbcReadUrl: String,
     jdbcReadWriteUrl: String,
     override val logger: Logger?,
 ) : Connection {
-    override val readOnly: JdbcConnection = DriverManager.getConnection(jdbcReadUrl)
-    override val readWrite: JdbcConnection = DriverManager.getConnection(jdbcReadWriteUrl)
+    override val readOnly: java.sql.Connection = DriverManager.getConnection(jdbcReadUrl)
+    override val readWrite: java.sql.Connection = DriverManager.getConnection(jdbcReadWriteUrl)
 
     init {
         if (!readOnly.isValid(0)) throw Exception("Orm: Invalid ro connection")

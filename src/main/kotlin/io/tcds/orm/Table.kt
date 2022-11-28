@@ -23,4 +23,21 @@ abstract class Table<E>(
     protected fun <T> column(column: Column<E, T?>): Column<E, T?> = columns.add(column).let { column }
 
     abstract fun entry(row: OrmResultSet): E
+
+    fun dll(): String {
+        return """
+            CREATE TABLE trip_payments (
+                `id`               VARCHAR(36)     PRIMARY KEY,
+                `trip_id`          VARCHAR(36)     NOT NULL,
+                `amount_value`     DECIMAL(27, 12) NOT NULL,
+                `amount_currency`  VARCHAR(10)     NOT NULL,
+                `payment_provider` VARCHAR(255)    NOT NULL,
+                `payment_type`     VARCHAR(255)    NOT NULL,
+                `created_at`       DATETIME(6)     NOT NULL,
+                
+                INDEX idx_trip_id    (`trip_id`),
+                INDEX idx_created_at (`created_at`)
+            );
+        """.trimIndent()
+    }
 }

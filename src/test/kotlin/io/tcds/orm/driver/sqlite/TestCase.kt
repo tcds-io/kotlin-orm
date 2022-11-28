@@ -1,7 +1,7 @@
 package io.tcds.orm.driver.sqlite
 
 import io.tcds.orm.driver.Connection
-import io.tcds.orm.driver.SqliteConnection
+import io.tcds.orm.driver.sqlite.SqliteConnection
 import mu.KotlinLogging
 import org.gradle.internal.impldep.org.jetbrains.annotations.MustBeInvokedByOverriders
 import org.junit.jupiter.api.AfterEach

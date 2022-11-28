@@ -1,10 +1,11 @@
-package io.tcds.orm.driver
+package io.tcds.orm.driver.mysql
 
+import io.tcds.orm.driver.Connection
 import org.slf4j.Logger
 import java.sql.DriverManager
 import java.sql.Connection as JdbcConnection
 
-class PgsqlConnection(
+class MysqlConnection(
     jdbcReadUrl: String,
     jdbcReadWriteUrl: String,
     override val logger: Logger?,
