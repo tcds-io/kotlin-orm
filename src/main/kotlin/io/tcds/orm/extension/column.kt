@@ -14,4 +14,3 @@ fun <T> Column<*, T>.isNull(): Condition = IsNull(this)
 infix fun <T> Column<*, T>.like(value: T): Condition = Like(this, value)
 infix fun <T> Column<*, T>.smallerThen(value: T): Condition = SmallerThen(this, value)
 infix fun <T> Column<*, T>.smallerThenOrEqualsTo(value: T): Condition = SmallerThenOrEqualsTo(this, value)
-

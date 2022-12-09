@@ -33,4 +33,3 @@ open class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
         return where(StatementGroup(conditions.removeWhere())) and deletedAt.isNull()
     }
 }
-

@@ -19,6 +19,18 @@ interface Connection {
     val readWrite: JdbcConnection
     val logger: Logger?
 
+    fun begin() = execute("BEGIN TRANSACTION;")
+    fun commit() = execute("COMMIT;")
+    fun rollback() = execute("ROLLBACK;")
+
+    fun transaction(block: () -> Unit) {
+        begin()
+
+        runCatching { block() }
+            .onSuccess { commit() }
+            .onFailure { rollback() }
+    }
+
     fun <E> query(
         table: Table<E>,
         where: Statement,
@@ -57,6 +69,7 @@ interface Connection {
 
                 execute(sql, where.params())
             }
+
             true -> {
                 val sql = """
                     UPDATE ${table.tableName}

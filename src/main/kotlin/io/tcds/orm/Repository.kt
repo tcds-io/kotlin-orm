@@ -39,4 +39,6 @@ open class Repository<E>(private val table: Table<E>, private val connection: Co
         sql = sql,
         params = params,
     ).map { table.entry(it) }
+
+    fun transaction(block: () -> Unit) = connection.transaction(block)
 }

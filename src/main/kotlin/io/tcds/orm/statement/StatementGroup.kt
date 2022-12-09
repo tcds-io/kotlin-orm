@@ -14,4 +14,3 @@ class StatementGroup(private val conditions: MutableList<Pair<Operator, Conditio
 
     override fun toSql(): String = "(${conditions.toSql()})"
 }
-
