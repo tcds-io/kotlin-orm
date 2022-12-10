@@ -10,9 +10,16 @@ class ColumnTests {
     private val table = AddressTable()
 
     @Test
-    fun `given a statement then compare with other statement`() {
+    fun `given a statement then compare with other boolean statement`() {
         val statement = where(table.main equalsTo true)
 
         Assertions.assertEquals(where(table.main equalsTo true), statement)
+    }
+
+    @Test
+    fun `given a statement then compare with other string statement`() {
+        val statement = where(table.street equalsTo "Av. Paulista")
+
+        Assertions.assertEquals(where(table.street equalsTo "Av. Paulista"), statement)
     }
 }
