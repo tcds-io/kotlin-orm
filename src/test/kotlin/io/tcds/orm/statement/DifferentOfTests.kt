@@ -14,7 +14,7 @@ class DifferentOfTests {
     fun `create infix different of statement and params`() {
         val clause = column differentOf "123"
 
-        Assertions.assertEquals("name != ?", clause.toSql())
+        Assertions.assertEquals("name != ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, "123")), clause.params())
     }
 
@@ -22,7 +22,7 @@ class DifferentOfTests {
     fun `create fun different of statement and params`() {
         val clause = column.differentOf("345")
 
-        Assertions.assertEquals("name != ?", clause.toSql())
+        Assertions.assertEquals("name != ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, "345")), clause.params())
     }
 }

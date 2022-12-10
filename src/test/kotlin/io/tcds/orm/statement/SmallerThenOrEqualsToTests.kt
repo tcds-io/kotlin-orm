@@ -14,7 +14,7 @@ class SmallerThenOrEqualsToTests {
     fun `create infix smaller then or equals to statement and params`() {
         val clause = column smallerThenOrEqualsTo 30
 
-        Assertions.assertEquals("age <= ?", clause.toSql())
+        Assertions.assertEquals("age <= ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 
@@ -22,7 +22,7 @@ class SmallerThenOrEqualsToTests {
     fun `create fun smaller then or equals to statement and params`() {
         val clause = column.smallerThenOrEqualsTo(30)
 
-        Assertions.assertEquals("age <= ?", clause.toSql())
+        Assertions.assertEquals("age <= ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 }

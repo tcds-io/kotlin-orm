@@ -42,9 +42,9 @@ interface Connection {
 
         val sql = """
             SELECT * FROM ${table.tableName}
-                ${tableWhere.toSql()}
+                ${tableWhere.toStmt()}
                 ${order.toOrderByStatement()}
-                ${Limit(limit, offset)}
+                ${Limit(limit, offset).toStmt()}
         """.trimIndent().trim()
 
         return query(sql, tableWhere.params())
@@ -64,7 +64,7 @@ interface Connection {
             false -> {
                 val sql = """
                     DELETE FROM ${table.tableName}
-                        ${where.toSql()}
+                        ${where.toStmt()}
                 """.trimIndent()
 
                 execute(sql, where.params())
@@ -74,7 +74,7 @@ interface Connection {
                 val sql = """
                     UPDATE ${table.tableName}
                         SET deleted_at = ?
-                        ${where.toSql()}
+                        ${where.toStmt()}
                 """.trimIndent()
 
                 execute(sql, where.getSoftDeleteQueryParams<E>())

@@ -8,20 +8,20 @@ class LimitTests {
     fun `when limit is null then string is empty`() {
         val limit = Limit(null, 10)
 
-        Assertions.assertEquals("", limit.toString())
+        Assertions.assertEquals("", limit.toStmt())
     }
 
     @Test
     fun `when limit is given and offset is null then string has limit`() {
         val limit = Limit(10, null)
 
-        Assertions.assertEquals("LIMIT 10", limit.toString())
+        Assertions.assertEquals("LIMIT 10", limit.toStmt())
     }
 
     @Test
     fun `when limit and offset are given then string has limit and offset`() {
         val limit = Limit(10, 3)
 
-        Assertions.assertEquals("LIMIT 10 OFFSET 3", limit.toString())
+        Assertions.assertEquals("LIMIT 10 OFFSET 3", limit.toStmt())
     }
 }

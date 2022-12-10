@@ -14,7 +14,7 @@ class IsNullTests {
     fun `create is null statement`() {
         val clause = column.isNull()
 
-        Assertions.assertEquals("name IS NULL", clause.toSql())
+        Assertions.assertEquals("name IS NULL", clause.toStmt())
         Assertions.assertEquals(emptyList<Param<User, String>>(), clause.params())
     }
 }

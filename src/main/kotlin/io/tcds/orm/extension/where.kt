@@ -9,8 +9,10 @@ import io.tcds.orm.statement.StatementGroup
 
 fun List<Param<*, *>>.columns(): String = joinToString(", ") { it.column.name }
 fun List<Param<*, *>>.marks(): String = joinToString(", ") { "?" }
+fun Pair<Operator, Condition>.toStmt() = if (first == NONE) second.toStmt() else "${first.operator} ${second.toStmt()}"
 fun Pair<Operator, Condition>.toSql() = if (first == NONE) second.toSql() else "${first.operator} ${second.toSql()}"
 
+fun MutableList<Pair<Operator, Condition>>.toStmt() = joinToString(" ") { it.toStmt() }
 fun MutableList<Pair<Operator, Condition>>.toSql() = joinToString(" ") { it.toSql() }
 fun MutableList<Pair<Operator, Condition>>.removeWhere(): MutableList<Pair<Operator, Condition>> {
     return map { if (it.first == WHERE) Pair(NONE, it.second) else it }.toMutableList()

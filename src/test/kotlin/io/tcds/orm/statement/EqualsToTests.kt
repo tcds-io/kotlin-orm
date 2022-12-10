@@ -14,7 +14,7 @@ class EqualsToTests {
     fun `create infix equals to statement and params`() {
         val clause = column equalsTo "123"
 
-        Assertions.assertEquals("name = ?", clause.toSql())
+        Assertions.assertEquals("name = ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, "123")), clause.params())
     }
 
@@ -22,7 +22,7 @@ class EqualsToTests {
     fun `create fun equals to statement and params`() {
         val clause = column.equalsTo("345")
 
-        Assertions.assertEquals("name = ?", clause.toSql())
+        Assertions.assertEquals("name = ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, "345")), clause.params())
     }
 }

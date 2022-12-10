@@ -14,7 +14,7 @@ class GreaterThenTests {
     fun `create infix grater then statement and params`() {
         val clause = column greaterThen 30
 
-        Assertions.assertEquals("age > ?", clause.toSql())
+        Assertions.assertEquals("age > ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 
@@ -22,7 +22,7 @@ class GreaterThenTests {
     fun `create fun grater then statement and params`() {
         val clause = column.greaterThen(30)
 
-        Assertions.assertEquals("age > ?", clause.toSql())
+        Assertions.assertEquals("age > ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 }

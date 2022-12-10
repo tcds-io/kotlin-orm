@@ -14,7 +14,7 @@ class GreaterThenOrEqualsToTests {
     fun `create infix grater then or equals to statement and params`() {
         val clause = column graterThenOrEqualsTo 30
 
-        Assertions.assertEquals("age >= ?", clause.toSql())
+        Assertions.assertEquals("age >= ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 
@@ -22,7 +22,7 @@ class GreaterThenOrEqualsToTests {
     fun `create fun grater then or equals to statement and params`() {
         val clause = column.graterThenOrEqualsTo(30)
 
-        Assertions.assertEquals("age >= ?", clause.toSql())
+        Assertions.assertEquals("age >= ?", clause.toStmt())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 }

@@ -16,7 +16,7 @@ class StatementTests {
     fun `given where conditions then create where statement with params`() {
         val where = where(age equalsTo 32) or (age greaterThen 50) and (name differentOf "Arthur Dent")
 
-        Assertions.assertEquals("WHERE age = ? OR age > ? AND name != ?", where.toSql())
+        Assertions.assertEquals("WHERE age = ? OR age > ? AND name != ?", where.toStmt())
         Assertions.assertEquals(
             listOf(Param(age, 32), Param(age, 50), Param(name, "Arthur Dent")),
             where.params(),
@@ -33,7 +33,7 @@ class StatementTests {
 
         Assertions.assertEquals(
             "WHERE age = ? OR (age > ? AND name != ?) AND (age < ? AND name != ?)",
-            where.toSql(),
+            where.toStmt(),
         )
         Assertions.assertEquals(
             listOf(
@@ -53,7 +53,7 @@ class StatementTests {
 
         val sfWhere = where.getSoftDeleteStatement<User>()
 
-        Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toSql())
+        Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toStmt())
         Assertions.assertEquals(listOf(Param(age, 32), Param(age, 50)), where.params())
     }
 
@@ -63,6 +63,13 @@ class StatementTests {
 
         val sfWhere = where.getSoftDeleteStatement<User>()
 
-        Assertions.assertEquals("WHERE deleted_at IS NULL", sfWhere.toSql())
+        Assertions.assertEquals("WHERE deleted_at IS NULL", sfWhere.toStmt())
+    }
+
+    @Test
+    fun `given where conditions then build string value`() {
+        val where = where(age equalsTo 32) or (age greaterThen 50) and (name differentOf "Arthur Dent")
+
+        Assertions.assertEquals("WHERE age = 32 OR age > 50 AND name != Arthur Dent", where.toSql())
     }
 }

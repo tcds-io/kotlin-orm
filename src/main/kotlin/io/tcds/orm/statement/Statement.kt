@@ -7,6 +7,7 @@ import io.tcds.orm.extension.*
 import java.time.LocalDateTime
 
 data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
+    fun toStmt() = conditions.toStmt()
     fun toSql() = conditions.toSql()
 
     fun add(condition: Pair<Operator, Condition>) = conditions.add(condition)

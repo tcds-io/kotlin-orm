@@ -5,6 +5,7 @@ import io.tcds.orm.Condition
 import io.tcds.orm.Param
 
 data class IsNull<E>(val column: Column<E, *>) : Condition {
-    override fun toSql(): String = "${column.name} IS NULL"
+    override fun toStmt(): String = "${column.name} IS NULL"
+    override fun toSql(): String = toStmt()
     override fun params(): List<Param<E, *>> = emptyList()
 }

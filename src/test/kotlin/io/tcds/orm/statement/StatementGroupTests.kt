@@ -14,7 +14,7 @@ class StatementGroupTests {
     fun `given a condition then group into parenthesis`() {
         val group = StatementGroup(conditions = mutableListOf(Pair(Operator.NONE, (column equalsTo "123"))) )
 
-        Assertions.assertEquals("(name = ?)", group.toSql())
+        Assertions.assertEquals("(name = ?)", group.toStmt())
         Assertions.assertEquals(listOf(Param(column, "123")), group.params())
     }
 }
