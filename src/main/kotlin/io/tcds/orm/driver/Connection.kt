@@ -19,9 +19,9 @@ interface Connection {
     val readWrite: JdbcConnection
     val logger: Logger?
 
-    fun begin() = execute("BEGIN TRANSACTION;")
-    fun commit() = execute("COMMIT;")
-    fun rollback() = execute("ROLLBACK;")
+    fun begin() = execute("BEGIN")
+    fun commit() = execute("COMMIT")
+    fun rollback() = execute("ROLLBACK")
 
     fun transaction(block: () -> Unit) {
         begin()

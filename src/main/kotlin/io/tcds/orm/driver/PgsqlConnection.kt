@@ -8,4 +8,8 @@ class PgsqlConnection(
     jdbcReadUrl: String,
     jdbcReadWriteUrl: String,
     override val logger: Logger?,
-) : NestedTransactionConnection(jdbcReadUrl, jdbcReadWriteUrl, logger)
+) : NestedTransactionConnection(
+    readOnly = DriverManager.getConnection(jdbcReadUrl),
+    readWrite = DriverManager.getConnection(jdbcReadWriteUrl),
+    logger = logger,
+)

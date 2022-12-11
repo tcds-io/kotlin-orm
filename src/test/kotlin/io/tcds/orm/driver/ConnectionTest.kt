@@ -20,7 +20,6 @@ import java.sql.Connection as JdbcConnection
 class ConnectionTest {
     private val readWrite: JdbcConnection = mockk()
     private val readOnly: JdbcConnection = mockk()
-    private val logger: Logger = mockk()
     private val stmt: PreparedStatement = mockk()
     private val table = AddressTable()
     private val sfTable = SoftDeleteAddressTable()
