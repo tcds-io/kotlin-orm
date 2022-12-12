@@ -21,8 +21,7 @@ class NestedTransactionConnectionTest {
     @Test
     fun `given a connection when begin then commit gets called then run begin and commit statements`() {
         val connection = DummyNestedTransactionConnection(readOnly, readWrite)
-        every { readWrite.prepareStatement("BEGIN") } returns stmt
-        every { readWrite.prepareStatement("COMMIT") } returns stmt
+        every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
         connection.begin()
@@ -35,12 +34,7 @@ class NestedTransactionConnectionTest {
     @Test
     fun `given a connection when begin and commit gets called multiple times then run store and release savepoint`() {
         val connection = DummyNestedTransactionConnection(readOnly, readWrite)
-        every { readWrite.prepareStatement("BEGIN") } returns stmt
-        every { readWrite.prepareStatement("SAVEPOINT LEVEL1") } returns stmt
-        every { readWrite.prepareStatement("SAVEPOINT LEVEL2") } returns stmt
-        every { readWrite.prepareStatement("RELEASE SAVEPOINT LEVEL2") } returns stmt
-        every { readWrite.prepareStatement("RELEASE SAVEPOINT LEVEL1") } returns stmt
-        every { readWrite.prepareStatement("COMMIT") } returns stmt
+        every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
         connection.begin()
@@ -61,8 +55,7 @@ class NestedTransactionConnectionTest {
     @Test
     fun `given a connection when begin then rollback gets called then run begin and rollback statements`() {
         val connection = DummyNestedTransactionConnection(readOnly, readWrite)
-        every { readWrite.prepareStatement("BEGIN") } returns stmt
-        every { readWrite.prepareStatement("ROLLBACK") } returns stmt
+        every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
         connection.begin()
@@ -75,12 +68,7 @@ class NestedTransactionConnectionTest {
     @Test
     fun `given a connection when begin and rollback gets called multiple times then run store and release savepoint`() {
         val connection = DummyNestedTransactionConnection(readOnly, readWrite)
-        every { readWrite.prepareStatement("BEGIN") } returns stmt
-        every { readWrite.prepareStatement("SAVEPOINT LEVEL1") } returns stmt
-        every { readWrite.prepareStatement("SAVEPOINT LEVEL2") } returns stmt
-        every { readWrite.prepareStatement("ROLLBACK TO SAVEPOINT LEVEL2") } returns stmt
-        every { readWrite.prepareStatement("ROLLBACK TO SAVEPOINT LEVEL1") } returns stmt
-        every { readWrite.prepareStatement("ROLLBACK") } returns stmt
+        every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
         connection.begin()
@@ -95,6 +83,30 @@ class NestedTransactionConnectionTest {
         verify(exactly = 1) { readWrite.prepareStatement("SAVEPOINT LEVEL2") }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK TO SAVEPOINT LEVEL2") }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK TO SAVEPOINT LEVEL1") }
+        verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK") }
+    }
+
+    @Test
+    fun `given a connection when transaction gets called and no exception is thrown then commit the transaction`() {
+        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        every { readWrite.prepareStatement(any()) } returns stmt
+        every { stmt.execute() } returns true
+
+        connection.transaction {}
+
+        verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
+        verify(exactly = 1) { readWrite.prepareStatement("COMMIT") }
+    }
+
+    @Test
+    fun `given a connection when transaction gets called and an exception is thrown then rollback the transaction`() {
+        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        every { readWrite.prepareStatement(any()) } returns stmt
+        every { stmt.execute() } returns true
+
+        connection.transaction { throw Exception("error") }
+
+        verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK") }
     }
 }
