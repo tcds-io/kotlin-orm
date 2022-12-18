@@ -12,7 +12,6 @@ import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 import org.junit.jupiter.api.Test
-import org.slf4j.Logger
 import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.sql.Connection as JdbcConnection
@@ -39,11 +38,13 @@ class ConnectionTest {
         )
 
         verify(exactly = 1) {
-            readOnly.prepareStatement("""
+            readOnly.prepareStatement(
+                """
                 SELECT * FROM addresses
                     WHERE id = ?
                     ORDER BY id ASC
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
         verify(exactly = 1) { stmt.setString(1, "random-address") }
         verify(exactly = 1) { stmt.executeQuery() }
@@ -61,11 +62,13 @@ class ConnectionTest {
         )
 
         verify(exactly = 1) {
-            readOnly.prepareStatement("""
+            readOnly.prepareStatement(
+                """
                 SELECT * FROM addresses
                     WHERE deleted_at IS NULL
                     ORDER BY id DESC
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
         verify(exactly = 1) { stmt.executeQuery() }
     }
@@ -80,10 +83,12 @@ class ConnectionTest {
         connection.insert(table, params)
 
         verify(exactly = 1) {
-            readWrite.prepareStatement("""
+            readWrite.prepareStatement(
+                """
                 INSERT INTO addresses (id, number)
                     VALUES (?, ?)
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
         verify(exactly = 1) { stmt.setString(1, "address-id") }
         verify(exactly = 1) { stmt.setString(2, "1234X") }
@@ -102,10 +107,12 @@ class ConnectionTest {
         )
 
         verify(exactly = 1) {
-            readWrite.prepareStatement("""
+            readWrite.prepareStatement(
+                """
                 DELETE FROM addresses
                     WHERE id = ?
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
         verify(exactly = 1) { stmt.setString(1, "address-id") }
         verify(exactly = 1) { stmt.execute() }
@@ -122,11 +129,13 @@ class ConnectionTest {
         connection.delete(table = sfTable, where = where(table.id equalsTo "address-id"))
 
         verify(exactly = 1) {
-            readWrite.prepareStatement("""
+            readWrite.prepareStatement(
+                """
                 UPDATE addresses
                     SET deleted_at = ?
                     WHERE id = ?
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
 
         verify(exactly = 1) { stmt.setTimestamp(1, Timestamp.valueOf(("2022-11-14 18:25:10"))) }

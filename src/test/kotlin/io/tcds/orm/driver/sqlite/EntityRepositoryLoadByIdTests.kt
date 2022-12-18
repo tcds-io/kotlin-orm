@@ -11,13 +11,9 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class EntityRepositoryLoadByIdTests : TestCase() {
-    private val addressTable = AddressTable()
-    private val statusTable = UserStatusTable()
-    private val addressRepository = EntityRepository(addressTable, connection())
-    private val statusRepository = Repository(statusTable, connection())
-
-    private val userTable = UserTable(addressRepository, statusRepository)
-    private val userRepository = EntityRepository(userTable, connection())
+    private val addressRepository = EntityRepository(AddressTable(), connection())
+    private val statusRepository = Repository(UserStatusTable(), connection())
+    private val userRepository = EntityRepository(UserTable(addressRepository, statusRepository), connection())
 
     @BeforeEach
     override fun setup() {
@@ -26,24 +22,24 @@ class EntityRepositoryLoadByIdTests : TestCase() {
         connection().execute(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(addressTable.id, "arthur-dent-address"),
-                Param(addressTable.street, "Galaxy Avenue"),
-                Param(addressTable.number, "124T"),
-                Param(addressTable.main, true),
-                Param(addressTable.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                Param(addressRepository.table.id, "arthur-dent-address"),
+                Param(addressRepository.table.street, "Galaxy Avenue"),
+                Param(addressRepository.table.number, "124T"),
+                Param(addressRepository.table.main, true),
+                Param(addressRepository.table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             )
         )
 
         connection().execute(
             "INSERT INTO users VALUES (?,?,?,?,?,?,?)",
             listOf(
-                Param(userTable.id, "arthur-dent"),
-                Param(userTable.name, "Arthur Dent"),
-                Param(userTable.email, "arthur.dent@galaxy.org"),
-                Param(userTable.height, 1.78.toFloat()),
-                Param(userTable.age, 42),
-                Param(userTable.active, true),
-                Param(userTable.addressId, "arthur-dent-address"),
+                Param(userRepository.table.id, "arthur-dent"),
+                Param(userRepository.table.name, "Arthur Dent"),
+                Param(userRepository.table.email, "arthur.dent@galaxy.org"),
+                Param(userRepository.table.height, 1.78.toFloat()),
+                Param(userRepository.table.age, 42),
+                Param(userRepository.table.active, true),
+                Param(userRepository.table.addressId, "arthur-dent-address"),
             )
         )
 
@@ -51,14 +47,14 @@ class EntityRepositoryLoadByIdTests : TestCase() {
             "INSERT INTO user_status VALUES (?,?,?), (?,?,?)",
             listOf(
                 // Status.ACTIVE
-                Param(statusTable.userId, "arthur-dent"),
-                Param(statusTable.status, Status.INACTIVE),
-                Param(statusTable.at, LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10)),
+                Param(statusRepository.table.userId, "arthur-dent"),
+                Param(statusRepository.table.status, Status.INACTIVE),
+                Param(statusRepository.table.at, LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10)),
 
                 // Status.INACTIVE
-                Param(statusTable.userId, "arthur-dent"),
-                Param(statusTable.status, Status.ACTIVE),
-                Param(statusTable.at, LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11)),
+                Param(statusRepository.table.userId, "arthur-dent"),
+                Param(statusRepository.table.status, Status.ACTIVE),
+                Param(statusRepository.table.at, LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11)),
             )
         )
     }

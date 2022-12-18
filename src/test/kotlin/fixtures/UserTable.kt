@@ -11,8 +11,8 @@ import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 
 class UserTable(
-    private val addresses: EntityRepository<Address, String>,
-    private val statusList: Repository<UserStatus>,
+    private val addresses: EntityRepository<Address, String, AddressTable>,
+    private val statusList: Repository<UserStatus, UserStatusTable>,
 ) : EntityTable<User, String>(
     tableName = "users",
     id = StringColumn("id") { it.id },

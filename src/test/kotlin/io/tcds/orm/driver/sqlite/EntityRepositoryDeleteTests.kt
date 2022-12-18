@@ -14,8 +14,8 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class EntityRepositoryDeleteTests : TestCase() {
-    private val addressTable = AddressTable()
-    private val addressRepository = EntityRepository(addressTable, connection())
+    private val repository = EntityRepository(AddressTable(), connection())
+    private val table = repository.table
 
     @BeforeEach
     override fun setup() {
@@ -24,11 +24,11 @@ class EntityRepositoryDeleteTests : TestCase() {
         connection().execute(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(addressTable.id, "arthur-dent-address"),
-                Param(addressTable.street, "Galaxy Avenue"),
-                Param(addressTable.number, "124T"),
-                Param(addressTable.main, true),
-                Param(addressTable.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                Param(table.id, "arthur-dent-address"),
+                Param(table.street, "Galaxy Avenue"),
+                Param(table.number, "124T"),
+                Param(table.main, true),
+                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             )
         )
     }
@@ -43,14 +43,14 @@ class EntityRepositoryDeleteTests : TestCase() {
             createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
         )
 
-        addressRepository.delete(address)
+        repository.delete(address)
 
         Assertions.assertEquals(
             0,
             connection().query(
-                table = addressTable,
-                where = where(addressTable.id equalsTo "arthur-dent-address"),
-                order = mapOf(addressTable.id to Order.ASC),
+                table = table,
+                where = where(table.id equalsTo "arthur-dent-address"),
+                order = mapOf(table.id to Order.ASC),
             ).count()
         )
     }
