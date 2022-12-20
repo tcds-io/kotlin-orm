@@ -2,7 +2,6 @@ package io.tcds.orm.driver.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
@@ -14,8 +13,7 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class EntityRepositoryDeleteTests : TestCase() {
-    private val repository = EntityRepository(AddressTable(), connection())
-    private val table = repository.table
+    private val table = AddressTable(connection())
 
     @BeforeEach
     override fun setup() {
@@ -43,7 +41,7 @@ class EntityRepositoryDeleteTests : TestCase() {
             createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
         )
 
-        repository.delete(address)
+        table.delete(address)
 
         Assertions.assertEquals(
             0,

@@ -1,9 +1,7 @@
 package io.tcds.orm.driver.sqlite
 
 import fixtures.*
-import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
-import io.tcds.orm.Repository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -11,9 +9,9 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class EntityRepositoryLoadByIdTests : TestCase() {
-    private val addressRepository = EntityRepository(AddressTable(), connection())
-    private val statusRepository = Repository(UserStatusTable(), connection())
-    private val userRepository = EntityRepository(UserTable(addressRepository, statusRepository), connection())
+    private val addressTable = AddressTable(connection())
+    private val statusTable = UserStatusTable(connection())
+    private val userTable = UserTable(connection(), addressTable, statusTable)
 
     @BeforeEach
     override fun setup() {
@@ -22,24 +20,24 @@ class EntityRepositoryLoadByIdTests : TestCase() {
         connection().execute(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(addressRepository.table.id, "arthur-dent-address"),
-                Param(addressRepository.table.street, "Galaxy Avenue"),
-                Param(addressRepository.table.number, "124T"),
-                Param(addressRepository.table.main, true),
-                Param(addressRepository.table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                Param(addressTable.id, "arthur-dent-address"),
+                Param(addressTable.street, "Galaxy Avenue"),
+                Param(addressTable.number, "124T"),
+                Param(addressTable.main, true),
+                Param(addressTable.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             )
         )
 
         connection().execute(
             "INSERT INTO users VALUES (?,?,?,?,?,?,?)",
             listOf(
-                Param(userRepository.table.id, "arthur-dent"),
-                Param(userRepository.table.name, "Arthur Dent"),
-                Param(userRepository.table.email, "arthur.dent@galaxy.org"),
-                Param(userRepository.table.height, 1.78.toFloat()),
-                Param(userRepository.table.age, 42),
-                Param(userRepository.table.active, true),
-                Param(userRepository.table.addressId, "arthur-dent-address"),
+                Param(userTable.id, "arthur-dent"),
+                Param(userTable.name, "Arthur Dent"),
+                Param(userTable.email, "arthur.dent@galaxy.org"),
+                Param(userTable.height, 1.78.toFloat()),
+                Param(userTable.age, 42),
+                Param(userTable.active, true),
+                Param(userTable.addressId, "arthur-dent-address"),
             )
         )
 
@@ -47,14 +45,14 @@ class EntityRepositoryLoadByIdTests : TestCase() {
             "INSERT INTO user_status VALUES (?,?,?), (?,?,?)",
             listOf(
                 // Status.ACTIVE
-                Param(statusRepository.table.userId, "arthur-dent"),
-                Param(statusRepository.table.status, Status.INACTIVE),
-                Param(statusRepository.table.at, LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10)),
+                Param(statusTable.userId, "arthur-dent"),
+                Param(statusTable.status, Status.INACTIVE),
+                Param(statusTable.at, LocalDateTime.of(1995, Month.JANUARY, 10, 10, 10, 10)),
 
                 // Status.INACTIVE
-                Param(statusRepository.table.userId, "arthur-dent"),
-                Param(statusRepository.table.status, Status.ACTIVE),
-                Param(statusRepository.table.at, LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11)),
+                Param(statusTable.userId, "arthur-dent"),
+                Param(statusTable.status, Status.ACTIVE),
+                Param(statusTable.at, LocalDateTime.of(1995, Month.FEBRUARY, 11, 11, 11, 11)),
             )
         )
     }
@@ -63,7 +61,7 @@ class EntityRepositoryLoadByIdTests : TestCase() {
     fun `given and user id when user exists then loadById returns an user entity`() {
         val id = "arthur-dent"
 
-        val arthur = userRepository.loadById(id)
+        val arthur = userTable.loadById(id)
 
         Assertions.assertEquals(
             User(
@@ -101,7 +99,7 @@ class EntityRepositoryLoadByIdTests : TestCase() {
     fun `given and user id when user does not exist then loadById returns null`() {
         val id = "another-user"
 
-        val arthur = userRepository.loadById(id)
+        val arthur = userTable.loadById(id)
 
         Assertions.assertNull(arthur)
     }

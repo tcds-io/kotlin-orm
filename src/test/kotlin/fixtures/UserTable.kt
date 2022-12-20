@@ -5,20 +5,22 @@ import io.tcds.orm.EntityTable
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Repository
 import io.tcds.orm.column.StringColumn
+import io.tcds.orm.driver.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.get
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
 
+@Suppress("MemberVisibilityCanBePrivate")
 class UserTable(
-    private val addresses: EntityRepository<Address, String, AddressTable>,
-    private val statusList: Repository<UserStatus, UserStatusTable>,
+    connection: Connection,
+    private val addressTable: AddressTable,
+    private val statusTable: UserStatusTable,
 ) : EntityTable<User, String>(
+    connection = connection,
     tableName = "users",
     id = StringColumn("id") { it.id },
 ) {
-    private val statusTable = UserStatusTable()
-
     val name = varchar("name") { it.name }
     val email = varchar("email") { it.email }
     val height = float("height") { it.height }
@@ -35,8 +37,8 @@ class UserTable(
             height = row.get(height)!!,
             age = row.get(age)!!,
             active = row.get(active)!!,
-            address = addresses.loadById(row.get(addressId)!!)!!,
-            status = statusList.select(
+            address = addressTable.loadById(row.get(addressId)!!)!!,
+            status = statusTable.select(
                 where(statusTable.userId equalsTo userId),
                 mapOf(statusTable.at to Order.ASC)
             ).toList()

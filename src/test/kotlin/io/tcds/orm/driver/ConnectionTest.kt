@@ -20,10 +20,11 @@ class ConnectionTest {
     private val readWrite: JdbcConnection = mockk()
     private val readOnly: JdbcConnection = mockk()
     private val stmt: PreparedStatement = mockk()
-    private val table = AddressTable()
-    private val sfTable = SoftDeleteAddressTable()
 
-    val connection = DummyConnection(readWrite, readOnly, null)
+    private val connection = DummyConnection(readWrite, readOnly, null)
+
+    private val table = AddressTable(connection)
+    private val sfTable = SoftDeleteAddressTable(connection)
 
     @Test
     fun `given select params when table is not soft delete then run query according to params`() {

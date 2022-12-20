@@ -1,10 +1,15 @@
 package io.tcds.orm
 
-abstract class EntityTable<E, pkT>(
+import io.tcds.orm.driver.Connection
+
+abstract class EntityTable<Entity, PKType>(
+    connection: Connection,
     override val tableName: String,
-    val id: Column<E, pkT?>,
+    val id: Column<Entity, PKType?>,
     override val softDelete: Boolean = false,
-) : Table<E>(tableName, softDelete) {
+) : Table<Entity>(connection, tableName, softDelete), EntityRepository<Entity, PKType> {
+    override val table: EntityTable<Entity, PKType> get() = this
+
     init {
         column(id)
     }

@@ -1,13 +1,16 @@
 package io.tcds.orm
 
 import io.tcds.orm.column.*
+import io.tcds.orm.driver.Connection
 import java.time.LocalDateTime
 
 abstract class Table<E>(
+    override val connection: Connection,
     open val tableName: String,
     open val softDelete: Boolean = false,
-) {
+) : Repository<E> {
     private val columns = mutableListOf<Column<E, *>>()
+    override val table: Table<E> get() = this
 
     fun integer(name: String, value: (E) -> Int?) = column(IntegerColumn(name = name, value = value))
     fun long(name: String, value: (E) -> Long?) = column(LongColumn(name = name, value = value))

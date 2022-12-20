@@ -3,9 +3,11 @@ package fixtures
 import io.tcds.orm.EntityTable
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.column.StringColumn
+import io.tcds.orm.driver.Connection
 import io.tcds.orm.extension.get
 
-class AddressTable : EntityTable<Address, String>(
+class AddressTable(connection: Connection) : EntityTable<Address, String>(
+    connection = connection,
     tableName = "addresses",
     id = StringColumn("id") { it.id },
 ) {

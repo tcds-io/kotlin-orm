@@ -2,7 +2,6 @@ package io.tcds.orm.driver.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.tcds.orm.EntityRepository
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
@@ -12,8 +11,7 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class RepositoryInsertTests : TestCase() {
-    private val addressTable = AddressTable()
-    private val addressRepository = EntityRepository(addressTable, connection())
+    private val table = AddressTable(connection())
 
     @Test
     fun `given an entity when insert gets called then the entry gets inserted`() {
@@ -25,15 +23,15 @@ class RepositoryInsertTests : TestCase() {
             createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
         )
 
-        addressRepository.insert(address)
+        table.insert(address)
 
         Assertions.assertEquals(
             listOf(address),
             connection().query(
-                table = addressTable,
-                where = where(addressTable.id equalsTo "arthur-dent-address-new-address-for-test"),
-                order = mapOf(addressTable.id to Order.ASC),
-            ).map { addressTable.entry(it) }.toList()
+                table = table,
+                where = where(table.id equalsTo "arthur-dent-address-new-address-for-test"),
+                order = mapOf(table.id to Order.ASC),
+            ).map { table.entry(it) }.toList()
         )
     }
 }

@@ -5,7 +5,10 @@ import io.tcds.orm.extension.emptyWhere
 import io.tcds.orm.statement.Order
 import io.tcds.orm.statement.Statement
 
-open class Repository<E, T : Table<E>>(open val table: T, private val connection: Connection) {
+interface Repository<E> {
+    val connection: Connection
+    val table: Table<E>
+
     fun delete(where: Statement) = connection.delete(table, where)
     fun exists(where: Statement): Boolean = loadBy(where) != null
     fun insert(vararg entries: E) = entries.forEach { connection.insert(table, table.params(it)) }
