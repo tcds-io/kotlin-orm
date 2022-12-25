@@ -17,10 +17,10 @@ class AddressTable(connection: Connection) : EntityTable<Address, String>(
     val createdAt = datetime("created_at") { it.createdAt }
 
     override fun entry(row: OrmResultSet): Address = Address(
-        id = row.get(id)!!,
-        street = row.get(street)!!,
-        number = row.get(number)!!,
-        main = row.get(main)!!,
-        createdAt = row.get(createdAt)!!,
+        id = row.get(id),
+        street = row.get(street),
+        number = row.get(number),
+        main = row.get(main),
+        createdAt = row.get(createdAt),
     )
 }

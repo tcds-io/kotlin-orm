@@ -12,8 +12,8 @@ class UserStatusTable(connection: Connection) : Table<UserStatus>(connection, ta
     val at = datetime("at") { it.at }
 
     override fun entry(row: OrmResultSet) = UserStatus(
-        userId = row.get(userId)!!,
-        status = row.get(status)!!,
-        at = row.get(at)!!,
+        userId = row.get(userId),
+        status = row.get(status),
+        at = row.get(at),
     )
 }
