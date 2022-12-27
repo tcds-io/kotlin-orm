@@ -4,7 +4,9 @@ import fixtures.driver.DummyNestedTransactionConnection
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.sql.PreparedStatement
 import java.sql.Connection as JdbcConnection
 
@@ -104,8 +106,9 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.transaction { throw Exception("error") }
+        val ex = assertThrows<Exception> { connection.transaction { throw Exception("a weird error occurred") } }
 
+        Assertions.assertEquals("a weird error occurred", ex.message)
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK") }
     }

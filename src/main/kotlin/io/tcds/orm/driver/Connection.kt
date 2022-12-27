@@ -28,7 +28,7 @@ interface Connection {
 
         runCatching { block() }
             .onSuccess { commit() }
-            .onFailure { rollback() }
+            .onFailure { rollback().apply { throw it } }
     }
 
     fun <E> query(
