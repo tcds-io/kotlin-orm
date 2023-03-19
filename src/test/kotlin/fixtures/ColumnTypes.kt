@@ -11,4 +11,7 @@ data class ColumnTypes(
     val datetime: LocalDateTime,
     val enum: Status,
     val string: String,
-)
+    val json: Data,
+) {
+    data class Data(val a: String, val b: Int)
+}

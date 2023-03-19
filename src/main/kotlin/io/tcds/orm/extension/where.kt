@@ -3,7 +3,10 @@ package io.tcds.orm.extension
 import io.tcds.orm.Condition
 import io.tcds.orm.Param
 import io.tcds.orm.statement.Operator
-import io.tcds.orm.statement.Operator.*
+import io.tcds.orm.statement.Operator.AND
+import io.tcds.orm.statement.Operator.NONE
+import io.tcds.orm.statement.Operator.OR
+import io.tcds.orm.statement.Operator.WHERE
 import io.tcds.orm.statement.Statement
 import io.tcds.orm.statement.StatementGroup
 

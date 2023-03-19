@@ -1,0 +1,37 @@
+package io.tcds.orm.driver.sqlite
+
+import fixtures.Address
+import fixtures.UserAddress
+import fixtures.UserAddressTable
+import io.tcds.orm.extension.emptyWhere
+import io.tcds.orm.statement.Order
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
+import java.time.Month
+
+class JsonColumnTests : TestCase() {
+    private val table = UserAddressTable(connection())
+    private val address = Address(
+        id = "arthur-dent-address",
+        street = "Galaxy Avenue",
+        number = "124T",
+        main = true,
+        createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+    )
+
+    @Test
+    fun `given an address when table has json column then insert as json`() {
+        table.insert(UserAddress("user-aaa", address), UserAddress("user-bbb", address))
+
+        val list = table.select(emptyWhere(), mapOf(table.userId to Order.DESC))
+
+        Assertions.assertEquals(
+            listOf(
+                UserAddress("user-bbb", address),
+                UserAddress("user-aaa", address),
+            ),
+            list.toList(),
+        )
+    }
+}

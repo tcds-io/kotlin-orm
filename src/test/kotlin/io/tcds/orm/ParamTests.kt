@@ -2,7 +2,6 @@ package io.tcds.orm
 
 import fixtures.Address
 import io.mockk.*
-import io.mockk.InternalPlatformDsl.toStr
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
