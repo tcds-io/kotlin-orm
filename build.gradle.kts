@@ -6,6 +6,7 @@ val mockkVersion: String by project
 val postgresVersion: String by project
 val sqliteVersion: String by project
 val kotlinLoggingVersion: String by project
+val jacksonVersion: String by project
 
 val buildVersion = System.getenv("VERSION") ?: "dev"
 
@@ -28,6 +29,8 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
 
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")

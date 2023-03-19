@@ -1,10 +1,10 @@
 package io.tcds.orm.statement
 
+import fixtures.User
 import io.tcds.orm.Column
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.toOrderByStatement
-import fixtures.User
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

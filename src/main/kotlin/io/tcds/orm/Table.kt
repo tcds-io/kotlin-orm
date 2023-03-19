@@ -22,14 +22,21 @@ abstract class Table<E>(
     fun bool(name: String, value: (E) -> Boolean) = column(BooleanColumn(name = name, value = value))
     fun datetime(name: String, value: (E) -> LocalDateTime) = column(DateTimeColumn(name = name, value = value))
     fun <T : Enum<*>> enum(name: String, value: (E) -> T) = column(EnumColumn(name = name, value = value))
+    fun <T> json(name: String, value: (E) -> T) = column(JsonColumn(name = name, value = value))
 
     fun nullableInteger(name: String, value: (E) -> Int?) = column(NullableIntegerColumn(name = name, value = value))
     fun nullableLong(name: String, value: (E) -> Long?) = column(NullableLongColumn(name = name, value = value))
     fun nullableFloat(name: String, value: (E) -> Float?) = column(NullableFloatColumn(name = name, value = value))
     fun nullableDouble(name: String, value: (E) -> Double?) = column(NullableDoubleColumn(name = name, value = value))
     fun nullableVarchar(name: String, value: (E) -> String?) = column(NullableStringColumn(name = name, value = value))
-    fun nullableDatetime(name: String, value: (E) -> LocalDateTime?) = column(NullableDateTimeColumn(name = name, value = value))
-    fun <T : Enum<*>> nullableEnum(name: String, value: (E) -> T?) = column(NullableEnumColumn(name = name, value = value))
+    fun nullableDatetime(name: String, value: (E) -> LocalDateTime?) =
+        column(NullableDateTimeColumn(name = name, value = value))
+
+    fun <T : Enum<*>> nullableEnum(name: String, value: (E) -> T?): Column<E, T?> {
+        return column(NullableEnumColumn(name = name, value = value))
+    }
+
+    fun <T> nullableJson(name: String, value: (E) -> T?) = column(NullableJsonColumn(name = name, value = value))
 
     fun params(entry: E): List<Param<E, *>> = columns.map { it.toValueParam(entry = entry) }
 

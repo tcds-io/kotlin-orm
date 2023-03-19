@@ -12,7 +12,7 @@ class StatementGroupTests {
 
     @Test
     fun `given a condition then group into parenthesis`() {
-        val group = StatementGroup(conditions = mutableListOf(Pair(Operator.NONE, (column equalsTo "123"))) )
+        val group = StatementGroup(conditions = mutableListOf(Pair(Operator.NONE, (column equalsTo "123"))))
 
         Assertions.assertEquals("(name = ?)", group.toStmt())
         Assertions.assertEquals(listOf(Param(column, "123")), group.params())

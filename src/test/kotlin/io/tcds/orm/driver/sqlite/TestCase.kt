@@ -43,6 +43,14 @@ open class TestCase {
                 at         DATETIME     NOT NULL
             );
         """.trimIndent())
+
+        connection().execute("""
+            CREATE TABLE user_address (
+                user_id    VARCHAR(255) NOT NULL,
+                address    TEXT NOT NULL
+            );
+        """.trimIndent()
+        )
     }
 
     @AfterEach

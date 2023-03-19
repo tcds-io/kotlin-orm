@@ -3,7 +3,6 @@ package io.tcds.orm.driver.sqlite
 import fixtures.Address
 import fixtures.AddressTable
 import io.tcds.orm.Column
-import io.tcds.orm.EntityRepository
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
