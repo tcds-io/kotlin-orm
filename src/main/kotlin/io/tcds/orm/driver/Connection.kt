@@ -5,6 +5,7 @@ import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
 import io.tcds.orm.Table
 import io.tcds.orm.extension.columns
+import io.tcds.orm.extension.columnsEqualMarks
 import io.tcds.orm.extension.marks
 import io.tcds.orm.extension.toOrderByStatement
 import io.tcds.orm.statement.Limit
@@ -57,6 +58,19 @@ interface Connection {
         """.trimIndent()
 
         execute(sql, params)
+    }
+
+    fun <E> update(table: Table<E>, params: List<Param<*, *>>, where: Statement) {
+        val tableWhere = if (table.softDelete) where.getSoftDeleteStatement<E>() else where
+        val stmtParams = params + where.params()
+
+        val sql = """
+            UPDATE ${table.tableName} SET
+                ${params.columnsEqualMarks()}
+            ${tableWhere.toStmt()}
+        """.trimIndent()
+
+        execute(sql, stmtParams)
     }
 
     fun <E> delete(table: Table<E>, where: Statement) {

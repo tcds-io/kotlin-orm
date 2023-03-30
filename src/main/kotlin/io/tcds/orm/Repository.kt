@@ -13,6 +13,10 @@ interface Repository<E> {
     fun exists(where: Statement): Boolean = loadBy(where) != null
     fun insert(vararg entries: E) = entries.forEach { connection.insert(table, table.params(it)) }
 
+    fun update(entry: E, columns: List<Column<E, *>>, where: Statement) {
+        connection.update(table, columns.map { it.toValueParam(entry = entry) }, where)
+    }
+
     fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? = connection.query(
         sql,
         params

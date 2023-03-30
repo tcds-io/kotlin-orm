@@ -10,7 +10,7 @@ abstract class Table<E>(
     open val tableName: String,
     open val softDelete: Boolean = false,
 ) : Repository<E> {
-    private val columns = mutableListOf<Column<E, *>>()
+    val columns = mutableListOf<Column<E, *>>()
     override val table: Table<E> get() = this
 
     fun integer(name: String, value: (E) -> Int) = column(IntegerColumn(name = name, value = value))

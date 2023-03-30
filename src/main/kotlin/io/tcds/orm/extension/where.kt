@@ -12,6 +12,7 @@ import io.tcds.orm.statement.StatementGroup
 
 fun List<Param<*, *>>.columns(): String = joinToString(", ") { it.column.name }
 fun List<Param<*, *>>.marks(): String = joinToString(", ") { "?" }
+fun List<Param<*, *>>.columnsEqualMarks(): String = joinToString(", ") { "${it.column.name} = ?" }
 fun Pair<Operator, Condition>.toStmt() = if (first == NONE) second.toStmt() else "${first.operator} ${second.toStmt()}"
 fun Pair<Operator, Condition>.toSql() = if (first == NONE) second.toSql() else "${first.operator} ${second.toSql()}"
 
