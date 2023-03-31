@@ -3,6 +3,7 @@ package io.tcds.orm
 import io.tcds.orm.column.*
 import io.tcds.orm.column.nullable.*
 import io.tcds.orm.driver.Connection
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 abstract class Table<E>(
@@ -21,6 +22,7 @@ abstract class Table<E>(
     fun nullable(name: String, value: (E) -> String) = column(StringColumn(name = name, value = value))
     fun bool(name: String, value: (E) -> Boolean) = column(BooleanColumn(name = name, value = value))
     fun datetime(name: String, value: (E) -> LocalDateTime) = column(DateTimeColumn(name = name, value = value))
+    fun date(name: String, value: (E) -> LocalDate) = column(DateColumn(name = name, value = value))
     fun <T : Enum<*>> enum(name: String, value: (E) -> T) = column(EnumColumn(name = name, value = value))
     fun <T> json(name: String, value: (E) -> T) = column(JsonColumn(name = name, value = value))
 
