@@ -1,5 +1,6 @@
 package fixtures
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ColumnTypes(
@@ -9,6 +10,7 @@ data class ColumnTypes(
     val long: Long,
     val boolean: Boolean,
     val datetime: LocalDateTime,
+    val date: LocalDate,
     val enum: Status,
     val string: String,
     val json: Data,
