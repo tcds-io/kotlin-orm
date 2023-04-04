@@ -12,23 +12,23 @@ abstract class Table<E>(
 ) : TableColumns<E>() {
     abstract fun entry(row: OrmResultSet): E
 
-    fun insert(vararg entries: E) = entries.forEach {
+    suspend fun insert(vararg entries: E) = entries.forEach {
         val params = params(it)
         val sql = "INSERT INTO $table (${params.columns()}) VALUES (${params.marks()})"
 
         connection.write(sql, params)
     }
 
-    fun loadBy(where: Statement, order: OrderStatement<E> = emptyMap()): E? = findBy(where, order, 1).firstOrNull()
+    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyMap()): E? = findBy(where, order, 1).firstOrNull()
 
-    fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
+    suspend fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
         return connection
             .read(sql, params)
             .firstOrNull()
             ?.let { entry(it) }
     }
 
-    fun findBy(
+    suspend fun findBy(
         where: Statement,
         order: OrderStatement<E> = emptyMap(),
         limit: Int? = null,
@@ -49,13 +49,13 @@ abstract class Table<E>(
             .map { entry(it) }
     }
 
-    fun findByQuery(sql: String, params: List<Param<*, *>> = emptyList()) = connection
+    suspend fun findByQuery(sql: String, params: List<Param<*, *>> = emptyList()) = connection
         .read(sql, params)
         .map { entry(it) }
 
-    fun exists(where: Statement): Boolean = loadBy(where) != null
+    suspend fun exists(where: Statement): Boolean = loadBy(where) != null
 
-    fun delete(where: Statement) {
+    suspend fun delete(where: Statement) {
         when (softDelete) {
             false -> connection.write(
                 "DELETE FROM $table ${where.toStmt()}",
@@ -68,7 +68,7 @@ abstract class Table<E>(
         }
     }
 
-    fun update(params: List<Param<*, *>>, where: Statement) {
+    suspend fun update(params: List<Param<*, *>>, where: Statement) {
         val tableWhere = when (softDelete) {
             true -> where.getSoftDeleteStatement<E>()
             else -> where

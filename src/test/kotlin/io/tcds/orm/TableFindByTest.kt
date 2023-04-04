@@ -3,13 +3,14 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -27,7 +28,7 @@ class TableFindByTest {
 
     @Test
     fun `given a where and order and limit and offset then invoke read from connection`() {
-        every { connection.read(any(), any()) } returns sequenceOf(
+        coEvery { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -48,14 +49,16 @@ class TableFindByTest {
             ),
         )
 
-        val result = table.findBy(
-            where = where(table.street like "Galaxy%"),
-            order = mapOf(table.createdAt to Order.DESC),
-            limit = 15,
-            offset = 30,
-        ).toList()
+        val result = runBlocking {
+            table.findBy(
+                where = where(table.street like "Galaxy%"),
+                order = mapOf(table.createdAt to Order.DESC),
+                limit = 15,
+                offset = 30,
+            ).toList()
+        }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
     }
 }

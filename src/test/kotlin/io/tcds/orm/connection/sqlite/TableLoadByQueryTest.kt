@@ -1,7 +1,9 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
+import fixtures.coWrite
 import io.tcds.orm.Param
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,7 +17,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -26,7 +28,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -37,7 +39,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "something-else"),
@@ -50,7 +52,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a sql query and ASC order when entry exists then load into the entity`() {
+    fun `given a sql query and ASC order when entry exists then load into the entity`() = runBlocking {
         val sql = "SELECT * FROM addresses ORDER BY id ASC LIMIT 1"
 
         val address = table.loadByQuery(sql)
@@ -59,7 +61,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a sql and a condition when entry exists then load into the entity`() {
+    fun `given a sql and a condition when entry exists then load into the entity`() = runBlocking {
         val sql = "SELECT * FROM addresses ORDER BY id DESC LIMIT 1"
 
         val address = table.loadByQuery(sql)
@@ -68,7 +70,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a sql query and DESC order when entry exists then load into the entity`() {
+    fun `given a sql query and DESC order when entry exists then load into the entity`() = runBlocking {
         val sql = "SELECT * FROM addresses WHERE number = ? ORDER BY id DESC LIMIT 1"
         val params = listOf(Param(table.number, "124T"))
 

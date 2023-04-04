@@ -2,7 +2,9 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
+import fixtures.coWrite
 import io.tcds.orm.Param
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +18,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -29,7 +31,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given and user id when user exists then loadById returns an user entity`() {
+    fun `given and user id when user exists then loadById returns an user entity`() = runBlocking {
         val id = "arthur-dent-address"
 
         val address = table.loadById(id)
@@ -47,7 +49,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given and user id when user does not exist then loadById returns null`() {
+    fun `given and user id when user does not exist then loadById returns null`() = runBlocking {
         val id = "another-user"
 
         val address = table.loadById(id)
