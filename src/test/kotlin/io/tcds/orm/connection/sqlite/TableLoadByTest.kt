@@ -2,11 +2,13 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
+import fixtures.coWrite
 import io.tcds.orm.Column
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,7 +22,7 @@ class TableLoadByTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -31,7 +33,7 @@ class TableLoadByTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -44,7 +46,7 @@ class TableLoadByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and ASC order when entry exists then load into the entity`() {
+    fun `given a condition and ASC order when entry exists then load into the entity`() = runBlocking {
         val where = where(table.main equalsTo true)
         val order = mapOf<Column<Address, *>, Order>(table.id to Order.ASC)
 
@@ -54,7 +56,7 @@ class TableLoadByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and DESC order when entry exists then load into the entity`() {
+    fun `given a condition and DESC order when entry exists then load into the entity`() = runBlocking {
         val where = where(table.main equalsTo true)
 
         val address = table.loadBy(where, order = mapOf(table.id to Order.DESC))

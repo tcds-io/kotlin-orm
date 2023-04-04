@@ -2,7 +2,9 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
+import fixtures.coWrite
 import io.tcds.orm.Param
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +18,7 @@ class EntityTableDeleteTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "galaxy-avenue"),
@@ -29,7 +31,7 @@ class EntityTableDeleteTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given an entity when delete gets called then the entry gets deleted`() {
+    fun `given an entity when delete gets called then the entry gets deleted`() = runBlocking {
         val address = Address.galaxyAvenue()
 
         table.delete(address)

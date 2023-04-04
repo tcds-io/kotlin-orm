@@ -4,6 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.extension.emptyParams
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,7 +28,7 @@ class GenericConnectionTest {
         every { write.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.transaction {}
+        runBlocking { connection.transaction {} }
 
         verify(exactly = 1) { write.prepareStatement("BEGIN") }
         verify(exactly = 1) { write.prepareStatement("COMMIT") }
@@ -38,7 +39,9 @@ class GenericConnectionTest {
         every { write.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        val ex = assertThrows<Exception> { connection.transaction { throw Exception("a weird error occurred") } }
+        val ex = assertThrows<Exception> {
+            runBlocking { connection.transaction { throw Exception("a weird error occurred") } }
+        }
 
         Assertions.assertEquals("a weird error occurred", ex.message)
         verify(exactly = 1) { write.prepareStatement("BEGIN") }
@@ -50,7 +53,7 @@ class GenericConnectionTest {
         every { read.prepareStatement(any()) } returns stmt
         every { stmt.executeQuery() } returns mockk()
 
-        connection.read("SELECT * FROM foo WHERE 0=1", emptyParams())
+        runBlocking { connection.read("SELECT * FROM foo WHERE 0=1", emptyParams()) }
 
         verify(exactly = 1) { read.prepareStatement("SELECT * FROM foo WHERE 0=1") }
     }
@@ -60,7 +63,7 @@ class GenericConnectionTest {
         every { write.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.write("DELETE FROM foo WHERE 0=1", emptyParams())
+        runBlocking { connection.write("DELETE FROM foo WHERE 0=1", emptyParams()) }
 
         verify(exactly = 1) { write.prepareStatement("DELETE FROM foo WHERE 0=1") }
     }

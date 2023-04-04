@@ -2,10 +2,9 @@ package io.tcds.orm
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class TableInsertTest {
@@ -16,11 +15,11 @@ class TableInsertTest {
 
     @Test
     fun `given the entry then invoke write in the connection`() {
-        every { connection.write(any(), any()) } returns true
+        coEvery { connection.write(any(), any()) } returns true
 
-        table.insert(address)
+        runBlocking { table.insert(address) }
 
-        verify {
+        coVerify {
             connection.write(
                 "INSERT INTO addresses (id, street, number, main, created_at) VALUES (?, ?, ?, ?, ?)",
                 listOf(

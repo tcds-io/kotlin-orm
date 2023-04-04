@@ -2,7 +2,9 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
+import fixtures.coWrite
 import io.tcds.orm.Param
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +18,7 @@ class EntityTableUpdateTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "galaxy-avenue"),
@@ -29,7 +31,7 @@ class EntityTableUpdateTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given an entity when update gets called then update in the database`() {
+    fun `given an entity when update gets called then update in the database`() = runBlocking {
         val address = Address.galaxyAvenue()
         val updated = address.updated("New Street")
 

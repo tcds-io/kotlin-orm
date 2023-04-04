@@ -3,10 +3,11 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -24,7 +25,7 @@ class TableLoadByQueryTest {
 
     @Test
     fun `given the query then invoke write in the connection`() {
-        every { connection.read(any(), any()) } returns sequenceOf(
+        coEvery { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -36,9 +37,9 @@ class TableLoadByQueryTest {
             )
         )
 
-        val result = table.loadByQuery(QUERY, listOf(Param(table.main, true)))
+        val result = runBlocking { table.loadByQuery(QUERY, listOf(Param(table.main, true))) }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(QUERY, listOf(Param(table.main, true))) }
+        coVerify { connection.read(QUERY, listOf(Param(table.main, true))) }
     }
 }

@@ -4,6 +4,7 @@ import fixtures.connection.DummyNestedTransactionConnection
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
 import java.sql.Connection as JdbcConnection
@@ -24,8 +25,10 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.begin()
-        connection.commit()
+        runBlocking {
+            connection.begin()
+            connection.commit()
+        }
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("COMMIT") }
@@ -37,12 +40,14 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.begin()
-        connection.begin()
-        connection.begin()
-        connection.commit()
-        connection.commit()
-        connection.commit()
+        runBlocking {
+            connection.begin()
+            connection.begin()
+            connection.begin()
+            connection.commit()
+            connection.commit()
+            connection.commit()
+        }
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("SAVEPOINT LEVEL1") }
@@ -58,8 +63,10 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.begin()
-        connection.rollback()
+        runBlocking {
+            connection.begin()
+            connection.rollback()
+        }
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK") }
@@ -71,12 +78,14 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any()) } returns stmt
         every { stmt.execute() } returns true
 
-        connection.begin()
-        connection.begin()
-        connection.begin()
-        connection.rollback()
-        connection.rollback()
-        connection.rollback()
+        runBlocking {
+            connection.begin()
+            connection.begin()
+            connection.begin()
+            connection.rollback()
+            connection.rollback()
+            connection.rollback()
+        }
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN") }
         verify(exactly = 1) { readWrite.prepareStatement("SAVEPOINT LEVEL1") }

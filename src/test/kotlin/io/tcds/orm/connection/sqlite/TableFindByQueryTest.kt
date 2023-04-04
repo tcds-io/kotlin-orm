@@ -1,7 +1,9 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
+import fixtures.coWrite
 import io.tcds.orm.Param
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,7 +17,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -26,7 +28,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -37,7 +39,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "another-address"),
@@ -53,7 +55,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
     fun `given a condition and ASC order and limit and offset when entries exist then select into the database`() {
         val sql = "SELECT * FROM addresses ORDER BY id ASC"
 
-        val addresses = table.findByQuery(sql)
+        val addresses = runBlocking { table.findByQuery(sql) }
 
         Assertions.assertEquals(
             listOf("another-address", "arthur-dent-address", "arthur-dent-address-another-address"),

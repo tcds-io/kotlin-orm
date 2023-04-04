@@ -19,19 +19,19 @@ open class NestedTransactionConnection(
 
     private var transactionDepth = 0
 
-    override fun begin() = when (transactionDepth) {
+    override suspend fun begin() = when (transactionDepth) {
         INITIAL_DEPTH -> super.begin().apply { transactionDepth++ }
         else -> write("SAVEPOINT LEVEL${transactionDepth++}")
     }
 
-    override fun commit() = decrementTxDepth().let {
+    override suspend fun commit() = decrementTxDepth().let {
         when (it) {
             INITIAL_DEPTH -> super.commit()
             else -> write("RELEASE SAVEPOINT LEVEL${it}")
         }
     }
 
-    override fun rollback() = decrementTxDepth().let {
+    override suspend fun rollback() = decrementTxDepth().let {
         when (it) {
             INITIAL_DEPTH -> super.rollback()
             else -> write("ROLLBACK TO SAVEPOINT LEVEL${it}")

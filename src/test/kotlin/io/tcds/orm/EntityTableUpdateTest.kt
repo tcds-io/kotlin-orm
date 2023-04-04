@@ -2,11 +2,12 @@ package io.tcds.orm
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.trimSpacesAndLines
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class EntityTableUpdateTest {
@@ -28,12 +29,12 @@ class EntityTableUpdateTest {
     @Test
     fun `given the params and where condition when table is not soft delete then run update`() {
         val table = AddressEntityTable(connection)
-        every { connection.write(any(), any()) } returns true
+        coEvery { connection.write(any(), any()) } returns true
 
         val updated = address.updated(street = "new street", number = "new number", main = false)
-        table.update(updated)
+        runBlocking { table.update(updated) }
 
-        verify {
+        coVerify {
             connection.write(
                 EXPECTED_QUERY,
                 listOf(
@@ -50,12 +51,12 @@ class EntityTableUpdateTest {
     @Test
     fun `given the params and where condition when table is soft delete then run update`() {
         val table = AddressEntityTable(connection, true)
-        every { connection.write(any(), any()) } returns true
+        coEvery { connection.write(any(), any()) } returns true
 
         val updated = address.updated(street = "new street", number = "new number", main = false)
-        table.update(updated)
+        runBlocking { table.update(updated) }
 
-        verify {
+        coVerify {
             connection.write(
                 EXPECTED_SOFT_DELETE_QUERY,
                 listOf(

@@ -5,6 +5,7 @@ import fixtures.UserAddress
 import fixtures.UserAddressTable
 import io.tcds.orm.extension.emptyWhere
 import io.tcds.orm.statement.Order
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -21,7 +22,7 @@ class JsonColumnTest : SqLiteTestCase() {
     )
 
     @Test
-    fun `given an address when table has json column then insert as json`() {
+    fun `given an address when table has json column then insert as json`() = runBlocking {
         table.insert(UserAddress("user-aaa", address), UserAddress("user-bbb", address))
 
         val list = table.findBy(emptyWhere(), mapOf(table.userId to Order.DESC))

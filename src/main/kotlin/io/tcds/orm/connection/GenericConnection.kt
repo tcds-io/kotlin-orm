@@ -12,11 +12,11 @@ open class GenericConnection(
     private val readWrite: JdbcConnection,
     private val logger: Logger?,
 ) : Connection {
-    override fun begin() = write("BEGIN")
-    override fun commit() = write("COMMIT")
-    override fun rollback() = write("ROLLBACK")
+    override suspend fun begin() = write("BEGIN")
+    override suspend fun commit() = write("COMMIT")
+    override suspend fun rollback() = write("ROLLBACK")
 
-    override fun <T> transaction(block: () -> T) {
+    override suspend fun <T> transaction(block: () -> T) {
         begin()
 
         runCatching { block() }
@@ -24,7 +24,7 @@ open class GenericConnection(
             .onFailure { rollback().apply { throw it } }
     }
 
-    override fun read(sql: String, params: List<Param<*, *>>): Sequence<OrmResultSet> {
+    override suspend fun read(sql: String, params: List<Param<*, *>>): Sequence<OrmResultSet> {
         val stmt = prepare(readOnly, sql, params)
         val result = stmt.executeQuery()
         if (logger !== null) ConnectionLogger.read(logger, sql, params)
@@ -36,14 +36,14 @@ open class GenericConnection(
         }
     }
 
-    override fun write(sql: String, params: List<Param<*, *>>): Boolean {
+    override suspend fun write(sql: String, params: List<Param<*, *>>): Boolean {
         val stmt = prepare(readWrite, sql, params)
         if (logger !== null) ConnectionLogger.write(logger, sql, params)
 
         return stmt.execute()
     }
 
-    open fun close() {
+    open suspend fun close() {
         readOnly.close()
         readWrite.close()
     }

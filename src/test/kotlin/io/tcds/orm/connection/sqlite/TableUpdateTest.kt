@@ -5,6 +5,7 @@ import fixtures.AddressTable
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -22,7 +23,7 @@ class TableUpdateTest : SqLiteTestCase() {
     )
 
     @Test
-    fun `given an entity when update gets called then the entry gets updated`() {
+    fun `given an entity when update gets called then the entry gets updated`() = runBlocking {
         table.insert(address)
 
         table.update(

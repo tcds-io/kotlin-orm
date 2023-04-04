@@ -2,11 +2,13 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
+import fixtures.coWrite
 import io.tcds.orm.Column
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.statement.Order
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,7 +22,7 @@ class TableFindByTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -31,7 +33,7 @@ class TableFindByTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -42,7 +44,7 @@ class TableFindByTest : SqLiteTestCase() {
             )
         )
 
-        connection().write(
+        connection().coWrite(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "another-address"),
@@ -55,7 +57,7 @@ class TableFindByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and ASC order when entries exist then select into the database`() {
+    fun `given a condition and ASC order when entries exist then select into the database`() = runBlocking {
         val where = where(table.main equalsTo true)
         val order = mapOf<Column<Address, *>, Order>(table.id to Order.ASC)
         val limit = 2
@@ -75,7 +77,7 @@ class TableFindByTest : SqLiteTestCase() {
         val limit = 2
         val offset = 1
 
-        val addresses = table.findBy(where, order, limit, offset)
+        val addresses = runBlocking { table.findBy(where, order, limit, offset) }
 
         Assertions.assertEquals(
             listOf("arthur-dent-address", "arthur-dent-address-another-address"),

@@ -3,10 +3,9 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressEntityTable
 import fixtures.MapOrmResultSet
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -30,7 +29,7 @@ class EntityTableLoadByIdTest {
     @Test
     fun `given a where and order then invoke read from connection`() {
         val table = AddressEntityTable(connection)
-        every { connection.read(any(), any()) } returns sequenceOf(
+        coEvery { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -42,16 +41,16 @@ class EntityTableLoadByIdTest {
             )
         )
 
-        val result = table.loadById("galaxy-highway")
+        val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
     }
 
     @Test
     fun `given a where when table is soft delete and order then invoke read from connection`() {
         val table = AddressEntityTable(connection, true)
-        every { connection.read(any(), any()) } returns sequenceOf(
+        coEvery { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -63,9 +62,9 @@ class EntityTableLoadByIdTest {
             )
         )
 
-        val result = table.loadById("galaxy-highway")
+        val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        coVerify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
     }
 }
