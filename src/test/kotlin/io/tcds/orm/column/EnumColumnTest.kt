@@ -18,4 +18,14 @@ class EnumColumnTest {
 
         verify(exactly = 1) { stmt.setString(3, "ACTIVE") }
     }
+
+    @Test
+    fun `given another enum value when it is not null then set a string value into the statement`() {
+        every { stmt.setString(any(), any()) } just runs
+        val column = EnumColumn<ColumnTypes, Status>("enum") { it.enum }
+
+        column.bind(stmt, 3, Status.INACTIVE)
+
+        verify(exactly = 1) { stmt.setString(3, "INACTIVE") }
+    }
 }

@@ -7,6 +7,10 @@ import io.tcds.orm.extension.*
 import java.time.LocalDateTime
 
 data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
+    companion object {
+        fun <E> deletedAt() = DateTimeColumn<E>("deleted_at") { LocalDateTime.now() }
+    }
+
     fun toStmt() = conditions.toStmt()
     fun toSql() = conditions.toSql()
 
@@ -20,7 +24,7 @@ data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
     }
 
     fun <E> getSoftDeleteQueryParams(): List<Param<*, *>> {
-        val deletedAt = DateTimeColumn<E>("deleted_at") { LocalDateTime.now() }
+        val deletedAt = deletedAt<E>()
         val params = mutableListOf<Param<*, *>>(Param(deletedAt, LocalDateTime.now()))
         conditions.forEach { params.addAll(it.second.params()) }
 
@@ -28,7 +32,7 @@ data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
     }
 
     fun <E> getSoftDeleteStatement(): Statement {
-        val deletedAt = DateTimeColumn<E>("deleted_at") { LocalDateTime.now() }
+        val deletedAt = deletedAt<E>()
         if (conditions.isEmpty()) return where(deletedAt.isNull())
 
         return where(StatementGroup(conditions.removeWhere())) and deletedAt.isNull()

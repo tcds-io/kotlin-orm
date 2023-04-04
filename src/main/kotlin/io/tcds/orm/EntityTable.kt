@@ -1,16 +1,28 @@
 package io.tcds.orm
 
-import io.tcds.orm.driver.Connection
+import io.tcds.orm.connection.Connection
+import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.where
 
-abstract class EntityTable<Entity, PKType>(
+abstract class EntityTable<E, PKType>(
     connection: Connection,
-    override val tableName: String,
-    val id: Column<Entity, PKType>,
-    override val softDelete: Boolean = false,
-) : Table<Entity>(connection, tableName, softDelete), EntityRepository<Entity, PKType> {
-    override val table: EntityTable<Entity, PKType> get() = this
+    table: String,
+    val id: Column<E, PKType>,
+    softDelete: Boolean,
+) : Table<E>(connection, table, softDelete) {
 
     init {
         column(id)
     }
+
+    fun loadById(id: PKType): E? = loadBy(where(this.id equalsTo id))
+
+    fun update(vararg entities: E) = entities.forEach {
+        update(
+            columns.filter { col -> col != id }.map { column -> column.toValueParam(entry = it) },
+            where(this.id equalsTo this.id.valueOf(it)),
+        )
+    }
+
+    fun delete(vararg entities: E) = entities.forEach { delete(where(this.id equalsTo this.id.valueOf(it))) }
 }

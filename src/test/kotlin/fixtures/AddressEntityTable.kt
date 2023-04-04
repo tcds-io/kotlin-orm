@@ -1,14 +1,19 @@
 package fixtures
 
+import io.tcds.orm.EntityTable
 import io.tcds.orm.OrmResultSet
-import io.tcds.orm.Table
+import io.tcds.orm.column.StringColumn
 import io.tcds.orm.connection.Connection
 
-class AddressTable(
+class AddressEntityTable(
     connection: Connection,
     softDelete: Boolean = false,
-) : Table<Address>(connection, "addresses", softDelete) {
-    val id = varchar("id") { it.id }
+) : EntityTable<Address, String>(
+    connection,
+    "addresses",
+    StringColumn("id") { it.id },
+    softDelete,
+) {
     val street = varchar("street") { it.street }
     val number = varchar("number") { it.number }
     val main = bool("main") { it.main }

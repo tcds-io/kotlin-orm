@@ -23,6 +23,7 @@ fun MutableList<Pair<Operator, Condition>>.removeWhere(): MutableList<Pair<Opera
 }
 
 fun emptyWhere(): Statement = Statement(mutableListOf())
+fun emptyParams(): List<Param<*, *>> = emptyWhere().params()
 fun where(condition: Condition): Statement = Statement(mutableListOf(Pair(WHERE, condition)))
 fun stmt(condition: Condition): Statement = Statement(mutableListOf(Pair(NONE, condition)))
 
