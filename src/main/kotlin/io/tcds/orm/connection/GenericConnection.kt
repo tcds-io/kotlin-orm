@@ -16,7 +16,7 @@ open class GenericConnection(
     override suspend fun commit() = write("COMMIT")
     override suspend fun rollback() = write("ROLLBACK")
 
-    override suspend fun <T> transaction(block: () -> T) {
+    override suspend fun <T> transaction(block: suspend () -> T) {
         begin()
 
         runCatching { block() }
