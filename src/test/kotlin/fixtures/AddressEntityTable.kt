@@ -19,7 +19,7 @@ class AddressEntityTable(
     val main = bool("main") { it.main }
     val createdAt = datetime("created_at") { it.createdAt }
 
-    override fun entry(row: OrmResultSet): Address = Address(
+    override suspend fun entry(row: OrmResultSet): Address = Address(
         id = row.get(id),
         street = row.get(street),
         number = row.get(number),

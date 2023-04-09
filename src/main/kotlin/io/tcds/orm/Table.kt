@@ -10,7 +10,7 @@ abstract class Table<E>(
     private val table: String,
     private val softDelete: Boolean = false,
 ) : TableColumns<E>() {
-    abstract fun entry(row: OrmResultSet): E
+    abstract suspend fun entry(row: OrmResultSet): E
 
     suspend fun insert(vararg entries: E) = entries.forEach {
         val params = params(it)

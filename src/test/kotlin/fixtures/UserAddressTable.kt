@@ -16,7 +16,7 @@ class UserAddressTable(
     val userId = varchar("user_id") { it.userId }
     val address = json("address") { it.address }
 
-    override fun entry(row: OrmResultSet): UserAddress {
+    override suspend fun entry(row: OrmResultSet): UserAddress {
         row as JdbcOrmResultSet
 
         return UserAddress(
