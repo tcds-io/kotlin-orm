@@ -1,8 +1,8 @@
 package io.tcds.orm.connection
 
-import io.tcds.orm.driver.JdbcOrmResultSet
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
+import io.tcds.orm.driver.JdbcOrmResultSet
 import org.slf4j.Logger
 import java.sql.PreparedStatement
 import java.sql.Connection as JdbcConnection
@@ -16,7 +16,7 @@ open class GenericConnection(
     override suspend fun commit() = write("COMMIT")
     override suspend fun rollback() = write("ROLLBACK")
 
-    override suspend fun <T> transaction(block: suspend () -> T) {
+    override suspend fun transaction(block: suspend () -> Unit) {
         begin()
 
         runCatching { block() }
