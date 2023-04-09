@@ -1,5 +1,7 @@
-package io.tcds.orm
+package io.tcds.orm.driver
 
+import io.tcds.orm.Column
+import io.tcds.orm.OrmResultSet
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

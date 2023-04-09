@@ -2,7 +2,7 @@ package io.tcds.orm.extension
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.tcds.orm.Column
-import io.tcds.orm.JdbcOrmResultSet
+import io.tcds.orm.driver.JdbcOrmResultSet
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.column.JsonColumn
 

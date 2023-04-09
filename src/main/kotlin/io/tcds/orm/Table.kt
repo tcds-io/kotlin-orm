@@ -9,9 +9,7 @@ abstract class Table<E>(
     private val connection: Connection,
     private val table: String,
     private val softDelete: Boolean = false,
-) : TableColumns<E>() {
-    abstract suspend fun entry(row: OrmResultSet): E
-
+) : TableColumns<E>(), ResultSetEntry<E> {
     suspend fun insert(vararg entries: E) = entries.forEach {
         val params = params(it)
         val sql = "INSERT INTO $table (${params.columns()}) VALUES (${params.marks()})"
@@ -19,7 +17,11 @@ abstract class Table<E>(
         connection.write(sql, params)
     }
 
-    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyMap()): E? = findBy(where, order, 1).firstOrNull()
+    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyMap()): E? = findBy(
+        where = where,
+        order = order,
+        limit = 1,
+    ).firstOrNull()
 
     suspend fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
         return connection

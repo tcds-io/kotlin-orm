@@ -1,6 +1,6 @@
 package io.tcds.orm.connection
 
-import io.tcds.orm.JdbcOrmResultSet
+import io.tcds.orm.driver.JdbcOrmResultSet
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
 import org.slf4j.Logger

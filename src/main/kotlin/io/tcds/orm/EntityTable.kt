@@ -8,9 +8,8 @@ abstract class EntityTable<E, PKType>(
     connection: Connection,
     table: String,
     val id: Column<E, PKType>,
-    softDelete: Boolean,
+    softDelete: Boolean = false,
 ) : Table<E>(connection, table, softDelete) {
-
     init {
         column(id)
     }
