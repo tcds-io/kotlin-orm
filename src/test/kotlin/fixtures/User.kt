@@ -1,5 +1,7 @@
 package fixtures
 
+import java.time.LocalDate
+
 data class User(
     val id: String,
     val name: String,
@@ -8,4 +10,5 @@ data class User(
     val age: Int,
     val active: Boolean,
     val address: Address,
+    val dateOfBirth: LocalDate,
 )
