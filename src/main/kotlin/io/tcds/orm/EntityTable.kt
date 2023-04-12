@@ -7,12 +7,9 @@ import io.tcds.orm.extension.where
 abstract class EntityTable<E, PKType>(
     connection: Connection,
     table: String,
-    val id: Column<E, PKType>,
     softDelete: Boolean = false,
 ) : Table<E>(connection, table, softDelete) {
-    init {
-        column(id)
-    }
+    abstract val id: Column<E, PKType>
 
     suspend fun loadById(id: PKType): E? = loadBy(where(this.id equalsTo id))
 
