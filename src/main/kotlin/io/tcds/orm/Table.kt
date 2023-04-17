@@ -17,7 +17,7 @@ abstract class Table<E>(
         connection.write(sql, params)
     }
 
-    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyMap()): E? = findBy(
+    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyList()): E? = findBy(
         where = where,
         order = order,
         limit = 1,
@@ -32,7 +32,7 @@ abstract class Table<E>(
 
     suspend fun findBy(
         where: Statement,
-        order: OrderStatement<E> = emptyMap(),
+        order: OrderStatement<E> = emptyList(),
         limit: Int? = null,
         offset: Int? = null,
     ): Sequence<E> {

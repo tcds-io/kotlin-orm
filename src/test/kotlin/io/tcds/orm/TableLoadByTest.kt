@@ -49,7 +49,7 @@ class TableLoadByTest {
         val result = runBlocking {
             table.loadBy(
                 where(table.street equalsTo "Galaxy Highway"),
-                mapOf(table.createdAt to Order.DESC),
+                listOf(table.createdAt.desc()),
             )
         }
 
@@ -75,7 +75,7 @@ class TableLoadByTest {
         val result = runBlocking {
             table.loadBy(
                 where(table.street equalsTo "Galaxy Highway"),
-                mapOf(table.createdAt to Order.DESC),
+                listOf(table.createdAt.desc()),
             )
         }
 

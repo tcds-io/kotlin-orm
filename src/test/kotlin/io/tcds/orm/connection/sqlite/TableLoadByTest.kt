@@ -48,7 +48,7 @@ class TableLoadByTest : SqLiteTestCase() {
     @Test
     fun `given a condition and ASC order when entry exists then load into the entity`() = runBlocking {
         val where = where(table.main equalsTo true)
-        val order = mapOf<Column<Address, *>, Order>(table.id to Order.ASC)
+        val order = listOf(table.id.asc())
 
         val address = table.loadBy(where, order = order)
 
@@ -59,7 +59,7 @@ class TableLoadByTest : SqLiteTestCase() {
     fun `given a condition and DESC order when entry exists then load into the entity`() = runBlocking {
         val where = where(table.main equalsTo true)
 
-        val address = table.loadBy(where, order = mapOf(table.id to Order.DESC))
+        val address = table.loadBy(where, order = listOf(table.id.desc()))
 
         Assertions.assertEquals("arthur-dent-address-another-address", address?.id)
     }

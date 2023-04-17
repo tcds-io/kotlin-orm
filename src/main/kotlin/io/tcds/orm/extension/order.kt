@@ -3,11 +3,11 @@ package io.tcds.orm.extension
 import io.tcds.orm.Column
 import io.tcds.orm.statement.Order
 
-typealias OrderStatement<E> = Map<Column<E, *>, Order>
+typealias OrderStatement<E> = List<Pair<Column<E, *>, Order>>
 
-fun <E> Map<Column<E, *>, Order>.toOrderByStatement(): String {
+fun <E> OrderStatement<E>.toOrderByStatement(): String {
     return when (isEmpty()) {
         true -> ""
-        false -> "ORDER BY " + map { "${it.key.name} ${it.value.name}" }.toList().joinToString(", ")
+        false -> "ORDER BY " + map { "${it.first.name} ${it.second.name}" }.toList().joinToString(", ")
     }
 }

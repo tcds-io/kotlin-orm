@@ -9,7 +9,6 @@ import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
-import io.tcds.orm.statement.Order
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -52,7 +51,7 @@ class TableFindByTest {
         val result = runBlocking {
             table.findBy(
                 where = where(table.street like "Galaxy%"),
-                order = mapOf(table.createdAt to Order.DESC),
+                order = listOf(table.createdAt.desc()),
                 limit = 15,
                 offset = 30,
             ).toList()

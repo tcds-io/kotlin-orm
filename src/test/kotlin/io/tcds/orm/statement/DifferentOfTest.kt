@@ -15,6 +15,7 @@ class DifferentOfTest {
         val clause = column differentOf "123"
 
         Assertions.assertEquals("name != ?", clause.toStmt())
+        Assertions.assertEquals("name != `123`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "123")), clause.params())
     }
 
@@ -23,6 +24,7 @@ class DifferentOfTest {
         val clause = column.differentOf("345")
 
         Assertions.assertEquals("name != ?", clause.toStmt())
+        Assertions.assertEquals("name != `345`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "345")), clause.params())
     }
 }

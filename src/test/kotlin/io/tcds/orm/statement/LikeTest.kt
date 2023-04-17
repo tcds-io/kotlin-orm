@@ -15,6 +15,7 @@ class LikeTest {
         val clause = column like "123"
 
         Assertions.assertEquals("name LIKE ?", clause.toStmt())
+        Assertions.assertEquals("name LIKE `123`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "123")), clause.params())
     }
 
@@ -23,6 +24,7 @@ class LikeTest {
         val clause = column.like("345")
 
         Assertions.assertEquals("name LIKE ?", clause.toStmt())
+        Assertions.assertEquals("name LIKE `345`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, "345")), clause.params())
     }
 }

@@ -17,6 +17,7 @@ class StatementTest {
         val where = where(age equalsTo 32) or (age greaterThen 50) and (name differentOf "Arthur Dent")
 
         Assertions.assertEquals("WHERE age = ? OR age > ? AND name != ?", where.toStmt())
+        Assertions.assertEquals("WHERE age = `32` OR age > `50` AND name != `Arthur Dent`", where.toSql())
         Assertions.assertEquals(
             listOf(Param(age, 32), Param(age, 50), Param(name, "Arthur Dent")),
             where.params(),
@@ -34,6 +35,10 @@ class StatementTest {
         Assertions.assertEquals(
             "WHERE age = ? OR (age > ? AND name != ?) AND (age < ? AND name != ?)",
             where.toStmt(),
+        )
+        Assertions.assertEquals(
+            "WHERE age = `32` OR (age > `50` AND name != `Arthur Dent`) AND (age < `100` AND name != `Ford Prefect`)",
+            where.toSql(),
         )
         Assertions.assertEquals(
             listOf(
@@ -54,6 +59,7 @@ class StatementTest {
         val sfWhere = where.getSoftDeleteStatement<User>()
 
         Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toStmt())
+        Assertions.assertEquals("WHERE (age = `32` OR age > `50`) AND deleted_at IS NULL", sfWhere.toSql())
         Assertions.assertEquals(listOf(Param(age, 32), Param(age, 50)), where.params())
     }
 
@@ -70,6 +76,6 @@ class StatementTest {
     fun `given where conditions then build string value`() {
         val where = where(age equalsTo 32) or (age greaterThen 50) and (name differentOf "Arthur Dent")
 
-        Assertions.assertEquals("WHERE age = 32 OR age > 50 AND name != Arthur Dent", where.toSql())
+        Assertions.assertEquals("WHERE age = `32` OR age > `50` AND name != `Arthur Dent`", where.toSql())
     }
 }

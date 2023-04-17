@@ -15,6 +15,7 @@ class StatementGroupTest {
         val group = StatementGroup(conditions = mutableListOf(Pair(Operator.NONE, (column equalsTo "123"))))
 
         Assertions.assertEquals("(name = ?)", group.toStmt())
+        Assertions.assertEquals("(name = `123`)", group.toSql())
         Assertions.assertEquals(listOf(Param(column, "123")), group.params())
     }
 }

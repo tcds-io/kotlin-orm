@@ -15,6 +15,7 @@ class GreaterThenOrEqualsToTest {
         val clause = column graterThenOrEqualsTo 30
 
         Assertions.assertEquals("age >= ?", clause.toStmt())
+        Assertions.assertEquals("age >= `30`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 
@@ -23,6 +24,7 @@ class GreaterThenOrEqualsToTest {
         val clause = column.graterThenOrEqualsTo(30)
 
         Assertions.assertEquals("age >= ?", clause.toStmt())
+        Assertions.assertEquals("age >= `30`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, 30)), clause.params())
     }
 }

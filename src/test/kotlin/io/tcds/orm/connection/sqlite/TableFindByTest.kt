@@ -59,7 +59,7 @@ class TableFindByTest : SqLiteTestCase() {
     @Test
     fun `given a condition and ASC order when entries exist then select into the database`() = runBlocking {
         val where = where(table.main equalsTo true)
-        val order = mapOf<Column<Address, *>, Order>(table.id to Order.ASC)
+        val order = listOf(table.id.asc())
         val limit = 2
 
         val addresses = table.findBy(where, order, limit)
@@ -73,7 +73,7 @@ class TableFindByTest : SqLiteTestCase() {
     @Test
     fun `given a condition and ASC order and limit and offset when entries exist then select into the database`() {
         val where = where(table.main equalsTo true)
-        val order = mapOf<Column<Address, *>, Order>(table.id to Order.ASC)
+        val order = listOf(table.id.asc())
         val limit = 2
         val offset = 1
 

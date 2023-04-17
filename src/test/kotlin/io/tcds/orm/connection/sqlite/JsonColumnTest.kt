@@ -25,7 +25,7 @@ class JsonColumnTest : SqLiteTestCase() {
     fun `given an address when table has json column then insert as json`() = runBlocking {
         table.insert(UserAddress("user-aaa", address), UserAddress("user-bbb", address))
 
-        val list = table.findBy(emptyWhere(), mapOf(table.userId to Order.DESC))
+        val list = table.findBy(emptyWhere(), listOf(table.userId.desc()))
 
         Assertions.assertEquals(
             listOf(

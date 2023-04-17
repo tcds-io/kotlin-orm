@@ -15,6 +15,7 @@ class BetweenTest {
         val clause = column.isBetween(23, 44)
 
         Assertions.assertEquals("age BETWEEN ? AND ?", clause.toStmt())
+        Assertions.assertEquals("age BETWEEN `23` AND `44`", clause.toSql())
         Assertions.assertEquals(listOf(Param(column, 23), Param(column, 44)), clause.params())
     }
 }
