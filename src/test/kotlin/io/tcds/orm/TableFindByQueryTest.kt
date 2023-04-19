@@ -3,8 +3,8 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import kotlinx.coroutines.runBlocking
@@ -28,7 +28,7 @@ class TableFindByQueryTest {
 
     @Test
     fun `given a query then invoke read from connection`() {
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -52,6 +52,6 @@ class TableFindByQueryTest {
         val result = runBlocking { table.findByQuery(QUERY, listOf(Param(table.street, "Galaxy%"))).toList() }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
-        coVerify { connection.read(QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(QUERY, listOf(Param(table.street, "Galaxy%"))) }
     }
 }

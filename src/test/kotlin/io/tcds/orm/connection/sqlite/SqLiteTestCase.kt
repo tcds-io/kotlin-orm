@@ -1,7 +1,5 @@
 package io.tcds.orm.connection.sqlite
 
-import fixtures.coClose
-import fixtures.coWrite
 import io.tcds.orm.connection.GenericConnection
 import io.tcds.orm.connection.SqLiteConnection
 import mu.KotlinLogging
@@ -16,7 +14,7 @@ open class SqLiteTestCase {
     @BeforeEach
     @MustBeInvokedByOverriders
     open fun setup() {
-        connection().coWrite(
+        connection().write(
             """
                 CREATE TABLE addresses
                 (
@@ -29,7 +27,7 @@ open class SqLiteTestCase {
             """
         )
 
-        connection().coWrite(
+        connection().write(
             """
                 CREATE TABLE users (
                     id         VARCHAR(255) NOT NULL,
@@ -43,7 +41,7 @@ open class SqLiteTestCase {
             """
         )
 
-        connection().coWrite(
+        connection().write(
             """
                 CREATE TABLE user_status (
                     user_id    VARCHAR(255) NOT NULL,
@@ -53,7 +51,7 @@ open class SqLiteTestCase {
             """
         )
 
-        connection().coWrite(
+        connection().write(
             """
                 CREATE TABLE user_address (
                     user_id    VARCHAR(255) NOT NULL,
@@ -66,9 +64,9 @@ open class SqLiteTestCase {
     @AfterEach
     @MustBeInvokedByOverriders
     open fun tearDown() {
-        connection().coWrite("DELETE FROM addresses")
-        connection().coWrite("DELETE FROM users")
-        connection().coClose()
+        connection().write("DELETE FROM addresses")
+        connection().write("DELETE FROM users")
+        connection().close()
         connection = null
     }
 

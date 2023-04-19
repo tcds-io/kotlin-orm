@@ -11,14 +11,14 @@ abstract class EntityTable<E, PKType>(
 ) : Table<E>(connection, table, softDelete) {
     abstract val id: Column<E, PKType>
 
-    suspend fun loadById(id: PKType): E? = loadBy(where(this.id equalsTo id))
+    fun loadById(id: PKType): E? = loadBy(where(this.id equalsTo id))
 
-    suspend fun update(vararg entities: E) = entities.forEach {
+    fun update(vararg entities: E) = entities.forEach {
         update(
             columns.filter { col -> col != id }.map { column -> column.toValueParam(entry = it) },
             where(this.id equalsTo this.id.valueOf(it)),
         )
     }
 
-    suspend fun delete(vararg entities: E) = entities.forEach { delete(where(this.id equalsTo this.id.valueOf(it))) }
+    fun delete(vararg entities: E) = entities.forEach { delete(where(this.id equalsTo this.id.valueOf(it))) }
 }

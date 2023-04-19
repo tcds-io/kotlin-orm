@@ -3,8 +3,8 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
@@ -27,7 +27,7 @@ class TableFindByTest {
 
     @Test
     fun `given a where and order and limit and offset then invoke read from connection`() {
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -58,6 +58,6 @@ class TableFindByTest {
         }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
-        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
     }
 }

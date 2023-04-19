@@ -4,8 +4,8 @@ import fixtures.Address
 import fixtures.AddressEntityTable
 import fixtures.freezeClock
 import fixtures.frozenClockAt
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.statement.Statement
@@ -19,21 +19,21 @@ class EntityTableDeleteTest {
     @Test
     fun `given the entry when table is not soft delete then invoke delete in the write connection`() {
         val table = AddressEntityTable(connection)
-        coEvery { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns true
 
         runBlocking { table.delete(address) }
 
-        coVerify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(Param(table.id, "galaxy-avenue"))) }
+        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(Param(table.id, "galaxy-avenue"))) }
     }
 
     @Test
     fun `given the entry when table is soft delete then invoke update in the write connection`() = freezeClock {
         val table = AddressEntityTable(connection, true)
-        coEvery { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns true
 
         runBlocking { table.delete(address) }
 
-        coVerify {
+        verify {
             connection.write(
                 "UPDATE addresses SET deleted_at = ? WHERE id = ?",
                 listOf(

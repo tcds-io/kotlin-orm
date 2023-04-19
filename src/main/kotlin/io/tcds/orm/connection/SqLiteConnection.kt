@@ -7,7 +7,7 @@ open class SqLiteConnection(
     private val connection: JdbcConnection,
     logger: Logger?,
 ) : GenericConnection(connection, connection, logger) {
-    override suspend fun close() {
+    override fun close() {
         connection.close()
     }
 }

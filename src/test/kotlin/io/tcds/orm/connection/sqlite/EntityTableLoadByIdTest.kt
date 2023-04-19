@@ -2,7 +2,6 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import fixtures.coWrite
 import io.tcds.orm.Param
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -18,7 +17,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),

@@ -1,7 +1,6 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
-import fixtures.coWrite
 import io.tcds.orm.Param
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -17,7 +16,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -28,7 +27,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -39,7 +38,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
             )
         )
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "something-else"),

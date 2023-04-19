@@ -3,8 +3,8 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import kotlinx.coroutines.runBlocking
@@ -25,7 +25,7 @@ class TableLoadByQueryTest {
 
     @Test
     fun `given the query then invoke write in the connection`() {
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -40,6 +40,6 @@ class TableLoadByQueryTest {
         val result = runBlocking { table.loadByQuery(QUERY, listOf(Param(table.main, true))) }
 
         Assertions.assertEquals(address, result)
-        coVerify { connection.read(QUERY, listOf(Param(table.main, true))) }
+        verify { connection.read(QUERY, listOf(Param(table.main, true))) }
     }
 }

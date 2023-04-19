@@ -3,8 +3,8 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
@@ -34,7 +34,7 @@ class TableLoadByTest {
     @Test
     fun `given a where and order then invoke read from connection`() {
         val table = AddressTable(connection)
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -54,13 +54,13 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
     }
 
     @Test
     fun `given a where when table is soft delete and order then invoke read from connection`() {
         val table = AddressTable(connection, true)
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -80,6 +80,6 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        coVerify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
     }
 }

@@ -1,8 +1,8 @@
 package io.tcds.orm
 
 import fixtures.AddressTable
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.and
@@ -18,7 +18,7 @@ class TableUpdateTest {
     @Test
     fun `given the params and where condition when table is not soft delete then run update`() {
         val table = AddressTable(connection)
-        coEvery { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns true
 
         runBlocking {
             table.update(
@@ -27,7 +27,7 @@ class TableUpdateTest {
             )
         }
 
-        coVerify {
+        verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE id = ?",
                 listOf(Param(table.street, "Galaxy Highway"), Param(table.id, "galaxy-avenue")),
@@ -38,7 +38,7 @@ class TableUpdateTest {
     @Test
     fun `given the params and where condition when table is soft delete then run update`() {
         val table = AddressTable(connection, true)
-        coEvery { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns true
 
         runBlocking {
             table.update(
@@ -47,7 +47,7 @@ class TableUpdateTest {
             )
         }
 
-        coVerify {
+        verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE (id = ? AND street IS NOT NULL) AND deleted_at IS NULL",
                 listOf(Param(table.street, "Galaxy Highway"), Param(table.id, "galaxy-avenue")),

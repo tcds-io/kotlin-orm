@@ -9,28 +9,30 @@ abstract class Table<E>(
     private val connection: Connection,
     private val table: String,
     private val softDelete: Boolean = false,
-) : TableColumns<E>(), ResultSetEntry<E> {
-    suspend fun insert(vararg entries: E) = entries.forEach {
+) : ResultSetEntry<E> {
+    val columns = mutableListOf<Column<E, *>>()
+
+    fun insert(vararg entries: E) = entries.forEach {
         val params = params(it)
         val sql = "INSERT INTO $table (${params.columns()}) VALUES (${params.marks()})"
 
         connection.write(sql, params)
     }
 
-    suspend fun loadBy(where: Statement, order: OrderStatement<E> = emptyList()): E? = findBy(
+    fun loadBy(where: Statement, order: OrderStatement<E> = emptyList()): E? = findBy(
         where = where,
         order = order,
         limit = 1,
     ).firstOrNull()
 
-    suspend fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
+    fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
         return connection
             .read(sql, params)
             .firstOrNull()
             ?.let { entry(it) }
     }
 
-    suspend fun findBy(
+    fun findBy(
         where: Statement,
         order: OrderStatement<E> = emptyList(),
         limit: Int? = null,
@@ -51,13 +53,13 @@ abstract class Table<E>(
             .map { entry(it) }
     }
 
-    suspend fun findByQuery(sql: String, params: List<Param<*, *>> = emptyList()) = connection
+    fun findByQuery(sql: String, params: List<Param<*, *>> = emptyList()) = connection
         .read(sql, params)
         .map { entry(it) }
 
-    suspend fun exists(where: Statement): Boolean = loadBy(where) != null
+    fun exists(where: Statement): Boolean = loadBy(where) != null
 
-    suspend fun delete(where: Statement) {
+    fun delete(where: Statement) {
         when (softDelete) {
             false -> connection.write(
                 "DELETE FROM $table ${where.toStmt()}",
@@ -70,7 +72,7 @@ abstract class Table<E>(
         }
     }
 
-    suspend fun update(params: List<Param<*, *>>, where: Statement) {
+    fun update(params: List<Param<*, *>>, where: Statement) {
         val tableWhere = when (softDelete) {
             true -> where.getSoftDeleteStatement<E>()
             else -> where

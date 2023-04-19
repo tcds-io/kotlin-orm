@@ -15,11 +15,11 @@ class TableInsertTest {
 
     @Test
     fun `given the entry then invoke write in the connection`() {
-        coEvery { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns true
 
         runBlocking { table.insert(address) }
 
-        coVerify {
+        verify {
             connection.write(
                 "INSERT INTO addresses (id, street, number, main, created_at) VALUES (?, ?, ?, ?, ?)",
                 listOf(

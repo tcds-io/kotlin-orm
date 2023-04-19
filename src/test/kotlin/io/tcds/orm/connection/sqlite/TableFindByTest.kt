@@ -2,7 +2,6 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
-import fixtures.coWrite
 import io.tcds.orm.Column
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
@@ -22,7 +21,7 @@ class TableFindByTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),
@@ -33,7 +32,7 @@ class TableFindByTest : SqLiteTestCase() {
             )
         )
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address-another-address"),
@@ -44,7 +43,7 @@ class TableFindByTest : SqLiteTestCase() {
             )
         )
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "another-address"),

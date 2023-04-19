@@ -4,10 +4,10 @@ import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
 
 interface Connection {
-    suspend fun begin(): Boolean
-    suspend fun commit(): Boolean
-    suspend fun rollback(): Boolean
-    suspend fun transaction(block: suspend () -> Unit)
-    suspend fun read(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet>
-    suspend fun write(sql: String, params: List<Param<*, *>> = emptyList()): Boolean
+    fun begin(): Boolean
+    fun commit(): Boolean
+    fun rollback(): Boolean
+    fun transaction(block: () -> Unit)
+    fun read(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet>
+    fun write(sql: String, params: List<Param<*, *>> = emptyList()): Boolean
 }

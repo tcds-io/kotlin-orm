@@ -3,6 +3,9 @@ package fixtures
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Table
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.extension.bool
+import io.tcds.orm.extension.datetime
+import io.tcds.orm.extension.varchar
 
 class AddressTable(
     connection: Connection,
@@ -14,7 +17,7 @@ class AddressTable(
     val main = bool("main") { it.main }
     val createdAt = datetime("created_at") { it.createdAt }
 
-    override suspend fun entry(row: OrmResultSet): Address = Address(
+    override fun entry(row: OrmResultSet): Address = Address(
         id = row.get(id),
         street = row.get(street),
         number = row.get(number),

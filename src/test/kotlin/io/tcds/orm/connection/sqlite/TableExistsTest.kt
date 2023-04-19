@@ -1,7 +1,6 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
-import fixtures.coWrite
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
@@ -19,7 +18,7 @@ class TableExistsTest : SqLiteTestCase() {
     override fun setup() {
         super.setup()
 
-        connection().coWrite(
+        connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
                 Param(table.id, "arthur-dent-address"),

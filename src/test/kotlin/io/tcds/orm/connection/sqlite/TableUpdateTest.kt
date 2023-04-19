@@ -4,7 +4,6 @@ import fixtures.Address
 import fixtures.AddressTable
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
-import io.tcds.orm.extension.map
 import io.tcds.orm.extension.where
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions

@@ -29,7 +29,7 @@ class EntityTableLoadByIdTest {
     @Test
     fun `given a where and order then invoke read from connection`() {
         val table = AddressEntityTable(connection)
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -44,13 +44,13 @@ class EntityTableLoadByIdTest {
         val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
     }
 
     @Test
     fun `given a where when table is soft delete and order then invoke read from connection`() {
         val table = AddressEntityTable(connection, true)
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -65,6 +65,6 @@ class EntityTableLoadByIdTest {
         val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        coVerify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
     }
 }

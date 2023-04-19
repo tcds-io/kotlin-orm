@@ -2,8 +2,8 @@ package io.tcds.orm
 
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
@@ -24,7 +24,7 @@ class TableExistsTest {
 
     @Test
     fun `given a where when connection returns entries then exist is true`() {
-        coEvery { connection.read(any(), any()) } returns sequenceOf(
+        every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
                     table.id to "galaxy-highway",
@@ -39,16 +39,16 @@ class TableExistsTest {
         val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
 
         Assertions.assertTrue(result)
-        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
     }
 
     @Test
     fun `given a where when connection does not return entries then exist is false`() {
-        coEvery { connection.read(any(), any()) } returns emptySequence()
+        every { connection.read(any(), any()) } returns emptySequence()
 
         val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
 
         Assertions.assertFalse(result)
-        coVerify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
     }
 }
