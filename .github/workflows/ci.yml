@@ -59,8 +59,19 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Prepare Release
+        run: |
+          ./gradlew generatePomFileForDefaultMavenJavaPublication
+          ./gradlew generatePomFileForPluginMavenPublication
+
       - name: Publish package
-        run: ./gradlew publish
         env:
+          OSS_USER: ${{ secrets.OSS_USER }}
+          OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
           GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
           GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_KEY: ${{ secrets.GPG_KEY }}
+          GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
+        run: |
+          ./gradlew publish
