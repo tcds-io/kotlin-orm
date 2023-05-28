@@ -67,7 +67,7 @@ abstract class Table<E>(
             )
             true -> connection.write(
                 "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
-                where.getSoftDeleteQueryParams<E>()
+                where.getSoftDeleteQueryParams<E>(),
             )
         }
     }

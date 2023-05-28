@@ -4,7 +4,6 @@ import fixtures.Address
 import fixtures.UserAddress
 import fixtures.UserAddressTable
 import io.tcds.orm.extension.emptyWhere
-import io.tcds.orm.statement.Order
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

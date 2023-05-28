@@ -25,7 +25,7 @@ class EntityTableDeleteTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
     }
 
@@ -39,7 +39,7 @@ class EntityTableDeleteTest : SqLiteTestCase() {
             0,
             connection()
                 .read("SELECT * FROM addresses WHERE id = ?", listOf(Param(table.id, "galaxy-avenue")))
-                .count()
+                .count(),
         )
     }
 }

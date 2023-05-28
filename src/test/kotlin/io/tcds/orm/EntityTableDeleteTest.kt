@@ -5,8 +5,8 @@ import fixtures.AddressEntityTable
 import fixtures.freezeClock
 import fixtures.frozenClockAt
 import io.mockk.every
-import io.mockk.verify
 import io.mockk.mockk
+import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.statement.Statement
 import kotlinx.coroutines.runBlocking

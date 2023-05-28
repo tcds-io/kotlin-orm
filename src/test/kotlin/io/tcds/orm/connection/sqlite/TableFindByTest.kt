@@ -1,12 +1,9 @@
 package io.tcds.orm.connection.sqlite
 
-import fixtures.Address
 import fixtures.AddressTable
-import io.tcds.orm.Column
 import io.tcds.orm.Param
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
-import io.tcds.orm.statement.Order
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -29,7 +26,7 @@ class TableFindByTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
 
         connection().write(
@@ -40,7 +37,7 @@ class TableFindByTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
 
         connection().write(
@@ -51,7 +48,7 @@ class TableFindByTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
     }
 

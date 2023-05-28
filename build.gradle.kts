@@ -18,11 +18,6 @@ object Publication {
         val password: String? = System.getenv("OSS_PASSWORD")
     }
 
-    object Github {
-        val username: String? = System.getenv("GPR_USERNAME")
-        val token: String? = System.getenv("GPR_TOKEN")
-    }
-
     object Gpg {
         val signingKeyId: String? = System.getenv("GPG_KEY_ID")
         val signingKey: String? = System.getenv("GPG_KEY")
@@ -84,18 +79,6 @@ val javadocJar by tasks.creating(Jar::class) { archiveClassifier.set("javadoc");
 
 publishing {
     repositories {
-        maven {
-            name = "GitHubPackages"
-            group = Publication.group
-            version = Publication.buildVersion
-            url = uri("https://maven.pkg.github.com/tcds-io/kotlin-orm")
-
-            credentials {
-                username = Publication.Github.username
-                password = Publication.Github.token
-            }
-        }
-
         maven {
             name = "SonaType"
             group = Publication.group

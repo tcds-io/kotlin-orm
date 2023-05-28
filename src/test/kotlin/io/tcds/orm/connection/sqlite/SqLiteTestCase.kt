@@ -24,7 +24,7 @@ open class SqLiteTestCase {
                     main       TINYINT      NOT NULL,
                     created_at DATETIME     NOT NULL
                 );
-            """
+            """,
         )
 
         connection().write(
@@ -38,7 +38,7 @@ open class SqLiteTestCase {
                     active     TINYINT      NOT NULL,
                     address_id VARCHAR(255) NOT NULL
                 );
-            """
+            """,
         )
 
         connection().write(
@@ -48,7 +48,7 @@ open class SqLiteTestCase {
                     status     VARCHAR(255) NOT NULL,
                     at         DATETIME     NOT NULL
                 );
-            """
+            """,
         )
 
         connection().write(
@@ -57,7 +57,7 @@ open class SqLiteTestCase {
                     user_id    VARCHAR(255) NOT NULL,
                     address    TEXT NOT NULL
                 );
-            """
+            """,
         )
     }
 
@@ -71,10 +71,12 @@ open class SqLiteTestCase {
     }
 
     fun connection(): GenericConnection {
-        if (connection === null) connection = SqLiteConnection(
-            DriverManager.getConnection("jdbc:sqlite::memory:"),
-            KotlinLogging.logger("io.tcds.orm")
-        )
+        if (connection === null) {
+            connection = SqLiteConnection(
+                DriverManager.getConnection("jdbc:sqlite::memory:"),
+                KotlinLogging.logger("io.tcds.orm"),
+            )
+        }
 
         return connection!!
     }

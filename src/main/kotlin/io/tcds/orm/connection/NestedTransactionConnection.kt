@@ -27,14 +27,14 @@ open class NestedTransactionConnection(
     override fun commit() = decrementTxDepth().let {
         when (it) {
             INITIAL_DEPTH -> super.commit()
-            else -> write("RELEASE SAVEPOINT LEVEL${it}")
+            else -> write("RELEASE SAVEPOINT LEVEL$it")
         }
     }
 
     override fun rollback() = decrementTxDepth().let {
         when (it) {
             INITIAL_DEPTH -> super.rollback()
-            else -> write("ROLLBACK TO SAVEPOINT LEVEL${it}")
+            else -> write("ROLLBACK TO SAVEPOINT LEVEL$it")
         }
     }
 

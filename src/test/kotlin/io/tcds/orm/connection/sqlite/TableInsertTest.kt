@@ -20,8 +20,8 @@ class TableInsertTest : SqLiteTestCase() {
             listOf(address),
             connection().read(
                 "SELECT * FROM addresses WHERE id = ?",
-                listOf(Param(table.id, "galaxy-highway"))
-            ).map { table.entry(it) }.toList()
+                listOf(Param(table.id, "galaxy-highway")),
+            ).map { table.entry(it) }.toList(),
         )
     }
 }

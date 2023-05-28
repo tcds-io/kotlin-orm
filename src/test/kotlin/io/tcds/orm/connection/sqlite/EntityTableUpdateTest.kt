@@ -25,7 +25,7 @@ class EntityTableUpdateTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
     }
 
@@ -44,7 +44,7 @@ class EntityTableUpdateTest : SqLiteTestCase() {
                 main = true,
                 createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
             ),
-            table.loadById("galaxy-avenue")
+            table.loadById("galaxy-avenue"),
         )
     }
 }

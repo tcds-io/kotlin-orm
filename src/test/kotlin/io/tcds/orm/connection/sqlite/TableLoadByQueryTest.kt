@@ -24,7 +24,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
 
         connection().write(
@@ -35,7 +35,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
 
         connection().write(
@@ -46,7 +46,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
                 Param(table.number, "789A"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
     }
 

@@ -23,7 +23,6 @@ class EntityTableLoadByIdTest {
     }
 
     private val connection: Connection = mockk()
-
     private val address = Address.galaxyHighway()
 
     @Test
@@ -32,13 +31,13 @@ class EntityTableLoadByIdTest {
         every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
-                    table.id to "galaxy-highway",
-                    table.street to "Galaxy Highway",
-                    table.number to "678H",
-                    table.main to false,
-                    table.createdAt to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.id.name to "galaxy-highway",
+                    table.street.name to "Galaxy Highway",
+                    table.number.name to "678H",
+                    table.main.name to false,
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
                 ),
-            )
+            ),
         )
 
         val result = runBlocking { table.loadById("galaxy-highway") }
@@ -53,13 +52,13 @@ class EntityTableLoadByIdTest {
         every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
-                    table.id to "galaxy-highway",
-                    table.street to "Galaxy Highway",
-                    table.number to "678H",
-                    table.main to false,
-                    table.createdAt to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.id.name to "galaxy-highway",
+                    table.street.name to "Galaxy Highway",
+                    table.number.name to "678H",
+                    table.main.name to false,
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
                 ),
-            )
+            ),
         )
 
         val result = runBlocking { table.loadById("galaxy-highway") }
