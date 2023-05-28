@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.sql.ResultSet as JdbcResultSet
 
-class JdbcOrmResultSet(val rs: JdbcResultSet) : OrmResultSet {
-    fun <T> nullableValue(value: T): T? = if (rs.wasNull()) null else value
+class JdbcOrmResultSet(private val rs: JdbcResultSet) : OrmResultSet {
+    override fun value(columnName: String): String? = rs.getString(columnName)
 
     override fun get(column: Column<*, String>): String = rs.getString(column.name)
     override fun get(column: Column<*, Int>): Int = rs.getInt(column.name)
@@ -38,4 +38,6 @@ class JdbcOrmResultSet(val rs: JdbcResultSet) : OrmResultSet {
             LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
         }
     }
+
+    private fun <T> nullableValue(value: T): T? = if (rs.wasNull()) null else value
 }

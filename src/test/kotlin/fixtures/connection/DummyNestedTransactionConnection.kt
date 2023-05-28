@@ -7,4 +7,3 @@ class DummyNestedTransactionConnection(
     readOnly: JdbcConnection,
     readWrite: JdbcConnection,
 ) : NestedTransactionConnection(readOnly = readOnly, readWrite = readWrite, logger = null)
-

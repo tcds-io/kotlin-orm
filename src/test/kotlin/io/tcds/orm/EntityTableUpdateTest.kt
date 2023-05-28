@@ -3,8 +3,8 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressEntityTable
 import io.mockk.every
-import io.mockk.verify
 import io.mockk.mockk
+import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.trimSpacesAndLines
 import kotlinx.coroutines.runBlocking

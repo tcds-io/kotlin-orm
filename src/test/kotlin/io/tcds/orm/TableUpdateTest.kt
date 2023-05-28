@@ -2,8 +2,8 @@ package io.tcds.orm
 
 import fixtures.AddressTable
 import io.mockk.every
-import io.mockk.verify
 import io.mockk.mockk
+import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.and
 import io.tcds.orm.extension.equalsTo
@@ -23,7 +23,7 @@ class TableUpdateTest {
         runBlocking {
             table.update(
                 listOf(Param(table.street, "Galaxy Highway")),
-                where(table.id equalsTo "galaxy-avenue")
+                where(table.id equalsTo "galaxy-avenue"),
             )
         }
 
@@ -43,7 +43,7 @@ class TableUpdateTest {
         runBlocking {
             table.update(
                 listOf(Param(table.street, "Galaxy Highway")),
-                where(table.id equalsTo "galaxy-avenue") and table.street.isNotNull()
+                where(table.id equalsTo "galaxy-avenue") and table.street.isNotNull(),
             )
         }
 

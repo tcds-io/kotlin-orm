@@ -39,12 +39,12 @@ class TableUpdateTest : SqLiteTestCase() {
                     number = "5432A",
                     main = address.main,
                     createdAt = address.createdAt,
-                )
+                ),
             ),
             connection().read(
                 "SELECT * FROM addresses where id = ?",
                 listOf(Param(table.id, "arthur-dent-address-new-address-for-test")),
-            ).map { table.entry(it) }.toList()
+            ).map { table.entry(it) }.toList(),
         )
     }
 }

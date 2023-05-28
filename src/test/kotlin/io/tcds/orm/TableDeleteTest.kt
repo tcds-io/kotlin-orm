@@ -25,7 +25,7 @@ class TableDeleteTest {
     }
 
     @Test
-    fun `given the entry when table is soft delete then invoke update in the write connection`() =freezeClock {
+    fun `given the entry when table is soft delete then invoke update in the write connection`() = freezeClock {
         val table = AddressTable(connection, true)
         every { connection.write(any(), any()) } returns true
 

@@ -4,12 +4,11 @@ import fixtures.Address
 import fixtures.AddressTable
 import fixtures.MapOrmResultSet
 import io.mockk.every
-import io.mockk.verify
 import io.mockk.mockk
+import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
-import io.tcds.orm.statement.Order
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -37,13 +36,13 @@ class TableLoadByTest {
         every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
-                    table.id to "galaxy-highway",
-                    table.street to "Galaxy Highway",
-                    table.number to "678H",
-                    table.main to false,
-                    table.createdAt to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.id.name to "galaxy-highway",
+                    table.street.name to "Galaxy Highway",
+                    table.number.name to "678H",
+                    table.main.name to false,
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
                 ),
-            )
+            ),
         )
 
         val result = runBlocking {
@@ -63,13 +62,13 @@ class TableLoadByTest {
         every { connection.read(any(), any()) } returns sequenceOf(
             MapOrmResultSet(
                 mapOf(
-                    table.id to "galaxy-highway",
-                    table.street to "Galaxy Highway",
-                    table.number to "678H",
-                    table.main to false,
-                    table.createdAt to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.id.name to "galaxy-highway",
+                    table.street.name to "Galaxy Highway",
+                    table.number.name to "678H",
+                    table.main.name to false,
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
                 ),
-            )
+            ),
         )
 
         val result = runBlocking {

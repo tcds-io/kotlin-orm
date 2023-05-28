@@ -13,7 +13,7 @@ class AddressEntityTable(
 ) : EntityTable<Address, String>(
     connection = connection,
     table = "addresses",
-    softDelete = softDelete
+    softDelete = softDelete,
 ) {
     override val id = varchar("id") { it.id }
     val street = varchar("street") { it.street }

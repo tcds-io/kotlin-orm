@@ -29,6 +29,12 @@ jobs:
         with:
           java-version: 11
 
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+
       - name: Test & Build
         run: ./gradlew build
         env:
@@ -68,12 +74,4 @@ jobs:
           OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
         run: |
           ./gradlew generatePomFileForPluginMavenPublication
-          ./gradlew publishAllPublicationsToSonaTypeRepository
-
-      - name: Publish to Github Package
-        env:
-          GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
-          GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
-        run: |
-          ./gradlew generatePomFileForDefaultMavenJavaPublication
-          ./gradlew publishAllPublicationsToGitHubPackagesRepository
+          ./gradlew publishDefaultMavenJavaPublicationToSonaTypeRepository

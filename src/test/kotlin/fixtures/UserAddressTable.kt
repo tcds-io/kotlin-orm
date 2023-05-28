@@ -14,12 +14,13 @@ class UserAddressTable(
 ) : Table<UserAddress>(
     connection = connection,
     table = "user_address",
-), JdbcResultSetEntry<UserAddress> {
-    val userId = varchar("user_id") { it.userId }
-    val address = json("address") { it.address }
+),
+    JdbcResultSetEntry<UserAddress> {
+        val userId = varchar("user_id") { it.userId }
+        val address = json("address") { it.address }
 
-    override fun entry(row: JdbcOrmResultSet): UserAddress = UserAddress(
-        userId = row.get(userId),
-        address = row.get(address),
-    )
-}
+        override fun entry(row: JdbcOrmResultSet): UserAddress = UserAddress(
+            userId = row.get(userId),
+            address = row.get(address),
+        )
+    }

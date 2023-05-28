@@ -26,7 +26,7 @@ class TableExistsTest : SqLiteTestCase() {
                 Param(table.number, "124T"),
                 Param(table.main, true),
                 Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
-            )
+            ),
         )
     }
 
