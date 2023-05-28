@@ -13,8 +13,11 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: '${{ github.ref_name }}'
-  ARTIFACT_NAME: 'artifact-${{ github.ref_name }}'
+  VERSION: ${{ github.ref_name }}
+  ARTIFACT_NAME: artifact-${{ github.ref_name }}
+  GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+  GPG_KEY: ${{ secrets.GPG_KEY }}
+  GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
 
 jobs:
   build:
@@ -59,19 +62,18 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Prepare Release
-        run: |
-          ./gradlew generatePomFileForDefaultMavenJavaPublication
-          ./gradlew generatePomFileForPluginMavenPublication
-
-      - name: Publish package
+      - name: Publish to Maven
         env:
           OSS_USER: ${{ secrets.OSS_USER }}
           OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
+        run: |
+          ./gradlew generatePomFileForPluginMavenPublication
+          ./gradlew publishAllPublicationsToSonaTypeRepository
+
+      - name: Publish to Github Package
+        env:
           GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
           GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-          GPG_KEY: ${{ secrets.GPG_KEY }}
-          GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
         run: |
-          ./gradlew publish
+          ./gradlew generatePomFileForDefaultMavenJavaPublication
+          ./gradlew publishAllPublicationsToGitHubPackagesRepository

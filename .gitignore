@@ -1,3 +1,5 @@
 .idea
 .gradle
 build/
+publish.sh
+gpg-key.pem

@@ -14,19 +14,19 @@ object Publication {
     val buildVersion: String = System.getenv("VERSION") ?: "dev"
 
     object Sonatype {
-        val user: String = System.getenv("OSS_USER") ?: ""
-        val password: String = System.getenv("OSS_PASSWORD") ?: ""
+        val username: String? = System.getenv("OSS_USER")
+        val password: String? = System.getenv("OSS_PASSWORD")
     }
 
     object Github {
-        val user: String = System.getenv("GPR_USERNAME") ?: ""
-        val token: String = System.getenv("GPR_TOKEN") ?: ""
+        val username: String? = System.getenv("GPR_USERNAME")
+        val token: String? = System.getenv("GPR_TOKEN")
     }
 
     object Gpg {
-        val signingKeyId: String = System.getenv("GPG_KEY_ID") ?: ""
-        val signingKey: String = System.getenv("GPG_KEY") ?: ""
-        val signingPassword: String = System.getenv("GPG_KEY_PASSWORD") ?: ""
+        val signingKeyId: String? = System.getenv("GPG_KEY_ID")
+        val signingKey: String? = System.getenv("GPG_KEY")
+        val signingPassword: String? = System.getenv("GPG_KEY_PASSWORD")
     }
 }
 
@@ -79,14 +79,8 @@ tasks.test {
     }
 }
 
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-val javadocJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("javadoc")
-    from(tasks.javadoc)
-}
+val sourcesJar by tasks.creating(Jar::class) { archiveClassifier.set("sources"); from(sourceSets.main.get().allSource) }
+val javadocJar by tasks.creating(Jar::class) { archiveClassifier.set("javadoc"); from(tasks.javadoc) }
 
 publishing {
     repositories {
@@ -97,7 +91,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/tcds-io/kotlin-orm")
 
             credentials {
-                username = Publication.Github.user
+                username = Publication.Github.username
                 password = Publication.Github.token
             }
         }
@@ -109,7 +103,7 @@ publishing {
             url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
 
             credentials {
-                username = Publication.Sonatype.user
+                username = Publication.Sonatype.username
                 password = Publication.Sonatype.password
             }
         }
@@ -123,7 +117,6 @@ publishing {
      */
     publications {
         listOf("defaultMavenJava", "pluginMaven").forEach { publication ->
-
             create<MavenPublication>(publication) {
                 // from(components["java"])
                 artifact(sourcesJar)
@@ -160,11 +153,11 @@ publishing {
 }
 
 signing {
-    val signingKeyId = Publication.Gpg.signingKeyId
-    val signingKey = Publication.Gpg.signingKey
-    val signingPassword = Publication.Gpg.signingPassword
-
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    useInMemoryPgpKeys(
+        Publication.Gpg.signingKeyId,
+        Publication.Gpg.signingKey,
+        Publication.Gpg.signingPassword,
+    )
     sign(publishing.publications["pluginMaven"])
 }
 
@@ -173,7 +166,7 @@ nexusPublishing {
         sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username.set(Publication.Sonatype.user)
+            username.set(Publication.Sonatype.username)
             password.set(Publication.Sonatype.password)
         }
     }
