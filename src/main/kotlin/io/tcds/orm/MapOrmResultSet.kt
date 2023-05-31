@@ -1,7 +1,5 @@
-package fixtures
+package io.tcds.orm
 
-import io.tcds.orm.Column
-import io.tcds.orm.OrmResultSet
 import java.time.LocalDate
 import java.time.LocalDateTime
 

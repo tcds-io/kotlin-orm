@@ -14,7 +14,6 @@ class JsonColumn<Entity, T>(name: String, value: (Entity) -> T) : Column<Entity,
             .registerModule(JavaTimeModule())
     }
 
-    override fun bind(stmt: PreparedStatement, index: Int, value: T) {
-        stmt.setString(index, mapper.writeValueAsString(value))
-    }
+    override fun columnType(): String = "JSON"
+    override fun bind(stmt: PreparedStatement, index: Int, value: T) = stmt.setString(index, mapper.writeValueAsString(value))
 }

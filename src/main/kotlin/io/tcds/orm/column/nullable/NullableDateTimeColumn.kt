@@ -10,6 +10,8 @@ class NullableDateTimeColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDateTime?,
 ) : Column<Entity, LocalDateTime?>(name, value) {
+    override fun columnType(): String = "DATETIME NULL"
+
     override fun bind(stmt: PreparedStatement, index: Int, value: LocalDateTime?) {
         when (value) {
             null -> stmt.setNull(index, Types.TIMESTAMP)

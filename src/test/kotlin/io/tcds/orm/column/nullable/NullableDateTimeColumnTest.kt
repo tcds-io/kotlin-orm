@@ -2,6 +2,7 @@ package io.tcds.orm.column.nullable
 
 import fixtures.ColumnTypes
 import io.mockk.*
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
 import java.sql.Timestamp
@@ -11,11 +12,14 @@ import java.time.LocalDateTime
 class NullableDateTimeColumnTest {
     private val stmt: PreparedStatement = mockk()
     private val datetime = LocalDateTime.now()
+    private val column = NullableDateTimeColumn<ColumnTypes>("foo") { it.datetime }
+
+    @Test
+    fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "DATETIME NULL", column.describe())
 
     @Test
     fun `given a datetime value when it is not null then set the value into the statement`() {
         every { stmt.setTimestamp(any(), any()) } just runs
-        val column = NullableDateTimeColumn<ColumnTypes>("at") { it.datetime }
 
         column.bind(stmt, 3, datetime)
 
@@ -25,7 +29,6 @@ class NullableDateTimeColumnTest {
     @Test
     fun `given a datetime value when it is null then set null value into the statement`() {
         every { stmt.setNull(any(), any()) } just runs
-        val column = NullableDateTimeColumn<ColumnTypes>("at") { it.datetime }
 
         column.bind(stmt, 3, null)
 

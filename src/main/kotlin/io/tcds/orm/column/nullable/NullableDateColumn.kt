@@ -10,6 +10,8 @@ class NullableDateColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDate?,
 ) : Column<Entity, LocalDate?>(name, value) {
+    override fun columnType(): String = "DATE NULL"
+
     override fun bind(stmt: PreparedStatement, index: Int, value: LocalDate?) {
         when (value) {
             null -> stmt.setNull(index, Types.DATE)
