@@ -9,7 +9,6 @@ class DateColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDate,
 ) : Column<Entity, LocalDate>(name, value) {
-    override fun bind(stmt: PreparedStatement, index: Int, value: LocalDate) {
-        stmt.setDate(index, Date.valueOf(value))
-    }
+    override fun columnType(): String = "DATE"
+    override fun bind(stmt: PreparedStatement, index: Int, value: LocalDate) = stmt.setDate(index, Date.valueOf(value))
 }

@@ -3,27 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val jUnitVersion: String by project
 val mockkVersion: String by project
-val postgresVersion: String by project
 val sqliteVersion: String by project
 val kotlinLoggingVersion: String by project
 val jacksonVersion: String by project
 val coroutinesVersion: String by project
-
-object Publication {
-    const val group = "io.tcds"
-    val buildVersion: String = System.getenv("VERSION") ?: "dev"
-
-    object Sonatype {
-        val username: String? = System.getenv("OSS_USER")
-        val password: String? = System.getenv("OSS_PASSWORD")
-    }
-
-    object Gpg {
-        val signingKeyId: String? = System.getenv("GPG_KEY_ID")
-        val signingKey: String? = System.getenv("GPG_KEY")
-        val signingPassword: String? = System.getenv("GPG_KEY_PASSWORD")
-    }
-}
 
 plugins {
     application
@@ -31,6 +14,7 @@ plugins {
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("orm.commands")
 }
 
 repositories {
@@ -71,6 +55,22 @@ tasks.test {
         showCauses = true
         showStackTraces = true
         showStandardStreams = true
+    }
+}
+
+object Publication {
+    const val group = "io.tcds"
+    val buildVersion: String = System.getenv("VERSION") ?: "dev"
+
+    object Sonatype {
+        val username: String? = System.getenv("OSS_USER")
+        val password: String? = System.getenv("OSS_PASSWORD")
+    }
+
+    object Gpg {
+        val signingKeyId: String? = System.getenv("GPG_KEY_ID")
+        val signingKey: String? = System.getenv("GPG_KEY")
+        val signingPassword: String? = System.getenv("GPG_KEY_PASSWORD")
     }
 }
 

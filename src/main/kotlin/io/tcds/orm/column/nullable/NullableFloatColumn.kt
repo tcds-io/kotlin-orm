@@ -5,6 +5,8 @@ import java.sql.PreparedStatement
 import java.sql.Types
 
 class NullableFloatColumn<Entity>(name: String, value: (Entity) -> Float?) : Column<Entity, Float?>(name, value) {
+    override fun columnType(): String = "FLOAT NULL"
+
     override fun bind(stmt: PreparedStatement, index: Int, value: Float?) {
         when (value) {
             null -> stmt.setNull(index, Types.FLOAT)

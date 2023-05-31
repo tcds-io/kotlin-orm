@@ -1,7 +1,6 @@
 package io.tcds.orm
 
 import fixtures.AddressTable
-import fixtures.MapOrmResultSet
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

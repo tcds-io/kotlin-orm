@@ -5,6 +5,8 @@ import java.sql.PreparedStatement
 import java.sql.Types
 
 class NullableStringColumn<Entity>(name: String, value: (Entity) -> String?) : Column<Entity, String?>(name, value) {
+    override fun columnType(): String = "STRING NULL"
+
     override fun bind(stmt: PreparedStatement, index: Int, value: String?) {
         when (value) {
             null -> stmt.setNull(index, Types.VARCHAR)
