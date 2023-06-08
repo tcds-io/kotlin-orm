@@ -84,4 +84,11 @@ abstract class Table<E>(
 
         connection.write(sql, (params + where.params()))
     }
+
+    fun values(entry: E): Map<String, Any?> {
+        val map = mutableMapOf<String, Any?>()
+        columns.forEach { map[it.name] = it.valueOf(entry) }
+
+        return map
+    }
 }
