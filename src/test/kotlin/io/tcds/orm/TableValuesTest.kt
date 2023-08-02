@@ -1,7 +1,8 @@
 package io.tcds.orm
 
-import fixtures.Address
-import fixtures.AddressTable
+import fixtures.Company
+import fixtures.CompanyTable
+import fixtures.Status
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
 import org.junit.jupiter.api.Assertions
@@ -11,23 +12,28 @@ import java.time.Month
 
 class TableValuesTest {
     private val connection: Connection = mockk()
-    private val table = AddressTable(connection)
+    private val table = CompanyTable(connection)
+    private val company = Company(
+        id = "arthur-dent-co",
+        name = "Arthur Dent Co",
+        status = Status.ACTIVE,
+        employees = 6,
+        online = true,
+        createdAt = LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+    )
+
+    private val values = mapOf(
+        "id" to "arthur-dent-co",
+        "name" to "Arthur Dent Co",
+        "status" to "ACTIVE",
+        "employees" to 6,
+        "online" to true,
+        "created_at" to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+    )
 
     @Test
-    fun `given an entry then return its values`() {
-        val address = Address.galaxyHighway()
+    fun `given an entry then return its values`() = Assertions.assertEquals(values, table.values(company))
 
-        val values = table.values(address)
-
-        Assertions.assertEquals(
-            mapOf(
-                "id" to "galaxy-highway",
-                "street" to "Galaxy Highway",
-                "number" to "678H",
-                "main" to false,
-                "created_at" to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
-            ),
-            values,
-        )
-    }
+    @Test
+    fun `given the values then return its entry`() = Assertions.assertEquals(company, table.entry(MapOrmResultSet(values)))
 }

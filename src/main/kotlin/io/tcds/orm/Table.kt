@@ -87,7 +87,11 @@ abstract class Table<E>(
 
     fun values(entry: E): Map<String, Any?> {
         val map = mutableMapOf<String, Any?>()
-        columns.forEach { map[it.name] = it.valueOf(entry) }
+        columns.forEach {
+            map[it.name] = it.valueOf(entry).let { value ->
+                if (value?.javaClass?.isEnum == true) (value as Enum<*>).name else value
+            }
+        }
 
         return map
     }

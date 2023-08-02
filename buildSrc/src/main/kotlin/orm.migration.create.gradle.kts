@@ -38,5 +38,5 @@ tasks.register("migration-create") {
             DROP TABLE ...
     """.trimIndent()
 
-    File("$ormMigrationDirectory/${name}.yaml").bufferedWriter().use { out -> out.write(content) }
+    File("$ormMigrationDirectory/$name.yaml").bufferedWriter().use { out -> out.write(content) }
 }

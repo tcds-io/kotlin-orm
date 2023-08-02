@@ -16,4 +16,3 @@ dependencies {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 }
-
