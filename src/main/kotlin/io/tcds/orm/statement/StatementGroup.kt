@@ -15,4 +15,5 @@ data class StatementGroup(private val conditions: MutableList<Pair<Operator, Con
 
     override fun toStmt(): String = "(${conditions.toStmt()})"
     override fun toSql(): String = "(${conditions.toSql()})"
+    fun isEmpty() = conditions.isEmpty()
 }

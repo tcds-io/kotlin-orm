@@ -16,8 +16,9 @@ fun List<Param<*, *>>.columnsEqualMarks(): String = joinToString(", ") { "${it.c
 fun Pair<Operator, Condition>.toStmt() = if (first == NONE) second.toStmt() else "${first.operator} ${second.toStmt()}"
 fun Pair<Operator, Condition>.toSql() = if (first == NONE) second.toSql() else "${first.operator} ${second.toSql()}"
 
-fun MutableList<Pair<Operator, Condition>>.toStmt() = joinToString(" ") { it.toStmt() }
-fun MutableList<Pair<Operator, Condition>>.toSql() = joinToString(" ") { it.toSql() }
+fun Pair<Operator, Condition>.hasConditions() = if (second is StatementGroup) !(second as StatementGroup).isEmpty() else true
+fun MutableList<Pair<Operator, Condition>>.toStmt() = filter { it.hasConditions() }.joinToString(" ") { it.toStmt() }
+fun MutableList<Pair<Operator, Condition>>.toSql() = filter { it.hasConditions() }.joinToString(" ") { it.toSql() }
 fun MutableList<Pair<Operator, Condition>>.removeWhere(): MutableList<Pair<Operator, Condition>> {
     return map { if (it.first == WHERE) Pair(NONE, it.second) else it }.toMutableList()
 }
@@ -27,8 +28,9 @@ fun emptyParams(): List<Param<*, *>> = emptyWhere().params()
 fun where(condition: Condition): Statement = Statement(mutableListOf(Pair(WHERE, condition)))
 fun stmt(condition: Condition): Statement = Statement(mutableListOf(Pair(NONE, condition)))
 
-infix fun Statement.and(condition: Condition) = conditions.add(Pair(AND, condition)).let { this }
-infix fun Statement.or(condition: Condition) = conditions.add(Pair(OR, condition)).let { this }
+infix fun Statement.add(condition: Condition) = add(Pair(NONE, condition)).let { this }
+infix fun Statement.and(condition: Condition) = add(Pair(AND, condition)).let { this }
+infix fun Statement.or(condition: Condition) = add(Pair(OR, condition)).let { this }
 
-infix fun Statement.and(block: () -> Statement) = add(Pair(AND, StatementGroup(block().conditions))).let { this }
-infix fun Statement.or(block: () -> Statement) = add(Pair(OR, StatementGroup(block().conditions))).let { this }
+infix fun Statement.and(block: (stmt: Statement) -> Statement) = add(Pair(AND, StatementGroup(block(emptyWhere()).conditions))).let { this }
+infix fun Statement.or(block: (stmt: Statement) -> Statement) = add(Pair(OR, StatementGroup(block(emptyWhere()).conditions))).let { this }

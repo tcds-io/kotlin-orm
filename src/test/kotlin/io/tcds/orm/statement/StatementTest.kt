@@ -53,6 +53,38 @@ class StatementTest {
     }
 
     @Test
+    fun `given where and group with empty where then create the query statement`() {
+        val where = where(age equalsTo 32) and { stmt ->
+            stmt.add(age greaterThen 50) or (age smallerThen 100) or {
+                stmt(age greaterThen 50) or (age smallerThen 100)
+            }
+        } or { stmt ->
+            stmt.add(name equalsTo "Arthur") and (name differentOf "Prefect")
+        }
+
+        Assertions.assertEquals(
+            "WHERE age = ? AND (age > ? OR age < ? OR (age > ? OR age < ?)) OR (name = ? AND name != ?)",
+            where.toStmt(),
+        )
+        Assertions.assertEquals(
+            "WHERE age = `32` AND (age > `50` OR age < `100` OR (age > `50` OR age < `100`)) OR (name = `Arthur` AND name != `Prefect`)",
+            where.toSql(),
+        )
+    }
+
+    @Test
+    fun `given where and and empty group then create the query statement`() {
+        val where = where(age equalsTo 32) and { stmt ->
+            stmt
+        } or {
+            emptyWhere()
+        }
+
+        Assertions.assertEquals("WHERE age = ?", where.toStmt())
+        Assertions.assertEquals("WHERE age = `32`", where.toSql())
+    }
+
+    @Test
     fun `given where conditions when converting to soft delete then rearrange statements`() {
         val where = where(age equalsTo 32) or (age greaterThen 50)
 

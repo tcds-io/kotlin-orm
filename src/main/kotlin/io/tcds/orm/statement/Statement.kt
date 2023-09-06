@@ -14,7 +14,14 @@ data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
     fun toStmt() = conditions.toStmt()
     fun toSql() = conditions.toSql()
 
-    fun add(condition: Pair<Operator, Condition>) = conditions.add(condition)
+    fun add(condition: Pair<Operator, Condition>): Statement {
+        when (conditions.isEmpty()) {
+            true -> conditions.add(Pair(Operator.NONE, condition.second))
+            else -> conditions.add(condition)
+        }
+
+        return this
+    }
 
     fun params(): List<Param<*, *>> {
         val params = mutableListOf<Param<*, *>>()
