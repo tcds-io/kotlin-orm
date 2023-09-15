@@ -16,12 +16,13 @@ open class GenericConnection(
     override fun commit() = write("COMMIT")
     override fun rollback() = write("ROLLBACK")
 
-    override fun transaction(block: () -> Unit) {
-        begin()
-
-        runCatching { block() }
-            .onSuccess { commit() }
-            .onFailure { rollback().apply { throw it } }
+    override fun <T> transaction(block: () -> T): T {
+        return try {
+            begin()
+            block().apply { commit() }
+        } catch (e: Exception) {
+            rollback().let { throw e }
+        }
     }
 
     override fun read(sql: String, params: List<Param<*, *>>): Sequence<OrmResultSet> {
