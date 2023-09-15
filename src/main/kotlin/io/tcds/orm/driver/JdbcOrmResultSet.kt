@@ -8,36 +8,46 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.sql.ResultSet as JdbcResultSet
 
-class JdbcOrmResultSet(private val rs: JdbcResultSet) : OrmResultSet {
-    override fun value(columnName: String): String? = rs.getString(columnName)
+class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
+    override fun value(columnName: String): String? = jdbcResultSet.getString(columnName)
+    fun generatedKeys(): List<Long> {
+        val keys = mutableListOf<Long>()
+        val rs = jdbcResultSet.statement.generatedKeys
 
-    override fun get(column: Column<*, String>): String = rs.getString(column.name)
-    override fun get(column: Column<*, Int>): Int = rs.getInt(column.name)
-    override fun get(column: Column<*, Long>): Long = rs.getLong(column.name)
-    override fun get(column: Column<*, Float>): Float = rs.getFloat(column.name)
-    override fun get(column: Column<*, Double>): Double = rs.getDouble(column.name)
-    override fun get(column: Column<*, Boolean>): Boolean = rs.getBoolean(column.name)
-    override fun get(column: Column<*, LocalDate>): LocalDate = rs.getDate(column.name).toLocalDate()
+        while (rs.next()) {
+            keys.add(rs.getLong(1))
+        }
+
+        return keys
+    }
+
+    override fun get(column: Column<*, String>): String = jdbcResultSet.getString(column.name)
+    override fun get(column: Column<*, Int>): Int = jdbcResultSet.getInt(column.name)
+    override fun get(column: Column<*, Long>): Long = jdbcResultSet.getLong(column.name)
+    override fun get(column: Column<*, Float>): Float = jdbcResultSet.getFloat(column.name)
+    override fun get(column: Column<*, Double>): Double = jdbcResultSet.getDouble(column.name)
+    override fun get(column: Column<*, Boolean>): Boolean = jdbcResultSet.getBoolean(column.name)
+    override fun get(column: Column<*, LocalDate>): LocalDate = jdbcResultSet.getDate(column.name).toLocalDate()
     override fun get(column: Column<*, LocalDateTime>): LocalDateTime {
-        return rs.getTimestamp(column.name)!!.time.let {
+        return jdbcResultSet.getTimestamp(column.name)!!.time.let {
             LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
         }
     }
 
-    override fun nullable(column: Column<*, String?>): String? = nullableValue(rs.getString(column.name))
-    override fun nullable(column: Column<*, Int?>): Int? = nullableValue(rs.getInt(column.name))
-    override fun nullable(column: Column<*, Long?>): Long? = nullableValue(rs.getLong(column.name))
-    override fun nullable(column: Column<*, Float?>): Float? = nullableValue(rs.getFloat(column.name))
-    override fun nullable(column: Column<*, Double?>): Double? = nullableValue(rs.getDouble(column.name))
+    override fun nullable(column: Column<*, String?>): String? = nullableValue(jdbcResultSet.getString(column.name))
+    override fun nullable(column: Column<*, Int?>): Int? = nullableValue(jdbcResultSet.getInt(column.name))
+    override fun nullable(column: Column<*, Long?>): Long? = nullableValue(jdbcResultSet.getLong(column.name))
+    override fun nullable(column: Column<*, Float?>): Float? = nullableValue(jdbcResultSet.getFloat(column.name))
+    override fun nullable(column: Column<*, Double?>): Double? = nullableValue(jdbcResultSet.getDouble(column.name))
     override fun nullable(column: Column<*, LocalDate?>): LocalDate? {
-        return nullableValue(rs.getDate(column.name)?.toLocalDate())
+        return nullableValue(jdbcResultSet.getDate(column.name)?.toLocalDate())
     }
 
     override fun nullable(column: Column<*, LocalDateTime?>): LocalDateTime? {
-        return rs.getTimestamp(column.name)?.time?.let {
+        return jdbcResultSet.getTimestamp(column.name)?.time?.let {
             LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
         }
     }
 
-    private fun <T> nullableValue(value: T): T? = if (rs.wasNull()) null else value
+    private fun <T> nullableValue(value: T): T? = if (jdbcResultSet.wasNull()) null else value
 }
