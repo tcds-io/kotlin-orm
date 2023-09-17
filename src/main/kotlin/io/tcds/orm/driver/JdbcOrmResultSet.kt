@@ -10,16 +10,6 @@ import java.sql.ResultSet as JdbcResultSet
 
 class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
     override fun value(columnName: String): String? = jdbcResultSet.getString(columnName)
-    fun generatedKeys(): List<Long> {
-        val keys = mutableListOf<Long>()
-        val rs = jdbcResultSet.statement.generatedKeys
-
-        while (rs.next()) {
-            keys.add(rs.getLong(1))
-        }
-
-        return keys
-    }
 
     override fun get(column: Column<*, String>): String = jdbcResultSet.getString(column.name)
     override fun get(column: Column<*, Int>): Int = jdbcResultSet.getInt(column.name)

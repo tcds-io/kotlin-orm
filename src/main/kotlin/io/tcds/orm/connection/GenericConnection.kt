@@ -5,6 +5,7 @@ import io.tcds.orm.Param
 import io.tcds.orm.driver.JdbcOrmResultSet
 import org.slf4j.Logger
 import java.sql.PreparedStatement
+import java.sql.Statement
 import java.sql.Connection as JdbcConnection
 
 open class GenericConnection(
@@ -37,11 +38,12 @@ open class GenericConnection(
         }
     }
 
-    override fun write(sql: String, params: List<Param<*, *>>): Boolean {
+    override fun write(sql: String, params: List<Param<*, *>>): Statement {
         val stmt = prepare(readWrite, sql, params)
         if (logger !== null) ConnectionLogger.write(logger, sql, params)
+        stmt.execute()
 
-        return stmt.execute()
+        return stmt
     }
 
     open fun close() {

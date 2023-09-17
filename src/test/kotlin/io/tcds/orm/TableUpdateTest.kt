@@ -18,7 +18,7 @@ class TableUpdateTest {
     @Test
     fun `given the params and where condition when table is not soft delete then run update`() {
         val table = AddressTable(connection)
-        every { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns mockk()
 
         runBlocking {
             table.update(
@@ -38,7 +38,7 @@ class TableUpdateTest {
     @Test
     fun `given the params and where condition when table is soft delete then run update`() {
         val table = AddressTable(connection, true)
-        every { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns mockk()
 
         runBlocking {
             table.update(

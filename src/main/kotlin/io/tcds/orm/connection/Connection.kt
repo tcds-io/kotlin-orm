@@ -2,12 +2,13 @@ package io.tcds.orm.connection
 
 import io.tcds.orm.OrmResultSet
 import io.tcds.orm.Param
+import java.sql.Statement
 
 interface Connection {
-    fun begin(): Boolean
-    fun commit(): Boolean
-    fun rollback(): Boolean
+    fun begin(): Statement
+    fun commit(): Statement
+    fun rollback(): Statement
     fun <T> transaction(block: () -> T): T
     fun read(sql: String, params: List<Param<*, *>> = emptyList()): Sequence<OrmResultSet>
-    fun write(sql: String, params: List<Param<*, *>> = emptyList()): Boolean
+    fun write(sql: String, params: List<Param<*, *>> = emptyList()): Statement
 }

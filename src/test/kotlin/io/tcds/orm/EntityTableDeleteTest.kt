@@ -19,7 +19,7 @@ class EntityTableDeleteTest {
     @Test
     fun `given the entry when table is not soft delete then invoke delete in the write connection`() {
         val table = AddressEntityTable(connection)
-        every { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns mockk()
 
         runBlocking { table.delete(address) }
 
@@ -29,7 +29,7 @@ class EntityTableDeleteTest {
     @Test
     fun `given the entry when table is soft delete then invoke update in the write connection`() = freezeClock {
         val table = AddressEntityTable(connection, true)
-        every { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns mockk()
 
         runBlocking { table.delete(address) }
 

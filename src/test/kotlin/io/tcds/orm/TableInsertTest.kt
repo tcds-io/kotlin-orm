@@ -15,7 +15,7 @@ class TableInsertTest {
 
     @Test
     fun `given the entry then invoke write in the connection`() {
-        every { connection.write(any(), any()) } returns true
+        every { connection.write(any(), any()) } returns mockk()
 
         runBlocking { table.insert(address) }
 
