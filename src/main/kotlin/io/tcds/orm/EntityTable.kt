@@ -13,12 +13,12 @@ abstract class EntityTable<E, PKType>(
 
     fun loadById(id: PKType): E? = loadBy(where(this.id equalsTo id))
 
-    fun update(vararg entities: E) = entities.forEach {
+    fun update(vararg entities: E) = entities.map {
         update(
             columns.filter { col -> col != id }.map { column -> column.toValueParam(entry = it) },
             where(this.id equalsTo this.id.valueOf(it)),
         )
     }
 
-    fun delete(vararg entities: E) = entities.forEach { delete(where(this.id equalsTo this.id.valueOf(it))) }
+    fun delete(vararg entities: E) = entities.map { delete(where(this.id equalsTo this.id.valueOf(it))) }
 }

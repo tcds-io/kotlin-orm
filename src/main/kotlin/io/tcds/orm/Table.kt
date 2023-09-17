@@ -4,6 +4,7 @@ import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.*
 import io.tcds.orm.statement.Limit
 import io.tcds.orm.statement.Statement
+import java.sql.Statement as JdbcStatement
 
 abstract class Table<E>(
     private val connection: Connection,
@@ -12,7 +13,7 @@ abstract class Table<E>(
 ) : ResultSetEntry<E> {
     val columns = mutableListOf<Column<E, *>>()
 
-    fun insert(vararg entries: E) = entries.forEach {
+    fun insert(vararg entries: E) = entries.map {
         val params = params(it)
         val sql = "INSERT INTO $table (${params.columns()}) VALUES (${params.marks()})"
 
@@ -59,20 +60,18 @@ abstract class Table<E>(
 
     fun exists(where: Statement): Boolean = loadBy(where) != null
 
-    fun delete(where: Statement) {
-        when (softDelete) {
-            false -> connection.write(
-                "DELETE FROM $table ${where.toStmt()}",
-                where.params(),
-            )
-            true -> connection.write(
-                "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
-                where.getSoftDeleteQueryParams<E>(),
-            )
-        }
+    fun delete(where: Statement) = when (softDelete) {
+        false -> connection.write(
+            "DELETE FROM $table ${where.toStmt()}",
+            where.params(),
+        )
+        true -> connection.write(
+            "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
+            where.getSoftDeleteQueryParams<E>(),
+        )
     }
 
-    fun update(params: List<Param<*, *>>, where: Statement) {
+    fun update(params: List<Param<*, *>>, where: Statement): JdbcStatement {
         val tableWhere = when (softDelete) {
             true -> where.getSoftDeleteStatement<E>()
             else -> where
@@ -82,7 +81,7 @@ abstract class Table<E>(
         val whereStmt = tableWhere.toStmt()
         val sql = "UPDATE $table SET $columnsMarks $whereStmt".trimSpaces()
 
-        connection.write(sql, (params + where.params()))
+        return connection.write(sql, (params + where.params()))
     }
 
     fun values(entry: E): Map<String, Any?> {
