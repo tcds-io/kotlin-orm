@@ -6,7 +6,8 @@ import java.time.LocalDateTime
 typealias OrmResult<T> = Map<String, T>
 
 class MapOrmResultSet(private val data: OrmResult<*>) : OrmResultSet {
-    override fun value(columnName: String): String? = data[columnName] as String?
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> value(columnName: String, clazz: Class<T>): T? = data[columnName] as T
 
     override fun get(column: Column<*, String>): String = data[column.name]!! as String
     override fun get(column: Column<*, Int>): Int = data[column.name]!! as Int

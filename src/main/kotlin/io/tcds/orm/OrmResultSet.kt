@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 interface OrmResultSet {
-    fun value(columnName: String): String?
+    fun <T> value(columnName: String, clazz: Class<T>): T?
 
     fun get(column: Column<*, String>): String
     fun get(column: Column<*, Int>): Int
