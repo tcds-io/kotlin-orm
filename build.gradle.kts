@@ -8,13 +8,38 @@ val kotlinLoggingVersion: String by project
 val jacksonVersion: String by project
 val coroutinesVersion: String by project
 
+object Publication {
+    const val group = "io.tcds.orm"
+    val buildVersion: String = System.getenv("VERSION") ?: "dev"
+
+    object Sonatype {
+        val username: String? = System.getenv("OSS_USER")
+        val password: String? = System.getenv("OSS_PASSWORD")
+    }
+
+    object Gpg {
+        val signingKeyId: String? = System.getenv("GPG_KEY_ID")
+        val signingKey: String? = System.getenv("GPG_KEY")
+        val signingPassword: String? = System.getenv("GPG_KEY_PASSWORD")
+    }
+
+    object Project {
+        const val name = "Kotlin Simple ORM"
+        const val description = "Kotlin Simple ORM is a simple but powerful database orm for kotlin applications"
+        const val repository = "https://github.com/tcds-io/kotlin-orm"
+        const val scm = "scm:git:git://github.com:tcds-io/kotlin-orm.git"
+
+        const val organization = "tcds-io"
+        const val developer = "Thiago Cordeiro"
+        const val email = "thiago@tcds.io"
+    }
+}
+
 plugins {
-    application
     `kotlin-dsl`
     `maven-publish`
     signing
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("orm.commands")
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 repositories {
@@ -41,7 +66,7 @@ dependencies {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        languageVersion = "1.7"
+        languageVersion = "1.9"
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
@@ -55,22 +80,6 @@ tasks.test {
         showCauses = true
         showStackTraces = true
         showStandardStreams = true
-    }
-}
-
-object Publication {
-    const val group = "io.tcds"
-    val buildVersion: String = System.getenv("VERSION") ?: "dev"
-
-    object Sonatype {
-        val username: String? = System.getenv("OSS_USER")
-        val password: String? = System.getenv("OSS_PASSWORD")
-    }
-
-    object Gpg {
-        val signingKeyId: String? = System.getenv("GPG_KEY_ID")
-        val signingKey: String? = System.getenv("GPG_KEY")
-        val signingPassword: String? = System.getenv("GPG_KEY_PASSWORD")
     }
 }
 
@@ -92,42 +101,35 @@ publishing {
         }
     }
 
-    /**
-     * references:
-     * - https://docs.gradle.org/current/userguide/publishing_maven.html
-     * - https://github.com/LukasForst/ktor-plugins/blob/master/build.gradle.kts
-     * - https://devanshuchandra.medium.com/maven-central-publishing-using-gradle-and-gpg-signing-47b216179dd6
-     */
     publications {
         listOf("defaultMavenJava", "pluginMaven").forEach { publication ->
             create<MavenPublication>(publication) {
-                // from(components["java"])
                 artifact(sourcesJar)
                 artifact(javadocJar)
 
                 pom {
-                    name.set("Kotlin Simple ORM")
-                    description.set("Kotlin Simple ORM is a simple but powerful database orm for kotlin applications")
-                    url.set("https://github.com/tcds-io/kotlin-orm")
+                    name.set(Publication.Project.name)
+                    description.set(Publication.Project.description)
+                    url.set(Publication.Project.repository)
                     packaging = "jar"
 
                     licenses {
                         license {
                             name.set("MIT License")
-                            url.set("https://github.com/tcds-io/kotlin-orm/blob/main/LICENSE")
+                            url.set("${Publication.Project.repository}/blob/main/LICENSE")
                         }
                     }
 
                     developers {
                         developer {
-                            id.set("tcds-io")
-                            name.set("Thiago Cordeiro")
-                            email.set("thiago@tcds.io")
+                            id.set(Publication.Project.organization)
+                            name.set(Publication.Project.developer)
+                            email.set(Publication.Project.email)
                         }
                     }
                     scm {
-                        connection.set("scm:git:git://github.com:tcds-io/kotlin-orm.git")
-                        url.set("https://github.com/tcds-io/kotlin-orm")
+                        connection.set(Publication.Project.scm)
+                        url.set(Publication.Project.repository)
                     }
                 }
             }
