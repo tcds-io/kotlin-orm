@@ -26,7 +26,7 @@ abstract class Table<E>(
         limit = 1,
     ).firstOrNull()
 
-    fun loadByQuery(sql: String, params: List<Param<*, *>> = emptyList()): E? {
+    fun loadByQuery(sql: String, params: List<Param<*>> = emptyList()): E? {
         return connection
             .read(sql, params)
             .firstOrNull()
@@ -54,7 +54,7 @@ abstract class Table<E>(
             .map { entry(it) }
     }
 
-    fun findByQuery(sql: String, params: List<Param<*, *>> = emptyList()) = connection
+    fun findByQuery(sql: String, params: List<Param<*>> = emptyList()) = connection
         .read(sql, params)
         .map { entry(it) }
 
@@ -65,13 +65,14 @@ abstract class Table<E>(
             "DELETE FROM $table ${where.toStmt()}",
             where.params(),
         )
+
         true -> connection.write(
             "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
             where.getSoftDeleteQueryParams<E>(),
         )
     }
 
-    fun update(params: List<Param<*, *>>, where: Statement): JdbcStatement {
+    fun update(params: List<Param<*>>, where: Statement): JdbcStatement {
         val tableWhere = when (softDelete) {
             true -> where.getSoftDeleteStatement<E>()
             else -> where

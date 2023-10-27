@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.sql.ResultSet as JdbcResultSet
 
+@Suppress("MemberVisibilityCanBePrivate")
 class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
     @Suppress("UNCHECKED_CAST")
     override fun <T> value(columnName: String, clazz: Class<T>): T? {

@@ -2,7 +2,7 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import kotlinx.coroutines.runBlocking
@@ -27,7 +27,7 @@ class TableUpdateTest : SqLiteTestCase() {
         table.insert(address)
 
         table.update(
-            listOf(Param(table.street, "Galaxy Highway"), Param(table.number, "5432A")),
+            listOf(ColumnParam(table.street, "Galaxy Highway"), ColumnParam(table.number, "5432A")),
             where(table.id equalsTo "arthur-dent-address-new-address-for-test"),
         )
 
@@ -43,7 +43,7 @@ class TableUpdateTest : SqLiteTestCase() {
             ),
             connection().read(
                 "SELECT * FROM addresses where id = ?",
-                listOf(Param(table.id, "arthur-dent-address-new-address-for-test")),
+                listOf(ColumnParam(table.id, "arthur-dent-address-new-address-for-test")),
             ).map { table.entry(it) }.toList(),
         )
     }

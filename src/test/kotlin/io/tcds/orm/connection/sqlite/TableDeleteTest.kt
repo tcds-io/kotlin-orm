@@ -1,7 +1,7 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.extension.emptyParams
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
@@ -22,22 +22,22 @@ class TableDeleteTest : SqLiteTestCase() {
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "arthur-dent-address"),
-                Param(table.street, "Galaxy Avenue"),
-                Param(table.number, "124T"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "arthur-dent-address"),
+                ColumnParam(table.street, "Galaxy Avenue"),
+                ColumnParam(table.number, "124T"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
 
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "another-arthur-dent-address"),
-                Param(table.street, "Galaxy Avenue 2"),
-                Param(table.number, "555T"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "another-arthur-dent-address"),
+                ColumnParam(table.street, "Galaxy Avenue 2"),
+                ColumnParam(table.number, "555T"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
     }

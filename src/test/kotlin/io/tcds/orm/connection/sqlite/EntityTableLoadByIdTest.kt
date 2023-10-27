@@ -2,7 +2,7 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -20,11 +20,11 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "arthur-dent-address"),
-                Param(table.street, "Galaxy Avenue"),
-                Param(table.number, "124T"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "arthur-dent-address"),
+                ColumnParam(table.street, "Galaxy Avenue"),
+                ColumnParam(table.number, "124T"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
     }

@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -44,7 +45,7 @@ class EntityTableLoadByIdTest {
         val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.id, "galaxy-highway"))) }
     }
 
     @Test
@@ -65,6 +66,6 @@ class EntityTableLoadByIdTest {
         val result = runBlocking { table.loadById("galaxy-highway") }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.id, "galaxy-highway"))) }
+        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(ColumnParam(table.id, "galaxy-highway"))) }
     }
 }

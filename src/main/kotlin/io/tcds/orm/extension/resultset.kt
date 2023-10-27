@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.tcds.orm.Column
 import io.tcds.orm.OrmException
 import io.tcds.orm.OrmResultSet
-import io.tcds.orm.column.JsonColumn
+import io.tcds.orm.param.JsonParam
 
 inline fun <reified T : Enum<T>> OrmResultSet.get(column: Column<*, T>): T = enumValueOf(value(column.name)!!)
 inline fun <reified T : Any> OrmResultSet.get(column: Column<*, T>): T = column.name.let { json(it, value(it)!!) }
@@ -19,7 +19,7 @@ inline fun <reified T : Any> OrmResultSet.nullable(column: Column<*, T?>): T? {
 
 inline fun <reified T : Any> json(columnName: String, value: String): T {
     return try {
-        JsonColumn.mapper.readValue(value)
+        JsonParam.mapper.readValue(value)
     } catch (ex: Exception) {
         throw OrmException("Failed to parse json value of `$columnName`")
     }

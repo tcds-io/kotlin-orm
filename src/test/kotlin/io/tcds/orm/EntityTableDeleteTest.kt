@@ -8,6 +8,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.statement.Statement
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -23,7 +24,7 @@ class EntityTableDeleteTest {
 
         runBlocking { table.delete(address) }
 
-        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(Param(table.id, "galaxy-avenue"))) }
+        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(ColumnParam(table.id, "galaxy-avenue"))) }
     }
 
     @Test
@@ -37,8 +38,8 @@ class EntityTableDeleteTest {
             connection.write(
                 "UPDATE addresses SET deleted_at = ? WHERE id = ?",
                 listOf(
-                    Param(Statement.deletedAt(), frozenClockAt),
-                    Param(table.id, "galaxy-avenue"),
+                    ColumnParam(Statement.deletedAt(), frozenClockAt),
+                    ColumnParam(table.id, "galaxy-avenue"),
                 ),
             )
         }

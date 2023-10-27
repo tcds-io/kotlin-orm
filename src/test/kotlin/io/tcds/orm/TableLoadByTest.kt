@@ -8,6 +8,7 @@ import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -52,7 +53,7 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.street, "Galaxy Highway"))) }
     }
 
     @Test
@@ -78,6 +79,6 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(Param(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(ColumnParam(table.street, "Galaxy Highway"))) }
     }
 }

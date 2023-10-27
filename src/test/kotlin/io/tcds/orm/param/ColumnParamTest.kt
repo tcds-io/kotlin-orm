@@ -1,12 +1,13 @@
-package io.tcds.orm
+package io.tcds.orm.param
 
 import fixtures.Address
 import io.mockk.*
+import io.tcds.orm.Column
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
 
-class ParamTest {
+class ColumnParamTest {
     companion object {
         private const val STREET = "Galaxy Avenue"
     }
@@ -14,11 +15,14 @@ class ParamTest {
     private val column: Column<Address, String> = mockk()
     private val stmt: PreparedStatement = mockk()
 
-    private val param = Param(column, STREET)
+    init {
+        every { column.name } returns "street"
+    }
 
     @Test
-    fun `given a param when bind is invoked then bind its value into the connection`() {
+    fun `given a param when bind is invoked then bind its value into the statement`() {
         every { column.bind(any(), any(), any()) } just runs
+        val param = ColumnParam(column, STREET)
 
         param.bind(1, stmt)
 
@@ -26,10 +30,10 @@ class ParamTest {
     }
 
     @Test
-    fun `given a param when toString is invoked then return the column equals to value string representation`() {
-        every { column.name } returns "street"
+    fun `given a param when describe is invoked then return the name equals to value`() {
+        val param = ColumnParam(column, STREET)
 
-        val string = param.toString()
+        val string = param.describe()
 
         Assertions.assertEquals("street=$STREET", string)
     }

@@ -2,7 +2,7 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -20,7 +20,7 @@ class TableInsertTest : SqLiteTestCase() {
             listOf(address),
             connection().read(
                 "SELECT * FROM addresses WHERE id = ?",
-                listOf(Param(table.id, "galaxy-highway")),
+                listOf(ColumnParam(table.id, "galaxy-highway")),
             ).map { table.entry(it) }.toList(),
         )
     }

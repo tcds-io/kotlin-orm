@@ -1,7 +1,7 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.extension.isBetween
 import org.junit.jupiter.api.Assertions
@@ -16,6 +16,6 @@ class BetweenTest {
 
         Assertions.assertEquals("age BETWEEN ? AND ?", clause.toStmt())
         Assertions.assertEquals("age BETWEEN `23` AND `44`", clause.toSql())
-        Assertions.assertEquals(listOf(Param(column, 23), Param(column, 44)), clause.params())
+        Assertions.assertEquals(listOf(ColumnParam(column, 23), ColumnParam(column, 44)), clause.params())
     }
 }

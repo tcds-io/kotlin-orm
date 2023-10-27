@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -36,9 +37,9 @@ class TableLoadByQueryTest {
             ),
         )
 
-        val result = runBlocking { table.loadByQuery(QUERY, listOf(Param(table.main, true))) }
+        val result = runBlocking { table.loadByQuery(QUERY, listOf(ColumnParam(table.main, true))) }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(QUERY, listOf(Param(table.main, true))) }
+        verify { connection.read(QUERY, listOf(ColumnParam(table.main, true))) }
     }
 }

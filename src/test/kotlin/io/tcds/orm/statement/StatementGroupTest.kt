@@ -1,7 +1,7 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.equalsTo
 import org.junit.jupiter.api.Assertions
@@ -16,6 +16,6 @@ class StatementGroupTest {
 
         Assertions.assertEquals("(name = ?)", group.toStmt())
         Assertions.assertEquals("(name = `123`)", group.toSql())
-        Assertions.assertEquals(listOf(Param(column, "123")), group.params())
+        Assertions.assertEquals(listOf(ColumnParam(column, "123")), group.params())
     }
 }

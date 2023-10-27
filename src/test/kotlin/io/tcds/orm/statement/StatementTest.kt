@@ -1,7 +1,7 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.*
@@ -19,7 +19,7 @@ class StatementTest {
         Assertions.assertEquals("WHERE age = ? OR age > ? AND name != ?", where.toStmt())
         Assertions.assertEquals("WHERE age = `32` OR age > `50` AND name != `Arthur Dent`", where.toSql())
         Assertions.assertEquals(
-            listOf(Param(age, 32), Param(age, 50), Param(name, "Arthur Dent")),
+            listOf(ColumnParam(age, 32), ColumnParam(age, 50), ColumnParam(name, "Arthur Dent")),
             where.params(),
         )
     }
@@ -42,11 +42,11 @@ class StatementTest {
         )
         Assertions.assertEquals(
             listOf(
-                Param(age, 32),
-                Param(age, 50),
-                Param(name, "Arthur Dent"),
-                Param(age, 100),
-                Param(name, "Ford Prefect"),
+                ColumnParam(age, 32),
+                ColumnParam(age, 50),
+                ColumnParam(name, "Arthur Dent"),
+                ColumnParam(age, 100),
+                ColumnParam(name, "Ford Prefect"),
             ),
             where.params(),
         )
@@ -92,7 +92,7 @@ class StatementTest {
 
         Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toStmt())
         Assertions.assertEquals("WHERE (age = `32` OR age > `50`) AND deleted_at IS NULL", sfWhere.toSql())
-        Assertions.assertEquals(listOf(Param(age, 32), Param(age, 50)), where.params())
+        Assertions.assertEquals(listOf(ColumnParam(age, 32), ColumnParam(age, 50)), where.params())
     }
 
     @Test

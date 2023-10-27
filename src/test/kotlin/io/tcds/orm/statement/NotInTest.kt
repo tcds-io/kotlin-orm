@@ -1,7 +1,7 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.valueNotIn
 import org.junit.jupiter.api.Assertions
@@ -18,7 +18,7 @@ class NotInTest {
 
         Assertions.assertEquals("name NOT IN (?,?)", clause.toStmt())
         Assertions.assertEquals("name NOT IN (`123`, `456`)", clause.toSql())
-        Assertions.assertEquals(listOf(Param(column, "123"), Param(column, "456")), clause.params())
+        Assertions.assertEquals(listOf(ColumnParam(column, "123"), ColumnParam(column, "456")), clause.params())
     }
 
     @Test
@@ -29,6 +29,6 @@ class NotInTest {
 
         Assertions.assertEquals("name NOT IN (?,?)", clause.toStmt())
         Assertions.assertEquals("name NOT IN (`123`, `456`)", clause.toSql())
-        Assertions.assertEquals(listOf(Param(column, "123"), Param(column, "456")), clause.params())
+        Assertions.assertEquals(listOf(ColumnParam(column, "123"), ColumnParam(column, "456")), clause.params())
     }
 }

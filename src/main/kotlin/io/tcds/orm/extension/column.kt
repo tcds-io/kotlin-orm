@@ -49,5 +49,5 @@ fun <E> Table<E>.datetimeNullable(name: String, value: (E) -> LocalDateTime?) = 
 fun <E, T : Enum<*>> Table<E>.enum(name: String, value: (E) -> T) = column(EnumColumn(name = name, value = value))
 fun <E, T> Table<E>.json(name: String, value: (E) -> T) = column(JsonColumn(name = name, value = value))
 
-fun <E> Table<E>.params(entry: E): List<Param<E, *>> = columns.map { it.toValueParam(entry = entry) }
+fun <E> Table<E>.params(entry: E): List<Param<*>> = columns.map { it.toValueParam(entry = entry) }
 fun <E, T> Table<E>.column(column: Column<E, T>): Column<E, T> = columns.add(column).let { column }

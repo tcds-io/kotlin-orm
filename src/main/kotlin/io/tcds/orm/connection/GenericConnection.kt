@@ -17,7 +17,7 @@ open class GenericConnection(
     override fun commit() = write("COMMIT")
     override fun rollback() = write("ROLLBACK")
 
-    override fun <T> transaction(block: () -> T): T {
+    override fun <T> transaction(block: Connection.() -> T): T {
         return try {
             begin()
             block().apply { commit() }
@@ -26,7 +26,7 @@ open class GenericConnection(
         }
     }
 
-    override fun read(sql: String, params: List<Param<*, *>>): Sequence<OrmResultSet> {
+    override fun read(sql: String, params: List<Param<*>>): Sequence<OrmResultSet> {
         val stmt = prepare(readOnly, sql, params)
         val result = stmt.executeQuery()
         if (logger !== null) ConnectionLogger.read(logger, sql, params)
@@ -38,7 +38,7 @@ open class GenericConnection(
         }
     }
 
-    override fun write(sql: String, params: List<Param<*, *>>): Statement {
+    override fun write(sql: String, params: List<Param<*>>): Statement {
         val stmt = prepare(readWrite, sql, params)
         if (logger !== null) ConnectionLogger.write(logger, sql, params)
         stmt.execute()
@@ -54,7 +54,7 @@ open class GenericConnection(
     private fun prepare(
         conn: JdbcConnection,
         sql: String,
-        params: List<Param<*, *>> = emptyList(),
+        params: List<Param<*>> = emptyList(),
     ): PreparedStatement {
         val stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ?: throw Exception("Failed to prepare sql statement")
         params.forEachIndexed { index, param -> param.bind((index + 1), stmt) }

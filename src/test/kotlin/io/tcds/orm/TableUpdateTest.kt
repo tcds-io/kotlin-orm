@@ -9,6 +9,7 @@ import io.tcds.orm.extension.and
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.isNotNull
 import io.tcds.orm.extension.where
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -22,7 +23,7 @@ class TableUpdateTest {
 
         runBlocking {
             table.update(
-                listOf(Param(table.street, "Galaxy Highway")),
+                listOf(ColumnParam(table.street, "Galaxy Highway")),
                 where(table.id equalsTo "galaxy-avenue"),
             )
         }
@@ -30,7 +31,7 @@ class TableUpdateTest {
         verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE id = ?",
-                listOf(Param(table.street, "Galaxy Highway"), Param(table.id, "galaxy-avenue")),
+                listOf(ColumnParam(table.street, "Galaxy Highway"), ColumnParam(table.id, "galaxy-avenue")),
             )
         }
     }
@@ -42,7 +43,7 @@ class TableUpdateTest {
 
         runBlocking {
             table.update(
-                listOf(Param(table.street, "Galaxy Highway")),
+                listOf(ColumnParam(table.street, "Galaxy Highway")),
                 where(table.id equalsTo "galaxy-avenue") and table.street.isNotNull(),
             )
         }
@@ -50,7 +51,7 @@ class TableUpdateTest {
         verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE (id = ? AND street IS NOT NULL) AND deleted_at IS NULL",
-                listOf(Param(table.street, "Galaxy Highway"), Param(table.id, "galaxy-avenue")),
+                listOf(ColumnParam(table.street, "Galaxy Highway"), ColumnParam(table.id, "galaxy-avenue")),
             )
         }
     }

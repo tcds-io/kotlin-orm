@@ -7,6 +7,7 @@ import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -38,7 +39,7 @@ class TableExistsTest {
         val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
 
         Assertions.assertTrue(result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }
     }
 
     @Test
@@ -48,6 +49,6 @@ class TableExistsTest {
         val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
 
         Assertions.assertFalse(result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }
     }
 }

@@ -8,6 +8,7 @@ import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -57,6 +58,6 @@ class TableFindByTest {
         }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
-        verify { connection.read(EXPECTED_QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }
     }
 }

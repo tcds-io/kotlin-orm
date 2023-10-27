@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -48,9 +49,9 @@ class TableFindByQueryTest {
             ),
         )
 
-        val result = runBlocking { table.findByQuery(QUERY, listOf(Param(table.street, "Galaxy%"))).toList() }
+        val result = runBlocking { table.findByQuery(QUERY, listOf(ColumnParam(table.street, "Galaxy%"))).toList() }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
-        verify { connection.read(QUERY, listOf(Param(table.street, "Galaxy%"))) }
+        verify { connection.read(QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }
     }
 }

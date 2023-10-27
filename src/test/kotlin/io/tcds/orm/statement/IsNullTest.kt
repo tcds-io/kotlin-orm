@@ -1,7 +1,7 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.isNull
 import org.junit.jupiter.api.Assertions
@@ -15,6 +15,6 @@ class IsNullTest {
         val clause = column.isNull()
 
         Assertions.assertEquals("name IS NULL", clause.toStmt())
-        Assertions.assertEquals(emptyList<Param<User, String>>(), clause.params())
+        Assertions.assertEquals(emptyList<ColumnParam<User, String>>(), clause.params())
     }
 }

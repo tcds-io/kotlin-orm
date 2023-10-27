@@ -7,6 +7,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.trimSpacesAndLines
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -38,11 +39,11 @@ class EntityTableUpdateTest {
             connection.write(
                 EXPECTED_QUERY,
                 listOf(
-                    Param(table.street, "new street"),
-                    Param(table.number, "new number"),
-                    Param(table.main, false),
-                    Param(table.createdAt, address.createdAt),
-                    Param(table.id, "galaxy-avenue"),
+                    ColumnParam(table.street, "new street"),
+                    ColumnParam(table.number, "new number"),
+                    ColumnParam(table.main, false),
+                    ColumnParam(table.createdAt, address.createdAt),
+                    ColumnParam(table.id, "galaxy-avenue"),
                 ),
             )
         }
@@ -60,11 +61,11 @@ class EntityTableUpdateTest {
             connection.write(
                 EXPECTED_SOFT_DELETE_QUERY,
                 listOf(
-                    Param(table.street, "new street"),
-                    Param(table.number, "new number"),
-                    Param(table.main, false),
-                    Param(table.createdAt, address.createdAt),
-                    Param(table.id, "galaxy-avenue"),
+                    ColumnParam(table.street, "new street"),
+                    ColumnParam(table.number, "new number"),
+                    ColumnParam(table.main, false),
+                    ColumnParam(table.createdAt, address.createdAt),
+                    ColumnParam(table.id, "galaxy-avenue"),
                 ),
             )
         }

@@ -1,7 +1,7 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
-import io.tcds.orm.Param
+import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -19,33 +19,33 @@ class TableLoadByQueryTest : SqLiteTestCase() {
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "arthur-dent-address"),
-                Param(table.street, "Galaxy Avenue"),
-                Param(table.number, "124T"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "arthur-dent-address"),
+                ColumnParam(table.street, "Galaxy Avenue"),
+                ColumnParam(table.number, "124T"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
 
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "arthur-dent-address-another-address"),
-                Param(table.street, "Galaxy Avenue"),
-                Param(table.number, "124T"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "arthur-dent-address-another-address"),
+                ColumnParam(table.street, "Galaxy Avenue"),
+                ColumnParam(table.number, "124T"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
 
         connection().write(
             "INSERT INTO addresses VALUES (?,?,?,?,?)",
             listOf(
-                Param(table.id, "something-else"),
-                Param(table.street, "Galaxy Avenue"),
-                Param(table.number, "789A"),
-                Param(table.main, true),
-                Param(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
+                ColumnParam(table.id, "something-else"),
+                ColumnParam(table.street, "Galaxy Avenue"),
+                ColumnParam(table.number, "789A"),
+                ColumnParam(table.main, true),
+                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33)),
             ),
         )
     }
@@ -71,7 +71,7 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     @Test
     fun `given a sql query and DESC order when entry exists then load into the entity`() = runBlocking {
         val sql = "SELECT * FROM addresses WHERE number = ? ORDER BY id DESC LIMIT 1"
-        val params = listOf(Param(table.number, "124T"))
+        val params = listOf(ColumnParam(table.number, "124T"))
 
         val address = table.loadByQuery(sql, params)
 
