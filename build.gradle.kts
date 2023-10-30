@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val jUnitVersion: String by project
 val mockkVersion: String by project
-val sqliteVersion: String by project
 val kotlinLoggingVersion: String by project
 val jacksonVersion: String by project
 val coroutinesVersion: String by project
@@ -52,7 +51,6 @@ dependencies {
     api(kotlin("stdlib"))
 
     // implementation("org.postgresql:postgresql:$postgresVersion")
-    implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
 
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
@@ -60,6 +58,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
+    testImplementation("org.xerial:sqlite-jdbc:3.43.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
 }

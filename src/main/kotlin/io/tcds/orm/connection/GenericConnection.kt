@@ -17,7 +17,7 @@ open class GenericConnection(
     override fun commit() = write("COMMIT")
     override fun rollback() = write("ROLLBACK")
 
-    override fun <T> transaction(block: Connection.() -> T): T {
+    override fun <T> transaction(block: () -> T): T {
         return try {
             begin()
             block().apply { commit() }

@@ -8,7 +8,7 @@ interface Connection {
     fun begin(): Statement
     fun commit(): Statement
     fun rollback(): Statement
-    fun <T> transaction(block: Connection.() -> T): T
+    fun <T> transaction(block: () -> T): T
     fun read(sql: String, params: List<Param<*>> = emptyList()): Sequence<OrmResultSet>
     fun write(sql: String, params: List<Param<*>> = emptyList()): Statement
 }
