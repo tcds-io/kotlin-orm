@@ -35,7 +35,7 @@ class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
     override fun get(column: Column<*, Double>): Double = jdbcResultSet.getDouble(column.name)
     override fun get(column: Column<*, Boolean>): Boolean = jdbcResultSet.getBoolean(column.name)
     override fun get(column: Column<*, LocalDate>): LocalDate = jdbcResultSet.getLocalDate(column.name)
-    override fun get(column: Column<*, LocalDateTime>): LocalDateTime = jdbcResultSet.getLocalDateTime(column.name)
+    override fun get(column: Column<*, LocalDateTime>): LocalDateTime = jdbcResultSet.getLocalDateTime(column.name)!!
 
     override fun nullable(column: Column<*, String?>): String? = nullable { jdbcResultSet.getString(column.name) }
     override fun nullable(column: Column<*, Int?>): Int? = nullable { jdbcResultSet.getInt(column.name) }
@@ -46,5 +46,5 @@ class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
     override fun nullable(column: Column<*, LocalDate?>): LocalDate? = nullable { jdbcResultSet.getLocalDate(column.name) }
     override fun nullable(column: Column<*, LocalDateTime?>): LocalDateTime? = nullable { jdbcResultSet.getLocalDateTime(column.name) }
 
-    private fun <T> nullable(getter: () -> T): T? = if (jdbcResultSet.wasNull()) null else getter()
+    private fun <T> nullable(getter: () -> T?): T? = if (jdbcResultSet.wasNull()) null else getter()
 }
