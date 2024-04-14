@@ -5,4 +5,4 @@ import java.time.LocalDateTime
 import java.sql.ResultSet as JdbcResultSet
 
 fun JdbcResultSet.getLocalDate(name: String): LocalDate = getDate(name).toLocalDate()
-fun JdbcResultSet.getLocalDateTime(name: String): LocalDateTime = getTimestamp(name)!!.toLocalDateTime()
+fun JdbcResultSet.getLocalDateTime(name: String): LocalDateTime = getTimestamp(name).toLocalDateTime()
