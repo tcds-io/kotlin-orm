@@ -17,7 +17,7 @@ class CompanyTable(
     val status = enum("status") { it.status }
     val employees = integer("employees") { it.employees }
     val online = bool("online") { it.online }
-    val createdAt = localdatetime("created_at") { it.createdAt }
+    val createdAt = datetime("created_at") { it.createdAt.toDate() }
 
     override fun entry(row: OrmResultSet): Company = Company(
         id = row.get(id),
@@ -25,6 +25,6 @@ class CompanyTable(
         status = row.get(status),
         employees = row.get(employees),
         online = row.get(online),
-        createdAt = row.get(createdAt),
+        createdAt = row.get(createdAt).toLocalDateTime(),
     )
 }

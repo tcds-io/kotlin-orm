@@ -42,13 +42,9 @@ fun <E> Table<E>.doubleNullable(name: String, value: (E) -> Double?) = column(Nu
 fun <E> Table<E>.bool(name: String, value: (E) -> Boolean) = column(BooleanColumn(name = name, value = value))
 
 fun <E> Table<E>.date(name: String, value: (E) -> Date) = column(DateColumn(name = name, value = value))
+fun <E> Table<E>.datetime(name: String, value: (E) -> Date) = column(DateColumn(name = name, value = value))
 fun <E> Table<E>.dateNullable(name: String, value: (E) -> Date?) = column(NullableDateColumn(name = name, value = value))
-
-fun <E> Table<E>.localdate(name: String, value: (E) -> LocalDate) = column(LocalDateColumn(name = name, value = value))
-fun <E> Table<E>.localdateNullable(name: String, value: (E) -> LocalDate?) = column(NullableLocalDateColumn(name = name, value = value))
-
-fun <E> Table<E>.localdatetime(name: String, value: (E) -> LocalDateTime) = column(LocalDateTimeColumn(name = name, value = value))
-fun <E> Table<E>.localdatetimeNullable(name: String, value: (E) -> LocalDateTime?) = column(NullableLocalDateTimeColumn(name = name, value = value))
+fun <E> Table<E>.datetimeNullable(name: String, value: (E) -> Date?) = column(NullableDateColumn(name = name, value = value))
 
 fun <E, T : Enum<*>> Table<E>.enum(name: String, value: (E) -> T) = column(EnumColumn(name = name, value = value))
 fun <E, T> Table<E>.json(name: String, value: (E) -> T) = column(JsonColumn(name = name, value = value))

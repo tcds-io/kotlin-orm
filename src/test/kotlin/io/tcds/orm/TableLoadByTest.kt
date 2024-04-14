@@ -7,6 +7,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
+import io.tcds.orm.extension.toDate
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
@@ -40,7 +41,7 @@ class TableLoadByTest {
                     table.street.name to "Galaxy Highway",
                     table.number.name to "678H",
                     table.main.name to false,
-                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate(),
                 ),
             ),
         )
@@ -66,7 +67,7 @@ class TableLoadByTest {
                     table.street.name to "Galaxy Highway",
                     table.number.name to "678H",
                     table.main.name to false,
-                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate(),
                 ),
             ),
         )

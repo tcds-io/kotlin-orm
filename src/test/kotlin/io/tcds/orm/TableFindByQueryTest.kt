@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.extension.toDate
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -35,7 +36,7 @@ class TableFindByQueryTest {
                     table.street.name to "Galaxy Highway",
                     table.number.name to "678H",
                     table.main.name to false,
-                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate(),
                 ),
             ),
             MapOrmResultSet(
@@ -44,7 +45,7 @@ class TableFindByQueryTest {
                     table.street.name to "Galaxy Avenue",
                     table.number.name to "123T",
                     table.main.name to true,
-                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33),
+                    table.createdAt.name to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate(),
                 ),
             ),
         )

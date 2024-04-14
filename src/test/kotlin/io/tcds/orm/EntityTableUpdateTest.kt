@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.tcds.orm.connection.Connection
+import io.tcds.orm.extension.toDate
 import io.tcds.orm.extension.trimSpacesAndLines
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
@@ -42,7 +43,7 @@ class EntityTableUpdateTest {
                     ColumnParam(table.street, "new street"),
                     ColumnParam(table.number, "new number"),
                     ColumnParam(table.main, false),
-                    ColumnParam(table.createdAt, address.createdAt),
+                    ColumnParam(table.createdAt, address.createdAt.toDate()),
                     ColumnParam(table.id, "galaxy-avenue"),
                 ),
             )
@@ -64,7 +65,7 @@ class EntityTableUpdateTest {
                     ColumnParam(table.street, "new street"),
                     ColumnParam(table.number, "new number"),
                     ColumnParam(table.main, false),
-                    ColumnParam(table.createdAt, address.createdAt),
+                    ColumnParam(table.createdAt, address.createdAt.toDate()),
                     ColumnParam(table.id, "galaxy-avenue"),
                 ),
             )
