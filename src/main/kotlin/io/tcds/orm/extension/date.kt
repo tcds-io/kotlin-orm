@@ -18,3 +18,4 @@ fun JdbcResultSet.getLocalDateTime(name: String): LocalDateTime? = getTimestamp(
 fun Date.toLocalDateTime(): LocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), utc)
 fun Date.toLocalDate(): LocalDate = LocalDate.ofInstant(Instant.ofEpochMilli(time), utc)
 fun LocalDateTime.toDate(): Date = Date.from(atZone(utc).toInstant())
+fun LocalDate.toDate(): Date = Date.from(atStartOfDay().atZone(utc).toInstant())
