@@ -8,7 +8,7 @@ import java.sql.PreparedStatement
 
 class JsonColumnTest {
     private val stmt: PreparedStatement = mockk()
-    private val column = JsonColumn<ColumnTypes, ColumnTypes.Data>("foo") { it.json }
+    private val column = JsonColumn<ColumnTypes, ColumnTypes.Json>("foo") { it.json }
 
     @Test
     fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "JSON", column.describe())
@@ -17,7 +17,7 @@ class JsonColumnTest {
     fun `given an object when it is not null then set a json string value into the statement`() {
         every { stmt.setString(any(), any()) } just runs
 
-        column.bind(stmt, 3, ColumnTypes.Data(a = "AAA", b = 18))
+        column.bind(stmt, 3, ColumnTypes.Json(a = "AAA", b = 18))
 
         verify(exactly = 1) { stmt.setString(3, """{"a":"AAA","b":18}""") }
     }

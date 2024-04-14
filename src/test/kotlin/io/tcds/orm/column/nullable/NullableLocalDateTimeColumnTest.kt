@@ -9,10 +9,10 @@ import java.sql.Timestamp
 import java.sql.Types
 import java.time.LocalDateTime
 
-class NullableDateTimeColumnTest {
+class NullableLocalDateTimeColumnTest {
     private val stmt: PreparedStatement = mockk()
     private val datetime = LocalDateTime.now()
-    private val column = NullableDateTimeColumn<ColumnTypes>("foo") { it.datetime }
+    private val column = NullableLocalDateTimeColumn<ColumnTypes>("foo") { it.localdatetime }
 
     @Test
     fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "DATETIME NULL", column.describe())

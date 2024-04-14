@@ -8,10 +8,10 @@ import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-class DateTimeColumnTest {
+class LocalDateTimeColumnTest {
     private val stmt: PreparedStatement = mockk()
     private val datetime = LocalDateTime.now()
-    private val column = DateTimeColumn<ColumnTypes>("foo") { it.datetime }
+    private val column = LocalDateTimeColumn<ColumnTypes>("foo") { it.localdatetime }
 
     @Test
     fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "DATETIME", column.describe())

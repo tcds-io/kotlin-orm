@@ -6,7 +6,7 @@ import java.sql.PreparedStatement
 import java.sql.Types
 import java.time.LocalDate
 
-class NullableDateColumn<Entity>(
+class NullableLocalDateColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDate?,
 ) : Column<Entity, LocalDate?>(name, value) {

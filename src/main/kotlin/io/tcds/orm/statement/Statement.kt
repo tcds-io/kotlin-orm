@@ -2,14 +2,14 @@ package io.tcds.orm.statement
 
 import io.tcds.orm.Condition
 import io.tcds.orm.Param
-import io.tcds.orm.column.DateTimeColumn
+import io.tcds.orm.column.LocalDateTimeColumn
 import io.tcds.orm.extension.*
 import io.tcds.orm.param.ColumnParam
 import java.time.LocalDateTime
 
 data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
     companion object {
-        fun <E> deletedAt() = DateTimeColumn<E>("deleted_at") { LocalDateTime.now() }
+        fun <E> deletedAt() = LocalDateTimeColumn<E>("deleted_at") { LocalDateTime.now() }
     }
 
     fun toStmt() = conditions.toStmt()

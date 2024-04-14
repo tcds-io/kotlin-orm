@@ -5,7 +5,7 @@ import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-class DateTimeColumn<Entity>(
+class LocalDateTimeColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDateTime,
 ) : Column<Entity, LocalDateTime>(name, value) {

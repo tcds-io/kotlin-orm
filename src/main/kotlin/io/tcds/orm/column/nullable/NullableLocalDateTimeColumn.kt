@@ -6,7 +6,7 @@ import java.sql.Timestamp
 import java.sql.Types
 import java.time.LocalDateTime
 
-class NullableDateTimeColumn<Entity>(
+class NullableLocalDateTimeColumn<Entity>(
     name: String,
     value: (Entity) -> LocalDateTime?,
 ) : Column<Entity, LocalDateTime?>(name, value) {

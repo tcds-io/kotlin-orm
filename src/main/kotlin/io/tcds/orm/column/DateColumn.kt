@@ -1,14 +1,14 @@
 package io.tcds.orm.column
 
 import io.tcds.orm.Column
-import java.sql.Date
-import java.sql.PreparedStatement
-import java.time.LocalDate
+import java.sql.PreparedStatement as Stmt
+import java.sql.Timestamp
+import java.util.Date
 
 class DateColumn<Entity>(
     name: String,
-    value: (Entity) -> LocalDate,
-) : Column<Entity, LocalDate>(name, value) {
+    value: (Entity) -> Date,
+) : Column<Entity, Date>(name, value) {
     override fun columnType(): String = "DATE"
-    override fun bind(stmt: PreparedStatement, index: Int, value: LocalDate) = stmt.setDate(index, Date.valueOf(value))
+    override fun bind(stmt: Stmt, index: Int, value: Date) = stmt.setTimestamp(index, Timestamp(value.time))
 }

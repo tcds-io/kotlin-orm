@@ -2,12 +2,14 @@ package io.tcds.orm
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.Date
 
 interface OrmResultSet {
     fun <T> value(columnName: String, clazz: Class<T>): T?
 
     fun get(column: Column<*, String>): String
     fun get(column: Column<*, Int>): Int
+    fun get(column: Column<*, Date>): Date
     fun get(column: Column<*, Long>): Long
     fun get(column: Column<*, Float>): Float
     fun get(column: Column<*, Double>): Double
@@ -17,6 +19,7 @@ interface OrmResultSet {
 
     fun nullable(column: Column<*, String?>): String?
     fun nullable(column: Column<*, Int?>): Int?
+    fun nullable(column: Column<*, Date?>): Date?
     fun nullable(column: Column<*, Long?>): Long?
     fun nullable(column: Column<*, Float?>): Float?
     fun nullable(column: Column<*, Double?>): Double?
