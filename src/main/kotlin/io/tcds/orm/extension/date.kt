@@ -6,7 +6,7 @@ import java.sql.ResultSet as JdbcResultSet
 
 private val utc = ZoneId.of("UTC")
 
-fun JdbcResultSet.getInstant(name: String): Instant = getTimestamp(name).toInstant()
+fun JdbcResultSet.getInstant(name: String): Instant? = getTimestamp(name)?.toInstant()
 
 // LocalDateTime <> Instant
 fun Instant.toLocalDateTime(): LocalDateTime = LocalDateTime.ofInstant(this, utc)

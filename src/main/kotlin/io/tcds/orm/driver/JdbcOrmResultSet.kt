@@ -28,7 +28,7 @@ class JdbcOrmResultSet(val jdbcResultSet: JdbcResultSet) : OrmResultSet {
     override fun get(column: Column<*, Float>): Float = jdbcResultSet.getFloat(column.name)
     override fun get(column: Column<*, Double>): Double = jdbcResultSet.getDouble(column.name)
     override fun get(column: Column<*, Boolean>): Boolean = jdbcResultSet.getBoolean(column.name)
-    override fun get(column: Column<*, Instant>): Instant = jdbcResultSet.getInstant(column.name)
+    override fun get(column: Column<*, Instant>): Instant = jdbcResultSet.getInstant(column.name)!!
 
     override fun nullable(column: Column<*, String?>): String? = nullable { jdbcResultSet.getString(column.name) }
     override fun nullable(column: Column<*, Int?>): Int? = nullable { jdbcResultSet.getInt(column.name) }
