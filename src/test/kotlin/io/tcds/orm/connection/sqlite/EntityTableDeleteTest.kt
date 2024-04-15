@@ -2,14 +2,12 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import io.tcds.orm.extension.toDate
+import fixtures.frozenClockAtApril
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
-import java.time.Month
 
 class EntityTableDeleteTest : SqLiteTestCase() {
     private val table = AddressEntityTable(connection())
@@ -25,7 +23,7 @@ class EntityTableDeleteTest : SqLiteTestCase() {
                 ColumnParam(table.street, "Galaxy Avenue"),
                 ColumnParam(table.number, "124T"),
                 ColumnParam(table.main, true),
-                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate()),
+                ColumnParam(table.createdAt, frozenClockAtApril),
             ),
         )
     }

@@ -2,7 +2,7 @@ package io.tcds.orm.connection.sqlite
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import io.tcds.orm.extension.toDate
+import fixtures.frozenClockAtApril
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -25,7 +25,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
                 ColumnParam(table.street, "Galaxy Avenue"),
                 ColumnParam(table.number, "124T"),
                 ColumnParam(table.main, true),
-                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate()),
+                ColumnParam(table.createdAt, frozenClockAtApril),
             ),
         )
     }

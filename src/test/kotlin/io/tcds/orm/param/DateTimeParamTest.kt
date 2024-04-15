@@ -1,6 +1,7 @@
 package io.tcds.orm.param
 
-import io.mockk.*
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement

@@ -1,14 +1,12 @@
 package io.tcds.orm.connection.sqlite
 
 import fixtures.AddressTable
-import io.tcds.orm.extension.toDate
+import fixtures.frozenClockAtApril
 import io.tcds.orm.param.ColumnParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
-import java.time.Month
 
 class TableFindByQueryTest : SqLiteTestCase() {
     private val table = AddressTable(connection())
@@ -24,7 +22,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
                 ColumnParam(table.street, "Galaxy Avenue"),
                 ColumnParam(table.number, "124T"),
                 ColumnParam(table.main, true),
-                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate()),
+                ColumnParam(table.createdAt, frozenClockAtApril),
             ),
         )
 
@@ -35,7 +33,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
                 ColumnParam(table.street, "Galaxy Avenue"),
                 ColumnParam(table.number, "124T"),
                 ColumnParam(table.main, true),
-                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate()),
+                ColumnParam(table.createdAt, frozenClockAtApril),
             ),
         )
 
@@ -46,7 +44,7 @@ class TableFindByQueryTest : SqLiteTestCase() {
                 ColumnParam(table.street, "Galaxy Avenue"),
                 ColumnParam(table.number, "124T"),
                 ColumnParam(table.main, true),
-                ColumnParam(table.createdAt, LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate()),
+                ColumnParam(table.createdAt, frozenClockAtApril),
             ),
         )
     }

@@ -13,7 +13,7 @@ class AddressTable(
     val street = varchar("street") { it.street }
     val number = varchar("number") { it.number }
     val main = bool("main") { it.main }
-    val createdAt = datetime("created_at") { it.createdAt.toDate() }
+    val createdAt = datetime("created_at") { it.createdAt.toInstant() }
 
     override fun entry(row: OrmResultSet): Address = Address(
         id = row.get(id),

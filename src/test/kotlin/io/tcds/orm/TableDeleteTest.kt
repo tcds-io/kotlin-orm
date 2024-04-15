@@ -3,7 +3,9 @@ package io.tcds.orm
 import fixtures.AddressTable
 import fixtures.freezeClock
 import fixtures.frozenClockAt
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where

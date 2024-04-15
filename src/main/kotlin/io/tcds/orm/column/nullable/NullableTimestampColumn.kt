@@ -4,18 +4,18 @@ import io.tcds.orm.Column
 import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.sql.Types
-import java.util.Date
+import java.time.Instant
 
-class NullableDateColumn<Entity>(
+class NullableTimestampColumn<Entity>(
     name: String,
-    value: (Entity) -> Date?,
-) : Column<Entity, Date?>(name, value) {
+    value: (Entity) -> Instant?,
+) : Column<Entity, Instant?>(name, value) {
     override fun columnType(): String = "DATETIME NULL"
 
-    override fun bind(stmt: PreparedStatement, index: Int, value: Date?) {
+    override fun bind(stmt: PreparedStatement, index: Int, value: Instant?) {
         when (value) {
             null -> stmt.setNull(index, Types.TIMESTAMP)
-            else -> stmt.setTimestamp(index, Timestamp(value.time))
+            else -> stmt.setTimestamp(index, Timestamp.from(value))
         }
     }
 }

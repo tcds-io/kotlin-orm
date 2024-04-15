@@ -3,9 +3,9 @@ package io.tcds.orm
 import fixtures.Company
 import fixtures.CompanyTable
 import fixtures.Status
+import fixtures.frozenClockAtApril
 import io.mockk.mockk
 import io.tcds.orm.connection.Connection
-import io.tcds.orm.extension.toDate
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -29,7 +29,7 @@ class TableValuesTest {
         "status" to "ACTIVE",
         "employees" to 6,
         "online" to true,
-        "created_at" to LocalDateTime.of(1995, Month.APRIL, 15, 9, 15, 33).toDate(),
+        "created_at" to frozenClockAtApril,
     )
 
     @Test

@@ -7,9 +7,7 @@ import io.tcds.orm.Table
 import io.tcds.orm.column.*
 import io.tcds.orm.column.nullable.*
 import io.tcds.orm.statement.*
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Date
+import java.time.Instant
 
 fun <T> Column<*, T>.isBetween(first: T, last: T): Condition = Between(this, first, last)
 infix fun <T> Column<*, T>.differentOf(value: T): Condition = DifferentOf(this, value)
@@ -41,10 +39,10 @@ fun <E> Table<E>.doubleNullable(name: String, value: (E) -> Double?) = column(Nu
 
 fun <E> Table<E>.bool(name: String, value: (E) -> Boolean) = column(BooleanColumn(name = name, value = value))
 
-fun <E> Table<E>.date(name: String, value: (E) -> Date) = column(DateColumn(name = name, value = value))
-fun <E> Table<E>.datetime(name: String, value: (E) -> Date) = column(DateColumn(name = name, value = value))
-fun <E> Table<E>.dateNullable(name: String, value: (E) -> Date?) = column(NullableDateColumn(name = name, value = value))
-fun <E> Table<E>.datetimeNullable(name: String, value: (E) -> Date?) = column(NullableDateColumn(name = name, value = value))
+fun <E> Table<E>.date(name: String, value: (E) -> Instant) = column(TimestampColumn(name = name, value = value))
+fun <E> Table<E>.datetime(name: String, value: (E) -> Instant) = column(TimestampColumn(name = name, value = value))
+fun <E> Table<E>.dateNullable(name: String, value: (E) -> Instant?) = column(NullableTimestampColumn(name = name, value = value))
+fun <E> Table<E>.datetimeNullable(name: String, value: (E) -> Instant?) = column(NullableTimestampColumn(name = name, value = value))
 
 fun <E, T : Enum<*>> Table<E>.enum(name: String, value: (E) -> T) = column(EnumColumn(name = name, value = value))
 fun <E, T> Table<E>.json(name: String, value: (E) -> T) = column(JsonColumn(name = name, value = value))

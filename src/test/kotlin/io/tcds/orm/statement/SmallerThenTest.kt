@@ -1,9 +1,9 @@
 package io.tcds.orm.statement
 
 import fixtures.User
-import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.extension.smallerThen
+import io.tcds.orm.param.ColumnParam
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
