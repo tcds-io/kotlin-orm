@@ -9,9 +9,9 @@ import java.sql.Statement
 import java.sql.Connection as JdbcConnection
 
 open class GenericConnection(
-    private val readOnly: JdbcConnection,
-    private val readWrite: JdbcConnection,
-    private val logger: Logger?,
+    private val readOnly: ResilientConnection,
+    private val readWrite: ResilientConnection,
+    private val logger: Logger? = null,
 ) : Connection {
     override fun begin() = write("BEGIN")
     override fun commit() = write("COMMIT")
@@ -27,7 +27,7 @@ open class GenericConnection(
     }
 
     override fun read(sql: String, params: List<Param<*>>): Sequence<OrmResultSet> {
-        val stmt = prepare(readOnly, sql, params)
+        val stmt = prepare(readOnly.instance(), sql, params)
         val result = stmt.executeQuery()
         if (logger !== null) ConnectionLogger.read(logger, sql, params)
 
@@ -39,7 +39,7 @@ open class GenericConnection(
     }
 
     override fun write(sql: String, params: List<Param<*>>): Statement {
-        val stmt = prepare(readWrite, sql, params)
+        val stmt = prepare(readWrite.instance(), sql, params)
         if (logger !== null) ConnectionLogger.write(logger, sql, params)
         stmt.execute()
 
@@ -47,8 +47,8 @@ open class GenericConnection(
     }
 
     open fun close() {
-        readOnly.close()
-        readWrite.close()
+        readOnly.instance().close()
+        readWrite.instance().close()
     }
 
     private fun prepare(

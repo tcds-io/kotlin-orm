@@ -17,11 +17,17 @@ class GenericConnectionTest {
     private val write: Connection = mockk()
     private val stmt: PreparedStatement = mockk()
 
-    private val connection = GenericConnection(read, write, null)
+    private val connection = GenericConnection(
+        ResilientConnection.reconnectable { read },
+        ResilientConnection.reconnectable { write },
+        null,
+    )
 
     init {
         every { read.isValid(any()) } returns true
         every { write.isValid(any()) } returns true
+        every { read.isClosed } returns false
+        every { write.isClosed } returns false
     }
 
     @Test

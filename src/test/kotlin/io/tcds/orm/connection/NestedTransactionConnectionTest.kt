@@ -18,11 +18,13 @@ class NestedTransactionConnectionTest {
     init {
         every { readOnly.isValid(any()) } returns true
         every { readWrite.isValid(any()) } returns true
+        every { readOnly.isClosed } returns false
+        every { readWrite.isClosed } returns false
     }
 
     @Test
     fun `given a connection when begin then commit gets called then run begin and commit statements`() {
-        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        val connection = connection()
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
@@ -37,7 +39,7 @@ class NestedTransactionConnectionTest {
 
     @Test
     fun `given a connection when begin and commit gets called multiple times then run store and release savepoint`() {
-        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        val connection = connection()
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
@@ -60,7 +62,7 @@ class NestedTransactionConnectionTest {
 
     @Test
     fun `given a connection when begin then rollback gets called then run begin and rollback statements`() {
-        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        val connection = connection()
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
@@ -75,7 +77,7 @@ class NestedTransactionConnectionTest {
 
     @Test
     fun `given a connection when begin and rollback gets called multiple times then run store and release savepoint`() {
-        val connection = DummyNestedTransactionConnection(readOnly, readWrite)
+        val connection = connection()
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
@@ -95,4 +97,9 @@ class NestedTransactionConnectionTest {
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK TO SAVEPOINT LEVEL1", Statement.RETURN_GENERATED_KEYS) }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK", Statement.RETURN_GENERATED_KEYS) }
     }
+
+    private fun connection() = DummyNestedTransactionConnection(
+        ResilientConnection.reconnectable { readOnly },
+        ResilientConnection.reconnectable { readWrite },
+    )
 }

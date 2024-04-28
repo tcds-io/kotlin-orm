@@ -1,11 +1,10 @@
 package io.tcds.orm.connection
 
 import org.slf4j.Logger
-import java.sql.Connection
 
 open class NestedTransactionConnection(
-    readOnly: Connection,
-    readWrite: Connection,
+    readOnly: ResilientConnection,
+    readWrite: ResilientConnection,
     logger: Logger?,
 ) : GenericConnection(readOnly, readWrite, logger) {
     companion object {
@@ -13,8 +12,8 @@ open class NestedTransactionConnection(
     }
 
     init {
-        if (!readOnly.isValid(0)) throw Exception("Orm: Invalid ro connection")
-        if (!readWrite.isValid(0)) throw Exception("Orm: Invalid rw connection")
+        if (!readOnly.instance().isValid(0)) throw Exception("Orm: Invalid ro connection")
+        if (!readWrite.instance().isValid(0)) throw Exception("Orm: Invalid rw connection")
     }
 
     private var transactionDepth = 0

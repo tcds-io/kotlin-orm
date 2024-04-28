@@ -1,6 +1,7 @@
 package io.tcds.orm.connection.sqlite
 
 import io.tcds.orm.connection.GenericConnection
+import io.tcds.orm.connection.ResilientConnection
 import io.tcds.orm.connection.SqLiteConnection
 import mu.KotlinLogging
 import org.gradle.internal.impldep.org.jetbrains.annotations.MustBeInvokedByOverriders
@@ -73,7 +74,7 @@ open class SqLiteTestCase {
     fun connection(): GenericConnection {
         if (connection === null) {
             connection = SqLiteConnection(
-                DriverManager.getConnection("jdbc:sqlite::memory:"),
+                ResilientConnection.reconnectable { DriverManager.getConnection("jdbc:sqlite::memory:") },
                 KotlinLogging.logger("io.tcds.orm"),
             )
         }

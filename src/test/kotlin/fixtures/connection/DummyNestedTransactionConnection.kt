@@ -1,9 +1,9 @@
 package fixtures.connection
 
 import io.tcds.orm.connection.NestedTransactionConnection
-import java.sql.Connection as JdbcConnection
+import io.tcds.orm.connection.ResilientConnection
 
 class DummyNestedTransactionConnection(
-    readOnly: JdbcConnection,
-    readWrite: JdbcConnection,
-) : NestedTransactionConnection(readOnly = readOnly, readWrite = readWrite, logger = null)
+    readOnly: ResilientConnection,
+    readWrite: ResilientConnection,
+) : NestedTransactionConnection(readOnly, readWrite, null)
