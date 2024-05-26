@@ -1,16 +1,10 @@
 package io.tcds.orm.column.nullable
 
 import io.tcds.orm.Column
-import java.sql.PreparedStatement
-import java.sql.Types
+import io.tcds.orm.Param
+import io.tcds.orm.param.nullable.NullableStringParam
 
 class NullableStringColumn<Entity>(name: String, value: (Entity) -> String?) : Column<Entity, String?>(name, value) {
     override fun columnType(): String = "STRING NULL"
-
-    override fun bind(stmt: PreparedStatement, index: Int, value: String?) {
-        when (value) {
-            null -> stmt.setNull(index, Types.VARCHAR)
-            else -> stmt.setString(index, value)
-        }
-    }
+    override fun toParam(value: String?): Param<String?> = NullableStringParam(this.name, value)
 }

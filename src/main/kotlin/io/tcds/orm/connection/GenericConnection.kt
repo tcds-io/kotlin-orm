@@ -57,7 +57,7 @@ open class GenericConnection(
         params: List<Param<*>> = emptyList(),
     ): PreparedStatement {
         val stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ?: throw Exception("Failed to prepare sql statement")
-        params.forEachIndexed { index, param -> param.bind((index + 1), stmt) }
+        params.forEachIndexed { index, param -> param.bind(stmt, (index + 1)) }
 
         return stmt
     }

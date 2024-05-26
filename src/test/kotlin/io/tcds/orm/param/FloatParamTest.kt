@@ -13,7 +13,7 @@ class FloatParamTest {
 
     @Test
     fun `given a param when bind is invoked then bind its value into the statement`() {
-        param.bind(1, stmt)
+        param.bind(stmt, 1)
 
         verify(exactly = 1) { stmt.setFloat(1, value) }
     }

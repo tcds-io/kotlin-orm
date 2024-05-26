@@ -7,5 +7,5 @@ data class IntegerParam(
     override val name: String,
     override val value: Int,
 ) : Param<Int> {
-    override fun bind(index: Int, stmt: PreparedStatement) = stmt.setInt(index, value)
+    override fun bind(stmt: PreparedStatement, index: Int) = stmt.setInt(index, value)
 }

@@ -1,4 +1,4 @@
-package io.tcds.orm.param
+package io.tcds.orm.param.nullable
 
 import fixtures.Address
 import io.mockk.*
@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
 
-class ColumnParamTest {
+class NullableColumnParamTest {
     companion object {
         private const val STREET = "Galaxy Avenue"
     }
 
-    private val column: Column<Address, String> = mockk()
+    private val column: Column<Address, String?> = mockk()
     private val stmt: PreparedStatement = mockk()
 
     init {
@@ -22,7 +22,7 @@ class ColumnParamTest {
     @Test
     fun `given a param when bind is invoked then bind its value into the statement`() {
         every { column.bind(any(), any(), any()) } just runs
-        val param = ColumnParam(column, STREET)
+        val param = NullableColumnParam(column, STREET)
 
         param.bind(stmt, 1)
 
@@ -30,8 +30,18 @@ class ColumnParamTest {
     }
 
     @Test
+    fun `given null value when bind is invoked then bind its value into the statement`() {
+        every { column.bind(any(), any(), any()) } just runs
+        val param = NullableColumnParam(column, null)
+
+        param.bind(stmt, 1)
+
+        verify(exactly = 1) { column.bind(stmt, 1, null) }
+    }
+
+    @Test
     fun `given a param when describe is invoked then return the name equals to value`() {
-        val param = ColumnParam(column, STREET)
+        val param = NullableColumnParam(column, STREET)
 
         val string = param.describe()
 
