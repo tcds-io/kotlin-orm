@@ -1,16 +1,13 @@
 package io.tcds.orm.column.nullable
 
 import io.tcds.orm.Column
-import java.sql.PreparedStatement
-import java.sql.Types
+import io.tcds.orm.Param
+import io.tcds.orm.param.nullable.NullableDoubleParam
 
-class NullableDoubleColumn<Entity>(name: String, value: (Entity) -> Double?) : Column<Entity, Double?>(name, value) {
+class NullableDoubleColumn<Entity>(
+    name: String,
+    value: (Entity) -> Double?,
+) : Column<Entity, Double?>(name, value) {
     override fun columnType(): String = "DOUBLE NULL"
-
-    override fun bind(stmt: PreparedStatement, index: Int, value: Double?) {
-        when (value) {
-            null -> stmt.setNull(index, Types.DOUBLE)
-            else -> stmt.setDouble(index, value)
-        }
-    }
+    override fun toParam(value: Double?): Param<Double?> = NullableDoubleParam(this.name, value)
 }

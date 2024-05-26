@@ -7,5 +7,5 @@ data class DoubleParam(
     override val name: String,
     override val value: Double,
 ) : Param<Double> {
-    override fun bind(index: Int, stmt: PreparedStatement) = stmt.setDouble(index, value)
+    override fun bind(stmt: PreparedStatement, index: Int) = stmt.setDouble(index, value)
 }

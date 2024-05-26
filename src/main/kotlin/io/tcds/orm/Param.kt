@@ -6,6 +6,6 @@ interface Param<T> {
     val name: String
     val value: T
 
-    fun bind(index: Int, stmt: PreparedStatement)
-    fun describe(): String = "${name}=$value"
+    fun bind(stmt: PreparedStatement, index: Int)
+    fun describe(): String = "$name=$value"
 }

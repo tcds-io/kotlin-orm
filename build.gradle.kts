@@ -8,7 +8,7 @@ val jacksonVersion: String by project
 val coroutinesVersion: String by project
 
 object Publication {
-    const val group = "io.tcds.orm"
+    const val GROUP = "io.tcds.orm"
     val buildVersion: String = System.getenv("VERSION") ?: "dev"
 
     object Sonatype {
@@ -23,14 +23,14 @@ object Publication {
     }
 
     object Project {
-        const val name = "Kotlin Simple ORM"
-        const val description = "Kotlin Simple ORM is a simple but powerful database orm for kotlin applications"
-        const val repository = "https://github.com/tcds-io/kotlin-orm"
-        const val scm = "scm:git:git://github.com:tcds-io/kotlin-orm.git"
+        const val NAME = "Kotlin Simple ORM"
+        const val DESCRIPTION = "Kotlin Simple ORM is a simple but powerful database orm for kotlin applications"
+        const val REPOSITORY = "https://github.com/tcds-io/kotlin-orm"
+        const val SCM = "scm:git:git://github.com:tcds-io/kotlin-orm.git"
 
-        const val organization = "tcds-io"
-        const val developer = "Thiago Cordeiro"
-        const val email = "thiago@tcds.io"
+        const val ORGANIZATION = "tcds-io"
+        const val DEVELOPER = "Thiago Cordeiro"
+        const val EMAIL = "thiago@tcds.io"
     }
 }
 
@@ -82,14 +82,20 @@ tasks.test {
     }
 }
 
-val sourcesJar by tasks.creating(Jar::class) { archiveClassifier.set("sources"); from(sourceSets.main.get().allSource) }
-val javadocJar by tasks.creating(Jar::class) { archiveClassifier.set("javadoc"); from(tasks.javadoc) }
+val sourcesJar by tasks.creating(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(tasks.javadoc)
+}
 
 publishing {
     repositories {
         maven {
             name = "SonaType"
-            group = Publication.group
+            group = Publication.GROUP
             version = Publication.buildVersion
             url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
 
@@ -107,28 +113,28 @@ publishing {
                 artifact(javadocJar)
 
                 pom {
-                    name.set(Publication.Project.name)
-                    description.set(Publication.Project.description)
-                    url.set(Publication.Project.repository)
+                    name.set(Publication.Project.NAME)
+                    description.set(Publication.Project.DESCRIPTION)
+                    url.set(Publication.Project.REPOSITORY)
                     packaging = "jar"
 
                     licenses {
                         license {
                             name.set("MIT License")
-                            url.set("${Publication.Project.repository}/blob/main/LICENSE")
+                            url.set("${Publication.Project.REPOSITORY}/blob/main/LICENSE")
                         }
                     }
 
                     developers {
                         developer {
-                            id.set(Publication.Project.organization)
-                            name.set(Publication.Project.developer)
-                            email.set(Publication.Project.email)
+                            id.set(Publication.Project.ORGANIZATION)
+                            name.set(Publication.Project.DEVELOPER)
+                            email.set(Publication.Project.EMAIL)
                         }
                     }
                     scm {
-                        connection.set(Publication.Project.scm)
-                        url.set(Publication.Project.repository)
+                        connection.set(Publication.Project.SCM)
+                        url.set(Publication.Project.REPOSITORY)
                     }
                 }
             }

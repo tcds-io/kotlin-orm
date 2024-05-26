@@ -15,7 +15,7 @@ abstract class EntityTable<E, PKType>(
 
     fun update(vararg entities: E) = entities.map {
         update(
-            columns.filter { col -> col != id }.map { column -> column.toValueParam(entry = it) },
+            columns.filter { col -> col != id }.map { column -> column.toColumnParam(entry = it) },
             where(this.id equalsTo this.id.valueOf(it)),
         )
     }
