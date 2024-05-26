@@ -27,6 +27,24 @@ class ReconnectableResilientConnectionTest {
     @Test
     fun `when instance is closed then create from the factory`() {
         every { connection.isClosed } returns true
+        every { connection.isValid(any()) } returns true
+        val connection = ResilientConnection.reconnectable {
+            calls++
+            connection
+        }
+
+        val instance = connection.instance()
+        connection.instance()
+        connection.instance()
+
+        Assertions.assertEquals(3, calls)
+        Assertions.assertInstanceOf(JdbcConnection::class.java, instance)
+    }
+
+    @Test
+    fun `when instance is not valid then create from the factory`() {
+        every { connection.isClosed } returns false
+        every { connection.isValid(any()) } returns false
         val connection = ResilientConnection.reconnectable {
             calls++
             connection
