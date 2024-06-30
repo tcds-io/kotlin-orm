@@ -1,5 +1,9 @@
 # Kotlin ORM
 
+### installing
+```gradle
+implementation("io.tcds.orm:orm:0.4.14")
+```
 
 #### _Example of entities_
 
