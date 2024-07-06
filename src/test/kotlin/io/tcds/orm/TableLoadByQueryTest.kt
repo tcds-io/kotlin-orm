@@ -36,7 +36,7 @@ class TableLoadByQueryTest {
             ),
         )
 
-        val result = runBlocking { table.loadByQuery(QUERY, listOf(ColumnParam(table.main, true))) }
+        val result = runBlocking { table.loadByQuery(QUERY, ColumnParam(table.main, true)) }
 
         Assertions.assertEquals(address, result)
         verify { connection.read(QUERY, listOf(ColumnParam(table.main, true))) }

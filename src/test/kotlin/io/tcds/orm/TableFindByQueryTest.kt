@@ -48,7 +48,7 @@ class TableFindByQueryTest {
             ),
         )
 
-        val result = runBlocking { table.findByQuery(QUERY, listOf(ColumnParam(table.street, "Galaxy%"))).toList() }
+        val result = runBlocking { table.findByQuery(QUERY, ColumnParam(table.street, "Galaxy%")).toList() }
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
         verify { connection.read(QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }

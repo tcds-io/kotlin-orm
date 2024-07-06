@@ -26,9 +26,8 @@ abstract class Table<E>(
         limit = 1,
     ).firstOrNull()
 
-    fun loadByQuery(sql: String, vararg params: Param<*>): E? = loadByQuery(sql, params.toList())
-    fun loadByQuery(sql: String, params: List<Param<*>> = emptyList()): E? = connection
-        .read(sql, params)
+    fun loadByQuery(sql: String, vararg params: Param<*>): E? = connection
+        .read(sql, params.toList())
         .firstOrNull()
         ?.let { entry(it) }
 
@@ -47,15 +46,15 @@ abstract class Table<E>(
         val orderStmt = order.toOrderByStatement()
         val limitStmt = Limit(limit, offset).toStmt()
         val sql = "SELECT * FROM $table $whereStmt $orderStmt $limitStmt".trimSpaces()
+        val params = tableWhere.params()
 
         return connection
-            .read(sql, tableWhere.params())
+            .read(sql, params)
             .map { entry(it) }
     }
 
-    fun findByQuery(sql: String, vararg params: Param<*>) = findByQuery(sql, params.toList())
-    fun findByQuery(sql: String, params: List<Param<*>> = emptyList()) = connection
-        .read(sql, params)
+    fun findByQuery(sql: String, vararg params: Param<*>) = connection
+        .read(sql, params.toList())
         .map { entry(it) }
 
     fun exists(where: Statement): Boolean = loadBy(where) != null
@@ -82,7 +81,7 @@ abstract class Table<E>(
         val whereStmt = tableWhere.toStmt()
         val sql = "UPDATE $table SET $columnsMarks $whereStmt".trimSpaces()
 
-        return connection.write(sql, (params + where.params()))
+        return connection.write(sql, params + where.params())
     }
 
     fun values(entry: E): Map<String, Any?> {

@@ -70,9 +70,9 @@ class TableLoadByQueryTest : SqLiteTestCase() {
     @Test
     fun `given a sql query and DESC order when entry exists then load into the entity`() = runBlocking {
         val sql = "SELECT * FROM addresses WHERE number = ? ORDER BY id DESC LIMIT 1"
-        val params = listOf(ColumnParam(table.number, "124T"))
+        val param = ColumnParam(table.number, "124T")
 
-        val address = table.loadByQuery(sql, params)
+        val address = table.loadByQuery(sql, param)
 
         Assertions.assertEquals("arthur-dent-address-another-address", address?.id)
     }
