@@ -26,12 +26,11 @@ abstract class Table<E>(
         limit = 1,
     ).firstOrNull()
 
-    fun loadByQuery(sql: String, params: List<Param<*>> = emptyList()): E? {
-        return connection
-            .read(sql, params)
-            .firstOrNull()
-            ?.let { entry(it) }
-    }
+    fun loadByQuery(sql: String, vararg params: Param<*>): E? = loadByQuery(sql, params.toList())
+    fun loadByQuery(sql: String, params: List<Param<*>> = emptyList()): E? = connection
+        .read(sql, params)
+        .firstOrNull()
+        ?.let { entry(it) }
 
     fun findBy(
         where: Statement,
@@ -54,6 +53,7 @@ abstract class Table<E>(
             .map { entry(it) }
     }
 
+    fun findByQuery(sql: String, vararg params: Param<*>) = findByQuery(sql, params.toList())
     fun findByQuery(sql: String, params: List<Param<*>> = emptyList()) = connection
         .read(sql, params)
         .map { entry(it) }

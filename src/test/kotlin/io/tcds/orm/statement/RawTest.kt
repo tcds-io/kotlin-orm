@@ -12,20 +12,20 @@ class RawTest {
 
     @Test
     fun `create where raw query statement and params`() {
-        val params = listOf(column.toParam("Arthur"))
+        val params = column.toParam("Arthur")
 
         val clause = where("(SELECT name FROM users LIMIT 1) = ?", params)
 
         Assertions.assertEquals("WHERE (SELECT name FROM users LIMIT 1) = ?", clause.toStmt())
         Assertions.assertEquals("WHERE (SELECT name FROM users LIMIT 1) = `Arthur`", clause.toSql())
-        Assertions.assertEquals(params, clause.params())
+        Assertions.assertEquals(listOf(params), clause.params())
     }
 
     @Test
     fun `create and raw query statement and params`() {
         val clause = where(column equalsTo "Arthur")
-            .and("(SELECT name FROM users LIMIT 1) = ?", listOf(column.toParam("John")))
-            .or("(SELECT name FROM users LIMIT 1) = ?", listOf(column.toParam("Lennon")))
+            .and("(SELECT name FROM users LIMIT 1) = ?", column.toParam("John"))
+            .or("(SELECT name FROM users LIMIT 1) = ?", column.toParam("Lennon"))
 
         Assertions.assertEquals(
             "WHERE name = ? AND (SELECT name FROM users LIMIT 1) = ? OR (SELECT name FROM users LIMIT 1) = ?",
@@ -49,8 +49,8 @@ class RawTest {
     fun `create grouped raw query statement and params`() {
         val clause = where(column equalsTo "Arthur")
             .or {
-                group("(SELECT a FROM aaa LIMIT 1) = ?", listOf(column.toParam("John")))
-                    .and("(SELECT b FROM bbb LIMIT 1) = ?", listOf(column.toParam("Lennon")))
+                group("(SELECT a FROM aaa LIMIT 1) = ?", column.toParam("John"))
+                    .and("(SELECT b FROM bbb LIMIT 1) = ?", column.toParam("Lennon"))
             }
 
         Assertions.assertEquals(
