@@ -3,7 +3,11 @@ package io.tcds.orm.extension
 import io.tcds.orm.Condition
 import io.tcds.orm.Param
 import io.tcds.orm.statement.Operator
-import io.tcds.orm.statement.Operator.*
+import io.tcds.orm.statement.Operator.AND
+import io.tcds.orm.statement.Operator.NONE
+import io.tcds.orm.statement.Operator.OR
+import io.tcds.orm.statement.Operator.WHERE
+import io.tcds.orm.statement.Raw
 import io.tcds.orm.statement.Statement
 import io.tcds.orm.statement.StatementGroup
 
@@ -23,11 +27,15 @@ fun MutableList<Pair<Operator, Condition>>.removeWhere(): MutableList<Pair<Opera
 fun emptyWhere(): Statement = Statement(mutableListOf())
 fun emptyParams(): List<Param<*>> = emptyWhere().params()
 fun where(condition: Condition): Statement = Statement(mutableListOf(Pair(WHERE, condition)))
-fun stmt(condition: Condition): Statement = Statement(mutableListOf(Pair(NONE, condition)))
+fun where(query: String, params: List<Param<*>> = emptyList()): Statement = Statement(mutableListOf(Pair(WHERE, Raw(query, params))))
+fun group(condition: Condition): Statement = Statement(mutableListOf(Pair(NONE, condition)))
+fun group(query: String, params: List<Param<*>> = emptyList()): Statement = Statement(mutableListOf(Pair(NONE, Raw(query, params))))
 
 infix fun Statement.add(condition: Condition) = add(Pair(NONE, condition)).let { this }
 infix fun Statement.and(condition: Condition) = add(Pair(AND, condition)).let { this }
 infix fun Statement.or(condition: Condition) = add(Pair(OR, condition)).let { this }
+fun Statement.and(query: String, params: List<Param<*>> = emptyList()) = add(Pair(AND, Raw(query, params))).let { this }
+fun Statement.or(query: String, params: List<Param<*>> = emptyList()) = add(Pair(OR, Raw(query, params))).let { this }
 
 infix fun Statement.and(block: (stmt: Statement) -> Statement) = add(Pair(AND, StatementGroup(block(emptyWhere()).conditions))).let { this }
 infix fun Statement.or(block: (stmt: Statement) -> Statement) = add(Pair(OR, StatementGroup(block(emptyWhere()).conditions))).let { this }

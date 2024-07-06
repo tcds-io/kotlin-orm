@@ -27,9 +27,9 @@ class StatementTest {
     @Test
     fun `given where and group conditions then create where statement with params`() {
         val where = where(age equalsTo 32) or {
-            stmt(age greaterThen 50) and (name differentOf "Arthur Dent")
+            group(age greaterThen 50) and (name differentOf "Arthur Dent")
         } and {
-            stmt(age smallerThen 100) and (name differentOf "Ford Prefect")
+            group(age smallerThen 100) and (name differentOf "Ford Prefect")
         }
 
         Assertions.assertEquals(
@@ -56,7 +56,7 @@ class StatementTest {
     fun `given where and group with empty where then create the query statement`() {
         val where = where(age equalsTo 32) and { stmt ->
             stmt.add(age greaterThen 50) or (age smallerThen 100) or {
-                stmt(age greaterThen 50) or (age smallerThen 100)
+                group(age greaterThen 50) or (age smallerThen 100)
             }
         } or { stmt ->
             stmt.add(name equalsTo "Arthur") and (name differentOf "Prefect")
