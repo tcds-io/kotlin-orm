@@ -13,6 +13,9 @@ open class GenericConnection(
     private val readWrite: ResilientConnection,
     private val logger: Logger? = null,
 ) : Connection {
+    override val reader: JdbcConnection = readOnly.instance()
+    override val writer: JdbcConnection = readWrite.instance()
+
     override fun begin() = write("BEGIN")
     override fun commit() = write("COMMIT")
     override fun rollback() = write("ROLLBACK")
