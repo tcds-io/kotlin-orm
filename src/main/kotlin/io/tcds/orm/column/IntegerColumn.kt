@@ -9,5 +9,6 @@ class IntegerColumn<Entity>(
     value: (Entity) -> Int,
 ) : Column<Entity, Int>(name, value) {
     override fun columnType(): String = "INTEGER"
-    override fun toParam(value: Int): Param<Int> = IntegerParam(this.name, value)
+    override fun valueParam(value: Int): Param<Int> = IntegerParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Int> = IntegerParam(this.name, valueOf(entry))
 }

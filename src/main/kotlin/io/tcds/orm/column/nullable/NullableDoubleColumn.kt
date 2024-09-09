@@ -9,5 +9,6 @@ class NullableDoubleColumn<Entity>(
     value: (Entity) -> Double?,
 ) : Column<Entity, Double?>(name, value) {
     override fun columnType(): String = "DOUBLE NULL"
-    override fun toParam(value: Double?): Param<Double?> = NullableDoubleParam(this.name, value)
+    override fun valueParam(value: Double?): Param<Double?> = NullableDoubleParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Double?> = NullableDoubleParam(this.name, valueOf(entry))
 }

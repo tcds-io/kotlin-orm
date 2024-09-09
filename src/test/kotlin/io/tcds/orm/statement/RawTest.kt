@@ -3,7 +3,7 @@ package io.tcds.orm.statement
 import fixtures.User
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.*
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.StringParam
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -12,7 +12,7 @@ class RawTest {
 
     @Test
     fun `create where raw query statement and params`() {
-        val params = column.toParam("Arthur")
+        val params = column.valueParam("Arthur")
 
         val clause = where("(SELECT name FROM users LIMIT 1) = ?", params)
 
@@ -24,8 +24,8 @@ class RawTest {
     @Test
     fun `create and raw query statement and params`() {
         val clause = where(column equalsTo "Arthur")
-            .and("(SELECT name FROM users LIMIT 1) = ?", column.toParam("John"))
-            .or("(SELECT name FROM users LIMIT 1) = ?", column.toParam("Lennon"))
+            .and("(SELECT name FROM users LIMIT 1) = ?", column.valueParam("John"))
+            .or("(SELECT name FROM users LIMIT 1) = ?", column.valueParam("Lennon"))
 
         Assertions.assertEquals(
             "WHERE name = ? AND (SELECT name FROM users LIMIT 1) = ? OR (SELECT name FROM users LIMIT 1) = ?",
@@ -37,9 +37,9 @@ class RawTest {
         )
         Assertions.assertEquals(
             listOf(
-                ColumnParam(column, "Arthur"),
-                column.toParam("John"),
-                column.toParam("Lennon"),
+                StringParam(column.name, "Arthur"),
+                column.valueParam("John"),
+                column.valueParam("Lennon"),
             ),
             clause.params(),
         )
@@ -49,8 +49,8 @@ class RawTest {
     fun `create grouped raw query statement and params`() {
         val clause = where(column equalsTo "Arthur")
             .or {
-                group("(SELECT a FROM aaa LIMIT 1) = ?", column.toParam("John"))
-                    .and("(SELECT b FROM bbb LIMIT 1) = ?", column.toParam("Lennon"))
+                group("(SELECT a FROM aaa LIMIT 1) = ?", column.valueParam("John"))
+                    .and("(SELECT b FROM bbb LIMIT 1) = ?", column.valueParam("Lennon"))
             }
 
         Assertions.assertEquals(
@@ -63,9 +63,9 @@ class RawTest {
         )
         Assertions.assertEquals(
             listOf(
-                ColumnParam(column, "Arthur"),
-                column.toParam("John"),
-                column.toParam("Lennon"),
+                StringParam(column.name, "Arthur"),
+                column.valueParam("John"),
+                column.valueParam("Lennon"),
             ),
             clause.params(),
         )

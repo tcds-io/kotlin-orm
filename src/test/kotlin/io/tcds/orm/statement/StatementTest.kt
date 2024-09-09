@@ -4,7 +4,8 @@ import fixtures.User
 import io.tcds.orm.column.IntegerColumn
 import io.tcds.orm.column.StringColumn
 import io.tcds.orm.extension.*
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.IntegerParam
+import io.tcds.orm.param.StringParam
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -19,7 +20,11 @@ class StatementTest {
         Assertions.assertEquals("WHERE age = ? OR age > ? AND name != ?", where.toStmt())
         Assertions.assertEquals("WHERE age = `32` OR age > `50` AND name != `Arthur Dent`", where.toSql())
         Assertions.assertEquals(
-            listOf(ColumnParam(age, 32), ColumnParam(age, 50), ColumnParam(name, "Arthur Dent")),
+            listOf(
+                IntegerParam(age.name, 32),
+                IntegerParam(age.name, 50),
+                StringParam(name.name, "Arthur Dent"),
+            ),
             where.params(),
         )
     }
@@ -42,11 +47,11 @@ class StatementTest {
         )
         Assertions.assertEquals(
             listOf(
-                ColumnParam(age, 32),
-                ColumnParam(age, 50),
-                ColumnParam(name, "Arthur Dent"),
-                ColumnParam(age, 100),
-                ColumnParam(name, "Ford Prefect"),
+                IntegerParam(age.name, 32),
+                IntegerParam(age.name, 50),
+                StringParam(name.name, "Arthur Dent"),
+                IntegerParam(age.name, 100),
+                StringParam(name.name, "Ford Prefect"),
             ),
             where.params(),
         )
@@ -92,7 +97,7 @@ class StatementTest {
 
         Assertions.assertEquals("WHERE (age = ? OR age > ?) AND deleted_at IS NULL", sfWhere.toStmt())
         Assertions.assertEquals("WHERE (age = `32` OR age > `50`) AND deleted_at IS NULL", sfWhere.toSql())
-        Assertions.assertEquals(listOf(ColumnParam(age, 32), ColumnParam(age, 50)), where.params())
+        Assertions.assertEquals(listOf(IntegerParam(age.name, 32), IntegerParam(age.name, 50)), where.params())
     }
 
     @Test

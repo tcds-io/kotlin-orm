@@ -1,6 +1,6 @@
 package io.tcds.orm.statement
 
-data class Limit constructor(private val limit: Int?, private val offset: Int?) {
+data class Limit(private val limit: Int?, private val offset: Int?) {
     fun toStmt(): String {
         return when (limit) {
             null -> ""

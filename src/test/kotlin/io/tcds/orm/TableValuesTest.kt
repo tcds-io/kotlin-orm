@@ -4,7 +4,7 @@ import fixtures.Company
 import fixtures.CompanyTable
 import fixtures.Status
 import fixtures.frozenClockAtApril
-import io.mockk.mockk
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -29,7 +29,7 @@ class TableValuesTest {
         "status" to "ACTIVE",
         "employees" to 6,
         "online" to true,
-        "created_at" to frozenClockAtApril,
+        "created_at" to frozenClockAtApril.toString(),
     )
 
     @Test

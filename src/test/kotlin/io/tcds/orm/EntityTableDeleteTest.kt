@@ -4,12 +4,10 @@ import fixtures.Address
 import fixtures.AddressEntityTable
 import fixtures.freezeClock
 import fixtures.frozenClockAt
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
-import io.tcds.orm.param.ColumnParam
-import io.tcds.orm.statement.Statement
+import io.tcds.orm.param.InstantParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -24,7 +22,7 @@ class EntityTableDeleteTest {
 
         runBlocking { table.delete(address) }
 
-        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(ColumnParam(table.id, "galaxy-avenue"))) }
+        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(StringParam(table.id.name, "galaxy-avenue"))) }
     }
 
     @Test
@@ -38,8 +36,8 @@ class EntityTableDeleteTest {
             connection.write(
                 "UPDATE addresses SET deleted_at = ? WHERE id = ?",
                 listOf(
-                    ColumnParam(Statement.deletedAt(), frozenClockAt),
-                    ColumnParam(table.id, "galaxy-avenue"),
+                    InstantParam("deleted_at", frozenClockAt),
+                    StringParam("id", "galaxy-avenue"),
                 ),
             )
         }

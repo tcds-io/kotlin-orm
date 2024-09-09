@@ -10,5 +10,6 @@ class TimestampColumn<Entity>(
     value: (Entity) -> Instant,
 ) : Column<Entity, Instant>(name, value) {
     override fun columnType(): String = "TIMESTAMP"
-    override fun toParam(value: Instant): Param<Instant> = InstantParam(this.name, value)
+    override fun valueParam(value: Instant): Param<Instant> = InstantParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Instant> = InstantParam(this.name, valueOf(entry))
 }

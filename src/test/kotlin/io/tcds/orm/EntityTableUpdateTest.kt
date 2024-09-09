@@ -2,13 +2,13 @@ package io.tcds.orm
 
 import fixtures.Address
 import fixtures.AddressEntityTable
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.toInstant
 import io.tcds.orm.extension.trimSpacesAndLines
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.BooleanParam
+import io.tcds.orm.param.InstantParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -40,11 +40,11 @@ class EntityTableUpdateTest {
             connection.write(
                 EXPECTED_QUERY,
                 listOf(
-                    ColumnParam(table.street, "new street"),
-                    ColumnParam(table.number, "new number"),
-                    ColumnParam(table.main, false),
-                    ColumnParam(table.createdAt, address.createdAt.toInstant()),
-                    ColumnParam(table.id, "galaxy-avenue"),
+                    StringParam(table.street.name, "new street"),
+                    StringParam(table.number.name, "new number"),
+                    BooleanParam(table.main.name, false),
+                    InstantParam(table.createdAt.name, address.createdAt.toInstant()),
+                    StringParam(table.id.name, "galaxy-avenue"),
                 ),
             )
         }
@@ -62,11 +62,11 @@ class EntityTableUpdateTest {
             connection.write(
                 EXPECTED_SOFT_DELETE_QUERY,
                 listOf(
-                    ColumnParam(table.street, "new street"),
-                    ColumnParam(table.number, "new number"),
-                    ColumnParam(table.main, false),
-                    ColumnParam(table.createdAt, address.createdAt.toInstant()),
-                    ColumnParam(table.id, "galaxy-avenue"),
+                    StringParam(table.street.name, "new street"),
+                    StringParam(table.number.name, "new number"),
+                    BooleanParam(table.main.name, false),
+                    InstantParam(table.createdAt.name, address.createdAt.toInstant()),
+                    StringParam(table.id.name, "galaxy-avenue"),
                 ),
             )
         }

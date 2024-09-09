@@ -3,13 +3,11 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.frozenClockAtApril
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -52,7 +50,7 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_QUERY, listOf(ColumnParam(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_QUERY, listOf(StringParam(table.street.name, "Galaxy Highway"))) }
     }
 
     @Test
@@ -78,6 +76,6 @@ class TableLoadByTest {
         }
 
         Assertions.assertEquals(address, result)
-        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(ColumnParam(table.street, "Galaxy Highway"))) }
+        verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(StringParam(table.street.name, "Galaxy Highway"))) }
     }
 }

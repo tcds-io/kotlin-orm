@@ -6,5 +6,6 @@ import io.tcds.orm.param.nullable.NullableIntegerParam
 
 class NullableIntegerColumn<Entity>(name: String, value: (Entity) -> Int?) : Column<Entity, Int?>(name, value) {
     override fun columnType(): String = "INTEGER NULL"
-    override fun toParam(value: Int?): Param<Int?> = NullableIntegerParam(this.name, value)
+    override fun valueParam(value: Int?): Param<Int?> = NullableIntegerParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Int?> = NullableIntegerParam(this.name, valueOf(entry))
 }

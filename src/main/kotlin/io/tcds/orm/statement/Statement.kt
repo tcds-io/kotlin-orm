@@ -4,7 +4,7 @@ import io.tcds.orm.Condition
 import io.tcds.orm.Param
 import io.tcds.orm.column.TimestampColumn
 import io.tcds.orm.extension.*
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.InstantParam
 import java.time.Instant
 import java.time.LocalDateTime
 
@@ -32,9 +32,8 @@ data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
         return params
     }
 
-    fun <E> getSoftDeleteQueryParams(): List<Param<*>> {
-        val deletedAt = deletedAt<E>()
-        val params = mutableListOf<Param<*>>(ColumnParam(deletedAt, LocalDateTime.now().toInstant()))
+    fun getSoftDeleteQueryParams(): List<Param<*>> {
+        val params = mutableListOf<Param<*>>(InstantParam("deleted_at", LocalDateTime.now().toInstant()))
         conditions.forEach { params.addAll(it.second.params()) }
 
         return params

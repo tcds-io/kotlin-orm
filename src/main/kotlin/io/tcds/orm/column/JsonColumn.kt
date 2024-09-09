@@ -9,5 +9,6 @@ class JsonColumn<Entity, T>(
     value: (Entity) -> T,
 ) : Column<Entity, T>(name, value) {
     override fun columnType(): String = "JSON"
-    override fun toParam(value: T): Param<T> = JsonParam(this.name, value)
+    override fun valueParam(value: T): Param<T> = JsonParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<T> = JsonParam(this.name, valueOf(entry))
 }
