@@ -64,6 +64,7 @@ abstract class Table<E>(
             "DELETE FROM $table ${where.toStmt()}",
             where.params(),
         )
+
         true -> connection.write(
             "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
             where.getSoftDeleteQueryParams(),
@@ -83,13 +84,7 @@ abstract class Table<E>(
         return connection.write(sql, params + where.params())
     }
 
-    fun values(entry: E): Map<String, Any?> {
-        val map = mutableMapOf<String, Any?>()
-
-        columns.forEach {
-            map[it.name] = it.entryParam(entry).plain()
-        }
-
-        return map
+    fun values(entry: E): Map<String, Any?> = columns.associate {
+        it.name to it.entryParam(entry).plain()
     }
 }
