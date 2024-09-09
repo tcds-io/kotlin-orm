@@ -9,5 +9,6 @@ class FloatColumn<Entity>(
     value: (Entity) -> Float,
 ) : Column<Entity, Float>(name, value) {
     override fun columnType(): String = "FLOAT"
-    override fun toParam(value: Float): Param<Float> = FloatParam(this.name, value)
+    override fun valueParam(value: Float): Param<Float> = FloatParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Float> = FloatParam(this.name, valueOf(entry))
 }

@@ -3,14 +3,12 @@ package io.tcds.orm
 import fixtures.AddressTable
 import fixtures.freezeClock
 import fixtures.frozenClockAt
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
-import io.tcds.orm.param.ColumnParam
-import io.tcds.orm.statement.Statement
+import io.tcds.orm.param.InstantParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -24,7 +22,12 @@ class TableDeleteTest {
 
         runBlocking { table.delete(where(table.id equalsTo "galaxy-avenue")) }
 
-        verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(ColumnParam(table.id, "galaxy-avenue"))) }
+        verify {
+            connection.write(
+                "DELETE FROM addresses WHERE id = ?",
+                listOf(StringParam("id", "galaxy-avenue")),
+            )
+        }
     }
 
     @Test
@@ -38,8 +41,8 @@ class TableDeleteTest {
             connection.write(
                 "UPDATE addresses SET deleted_at = ? WHERE id = ?",
                 listOf(
-                    ColumnParam(Statement.deletedAt(), frozenClockAt),
-                    ColumnParam(table.id, "galaxy-avenue"),
+                    InstantParam("deleted_at", frozenClockAt),
+                    StringParam("id", "galaxy-avenue"),
                 ),
             )
         }

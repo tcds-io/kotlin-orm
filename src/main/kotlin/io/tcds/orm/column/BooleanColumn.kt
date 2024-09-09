@@ -9,5 +9,6 @@ class BooleanColumn<Entity>(
     value: (Entity) -> Boolean,
 ) : Column<Entity, Boolean>(name, value) {
     override fun columnType(): String = "BOOLEAN"
-    override fun toParam(value: Boolean): Param<Boolean> = BooleanParam(this.name, value)
+    override fun valueParam(value: Boolean): Param<Boolean> = BooleanParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Boolean> = BooleanParam(this.name, valueOf(entry))
 }

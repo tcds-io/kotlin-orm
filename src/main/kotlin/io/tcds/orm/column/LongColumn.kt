@@ -9,5 +9,6 @@ class LongColumn<Entity>(
     value: (Entity) -> Long,
 ) : Column<Entity, Long>(name, value) {
     override fun columnType(): String = "LONG"
-    override fun toParam(value: Long): Param<Long> = LongParam(this.name, value)
+    override fun valueParam(value: Long): Param<Long> = LongParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<Long> = LongParam(this.name, valueOf(entry))
 }

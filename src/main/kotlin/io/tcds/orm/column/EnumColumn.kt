@@ -9,5 +9,6 @@ class EnumColumn<Entity, T : Enum<*>>(
     value: (Entity) -> T,
 ) : Column<Entity, T>(name, value) {
     override fun columnType(): String = "ENUM"
-    override fun toParam(value: T): Param<T> = EnumParam(this.name, value)
+    override fun valueParam(value: T): Param<T> = EnumParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<T> = EnumParam(this.name, valueOf(entry))
 }

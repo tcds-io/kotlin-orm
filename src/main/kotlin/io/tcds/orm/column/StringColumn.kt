@@ -9,5 +9,6 @@ class StringColumn<Entity>(
     value: (Entity) -> String,
 ) : Column<Entity, String>(name, value) {
     override fun columnType(): String = "STRING"
-    override fun toParam(value: String): Param<String> = StringParam(this.name, value)
+    override fun valueParam(value: String): Param<String> = StringParam(this.name, value)
+    override fun entryParam(entry: Entity): Param<String> = StringParam(this.name, valueOf(entry))
 }

@@ -17,5 +17,6 @@ data class JsonParam<T>(
             .registerModule(JavaTimeModule())
     }
 
+    override fun plain(): String = mapper.writeValueAsString(value)
     override fun bind(stmt: PreparedStatement, index: Int) = stmt.setString(index, mapper.writeValueAsString(value))
 }

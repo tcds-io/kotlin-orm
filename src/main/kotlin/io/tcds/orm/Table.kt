@@ -64,10 +64,9 @@ abstract class Table<E>(
             "DELETE FROM $table ${where.toStmt()}",
             where.params(),
         )
-
         true -> connection.write(
             "UPDATE $table SET deleted_at = ? ${where.toStmt()}",
-            where.getSoftDeleteQueryParams<E>(),
+            where.getSoftDeleteQueryParams(),
         )
     }
 
@@ -86,10 +85,9 @@ abstract class Table<E>(
 
     fun values(entry: E): Map<String, Any?> {
         val map = mutableMapOf<String, Any?>()
+
         columns.forEach {
-            map[it.name] = it.valueOf(entry).let { value ->
-                if (value?.javaClass?.isEnum == true) (value as Enum<*>).name else value
-            }
+            map[it.name] = it.entryParam(entry).plain()
         }
 
         return map

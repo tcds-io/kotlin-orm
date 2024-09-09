@@ -1,15 +1,14 @@
 package io.tcds.orm
 
 import fixtures.AddressTable
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.and
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.isNotNull
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -31,7 +30,10 @@ class TableUpdateTest {
         verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE id = ?",
-                listOf(ColumnParam(table.street, "Galaxy Highway"), ColumnParam(table.id, "galaxy-avenue")),
+                listOf(
+                    ColumnParam(table.street, "Galaxy Highway"),
+                    StringParam(table.id.name, "galaxy-avenue"),
+                ),
             )
         }
     }
@@ -51,7 +53,10 @@ class TableUpdateTest {
         verify {
             connection.write(
                 "UPDATE addresses SET street = ? WHERE (id = ? AND street IS NOT NULL) AND deleted_at IS NULL",
-                listOf(ColumnParam(table.street, "Galaxy Highway"), ColumnParam(table.id, "galaxy-avenue")),
+                listOf(
+                    ColumnParam(table.street, "Galaxy Highway"),
+                    StringParam(table.id.name, "galaxy-avenue"),
+                ),
             )
         }
     }

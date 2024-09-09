@@ -7,5 +7,6 @@ interface Param<T> {
     val value: T
 
     fun bind(stmt: PreparedStatement, index: Int)
+    fun plain(): Any = value as Any
     fun describe(): String = "$name=$value"
 }

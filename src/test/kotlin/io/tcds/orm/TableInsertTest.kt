@@ -2,12 +2,12 @@ package io.tcds.orm
 
 import fixtures.Address
 import fixtures.AddressTable
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.toInstant
-import io.tcds.orm.param.ColumnParam
+import io.tcds.orm.param.BooleanParam
+import io.tcds.orm.param.InstantParam
+import io.tcds.orm.param.StringParam
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -27,11 +27,11 @@ class TableInsertTest {
             connection.write(
                 "INSERT INTO addresses (id, street, number, main, created_at) VALUES (?, ?, ?, ?, ?)",
                 listOf(
-                    ColumnParam(table.id, address.id),
-                    ColumnParam(table.street, address.street),
-                    ColumnParam(table.number, address.number),
-                    ColumnParam(table.main, address.main),
-                    ColumnParam(table.createdAt, address.createdAt.toInstant()),
+                    StringParam(table.id.name, address.id),
+                    StringParam(table.street.name, address.street),
+                    StringParam(table.number.name, address.number),
+                    BooleanParam(table.main.name, address.main),
+                    InstantParam(table.createdAt.name, address.createdAt.toInstant()),
                 ),
             )
         }
