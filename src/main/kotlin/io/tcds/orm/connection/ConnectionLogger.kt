@@ -14,7 +14,7 @@ interface ConnectionLogger {
         }
 
         private fun params(params: List<Param<*>>): String {
-            val list = params.mapIndexed { index, it -> "$index: ${it.name} = ${it.value}" }
+            val list = params.mapIndexed { index, it -> "$index: ${it.name} = ${it.plain()}" }
 
             return "\n\t" + list.joinToString("\n\t")
         }
