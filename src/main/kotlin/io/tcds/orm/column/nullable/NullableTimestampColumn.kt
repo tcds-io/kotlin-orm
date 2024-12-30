@@ -9,5 +9,5 @@ class NullableTimestampColumn<Entity>(name: String, value: (Entity) -> Instant?)
     override fun columnType(): String = "DATETIME NULL"
     override fun valueParam(value: Instant?): Param<Instant?> = NullableInstantParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Instant?> = NullableInstantParam(this.name, valueOf(entry))
-    override fun ddl(): String = "`$name` TIMESTAMP"
+    override fun ddl(): String = "`$name` DATETIME(6)"
 }

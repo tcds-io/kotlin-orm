@@ -12,5 +12,5 @@ class TimestampColumn<Entity>(
     override fun columnType(): String = "TIMESTAMP"
     override fun valueParam(value: Instant): Param<Instant> = InstantParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Instant> = InstantParam(this.name, valueOf(entry))
-    override fun ddl(): String = "`$name` TIMESTAMP NOT NULL"
+    override fun ddl(): String = "`$name` DATETIME(6) NOT NULL"
 }
