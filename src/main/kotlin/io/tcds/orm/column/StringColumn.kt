@@ -11,4 +11,5 @@ class StringColumn<Entity>(
     override fun columnType(): String = "STRING"
     override fun valueParam(value: String): Param<String> = StringParam(this.name, value)
     override fun entryParam(entry: Entity): Param<String> = StringParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` VARCHAR(255) NOT NULL"
 }

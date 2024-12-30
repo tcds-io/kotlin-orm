@@ -87,4 +87,10 @@ abstract class Table<E>(
     fun values(entry: E): Map<String, Any?> = columns.associate {
         it.name to it.entryParam(entry).plain()
     }
+
+    fun ddl() = StringBuilder().apply {
+        appendLine("CREATE TABLE `$table` (")
+        appendLine("    ${columns.joinToString(",\n    ") { it.ddl() }}")
+        appendLine(");")
+    }.trim()
 }

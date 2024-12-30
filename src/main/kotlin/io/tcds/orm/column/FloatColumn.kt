@@ -11,4 +11,5 @@ class FloatColumn<Entity>(
     override fun columnType(): String = "FLOAT"
     override fun valueParam(value: Float): Param<Float> = FloatParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Float> = FloatParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` FLOAT NOT NULL"
 }

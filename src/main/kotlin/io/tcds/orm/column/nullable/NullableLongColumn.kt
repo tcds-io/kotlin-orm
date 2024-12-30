@@ -8,4 +8,5 @@ class NullableLongColumn<Entity>(name: String, value: (Entity) -> Long?) : Colum
     override fun columnType(): String = "LONG NULL"
     override fun valueParam(value: Long?): Param<Long?> = NullableLongParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Long?> = NullableLongParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` BIGINT"
 }

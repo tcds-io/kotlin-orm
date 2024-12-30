@@ -11,4 +11,5 @@ class LongColumn<Entity>(
     override fun columnType(): String = "LONG"
     override fun valueParam(value: Long): Param<Long> = LongParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Long> = LongParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` BIGINT NOT NULL"
 }

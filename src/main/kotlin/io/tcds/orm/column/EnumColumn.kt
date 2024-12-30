@@ -11,4 +11,5 @@ class EnumColumn<Entity, T : Enum<*>>(
     override fun columnType(): String = "ENUM"
     override fun valueParam(value: T): Param<T> = EnumParam(this.name, value)
     override fun entryParam(entry: Entity): Param<T> = EnumParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` VARCHAR(255) NOT NULL"
 }

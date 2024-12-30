@@ -8,4 +8,5 @@ class NullableEnumColumn<Entity, T : Enum<*>>(name: String, value: (Entity) -> T
     override fun columnType(): String = "ENUM NULL"
     override fun valueParam(value: T?): Param<T?> = NullableEnumParam(this.name, value)
     override fun entryParam(entry: Entity): Param<T?> = NullableEnumParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` VARCHAR(255)"
 }

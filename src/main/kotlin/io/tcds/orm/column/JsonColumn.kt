@@ -11,4 +11,5 @@ class JsonColumn<Entity, T>(
     override fun columnType(): String = "JSON"
     override fun valueParam(value: T): Param<T> = JsonParam(this.name, value)
     override fun entryParam(entry: Entity): Param<T> = JsonParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` JSON NOT NULL"
 }

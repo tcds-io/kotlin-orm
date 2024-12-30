@@ -8,4 +8,5 @@ class NullableStringColumn<Entity>(name: String, value: (Entity) -> String?) : C
     override fun columnType(): String = "STRING NULL"
     override fun valueParam(value: String?): Param<String?> = NullableStringParam(this.name, value)
     override fun entryParam(entry: Entity): Param<String?> = NullableStringParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` VARCHAR(255)"
 }

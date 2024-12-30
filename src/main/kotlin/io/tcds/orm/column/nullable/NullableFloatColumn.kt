@@ -8,4 +8,5 @@ class NullableFloatColumn<Entity>(name: String, value: (Entity) -> Float?) : Col
     override fun columnType(): String = "FLOAT NULL"
     override fun valueParam(value: Float?): Param<Float?> = NullableFloatParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Float?> = NullableFloatParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` FLOAT"
 }

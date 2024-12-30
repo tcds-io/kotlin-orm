@@ -7,6 +7,7 @@ abstract class Column<Entry, Type>(val name: String, val valueOf: (Entry) -> Typ
     abstract fun columnType(): String
     abstract fun valueParam(value: Type): Param<Type>
     abstract fun entryParam(entry: Entry): Param<Type>
+    abstract fun ddl(): String
     override fun hashCode() = listOf(name, valueOf).hashCode()
     override fun equals(other: Any?): Boolean = other is Column<*, *> && other.hashCode() == hashCode()
 

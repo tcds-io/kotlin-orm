@@ -11,4 +11,5 @@ class BooleanColumn<Entity>(
     override fun columnType(): String = "BOOLEAN"
     override fun valueParam(value: Boolean): Param<Boolean> = BooleanParam(this.name, value)
     override fun entryParam(entry: Entity): Param<Boolean> = BooleanParam(this.name, valueOf(entry))
+    override fun ddl(): String = "`$name` BOOLEAN NOT NULL"
 }
