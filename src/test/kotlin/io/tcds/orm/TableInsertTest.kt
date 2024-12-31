@@ -25,7 +25,7 @@ class TableInsertTest {
 
         verify {
             connection.write(
-                "INSERT INTO addresses (id, street, number, main, created_at) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO addresses (id,street,number,main,created_at) VALUES (?,?,?,?,?)",
                 listOf(
                     StringParam(table.id.name, address.id),
                     StringParam(table.street.name, address.street),

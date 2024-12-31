@@ -2,7 +2,7 @@ package io.tcds.orm.statement
 
 import io.tcds.orm.Condition
 import io.tcds.orm.Param
-import io.tcds.orm.column.TimestampColumn
+import io.tcds.orm.column.DatetimeColumn
 import io.tcds.orm.extension.*
 import io.tcds.orm.param.InstantParam
 import java.time.Instant
@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 data class Statement(val conditions: MutableList<Pair<Operator, Condition>>) {
     companion object {
-        fun <E> deletedAt() = TimestampColumn<E>("deleted_at") { Instant.now() }
+        fun <E> deletedAt() = DatetimeColumn<E>("deleted_at") { Instant.now() }
     }
 
     fun toStmt() = conditions.toStmt()

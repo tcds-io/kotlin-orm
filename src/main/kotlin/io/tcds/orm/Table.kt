@@ -13,11 +13,26 @@ abstract class Table<E>(
 ) : ResultSetEntry<E> {
     val columns = mutableListOf<Column<E, *>>()
 
-    fun insert(vararg entries: E) = entries.map {
-        val params = params(it)
-        val sql = "INSERT INTO $table (${params.columns()}) VALUES (${params.marks()})"
+    fun insert(vararg entries: E): List<JdbcStatement> {
+        val cols = columns.joinToString(",") { it.name }
+        val marks = columns.joinToString(",") { "?" }
+        val sql = "INSERT INTO $table ($cols) VALUES ($marks)"
 
-        connection.write(sql, params)
+        return entries.map { connection.write(sql, params(it)) }
+    }
+
+    fun bulkInsert(entries: List<E>): JdbcStatement {
+        val cols = columns.joinToString(",") { it.name }
+        val marks = columns.joinToString(",") { "?" }
+        val params = mutableListOf<Param<*>>()
+
+        val sql = StringBuilder().apply {
+            appendLine("INSERT INTO $table ($cols)")
+            appendLine("    VALUES")
+            appendLine(entries.joinToString(",\n") { params.addAll(params(it)).let { "        ($marks)" } })
+        }.toString().trim()
+
+        return connection.write(sql, params)
     }
 
     fun loadBy(where: Statement, order: OrderStatement<E> = emptyList()): E? = findBy(

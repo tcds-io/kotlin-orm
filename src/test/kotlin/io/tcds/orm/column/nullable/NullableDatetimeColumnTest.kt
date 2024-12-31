@@ -9,10 +9,10 @@ import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
 
-class NullableTimestampColumnTest {
+class NullableDatetimeColumnTest {
     private val stmt: PreparedStatement = mockk()
     private val instant = Instant.now()
-    private val column = NullableTimestampColumn<ColumnTypes>("foo") { it.instant }
+    private val column = NullableDatetimeColumn<ColumnTypes>("foo") { it.instant }
 
     @Test
     fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "DATETIME NULL", column.describe())
