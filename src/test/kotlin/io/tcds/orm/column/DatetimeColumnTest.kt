@@ -8,13 +8,13 @@ import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.time.Instant
 
-class TimestampColumnTest {
+class DatetimeColumnTest {
     private val stmt: PreparedStatement = mockk()
     private val instant = Instant.now()
-    private val column = TimestampColumn<ColumnTypes>("foo") { it.instant }
+    private val column = DatetimeColumn<ColumnTypes>("foo") { it.instant }
 
     @Test
-    fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "TIMESTAMP", column.describe())
+    fun `given a column then describe its configuration`() = Assertions.assertEquals("foo" to "DATETIME", column.describe())
 
     @Test
     fun `given a date value when it is not null then set the value into the statement`() {

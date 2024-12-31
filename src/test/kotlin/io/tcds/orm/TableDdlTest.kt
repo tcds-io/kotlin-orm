@@ -20,7 +20,7 @@ class TableDdlTest {
                 `double` DECIMAL(10, 2) NOT NULL,
                 `string` VARCHAR(255) NOT NULL,
                 `boolean` BOOLEAN NOT NULL,
-                `instant` TIMESTAMP NOT NULL
+                `instant` DATETIME(6) NOT NULL
             );
             """.trimIndent(),
             table.ddl(),
