@@ -8,7 +8,6 @@ import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -42,12 +41,10 @@ class TableLoadByTest {
             ),
         )
 
-        val result = runBlocking {
-            table.loadBy(
-                where(table.street equalsTo "Galaxy Highway"),
-                listOf(table.createdAt.desc()),
-            )
-        }
+        val result = table.loadBy(
+            where(table.street equalsTo "Galaxy Highway"),
+            listOf(table.createdAt.desc()),
+        )
 
         Assertions.assertEquals(address, result)
         verify { connection.read(EXPECTED_QUERY, listOf(StringParam(table.street.name, "Galaxy Highway"))) }
@@ -68,12 +65,10 @@ class TableLoadByTest {
             ),
         )
 
-        val result = runBlocking {
-            table.loadBy(
-                where(table.street equalsTo "Galaxy Highway"),
-                listOf(table.createdAt.desc()),
-            )
-        }
+        val result = table.loadBy(
+            where(table.street equalsTo "Galaxy Highway"),
+            listOf(table.createdAt.desc()),
+        )
 
         Assertions.assertEquals(address, result)
         verify { connection.read(EXPECTED_SOFT_DELETE_QUERY, listOf(StringParam(table.street.name, "Galaxy Highway"))) }

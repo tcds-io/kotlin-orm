@@ -7,32 +7,28 @@ import io.tcds.orm.statement.Statement
 import java.sql.Statement as JdbcStatement
 
 abstract class Table<E>(
-    private val connection: Connection,
-    private val table: String,
+    val connection: Connection,
+    val table: String,
     private val softDelete: Boolean = false,
 ) : ResultSetEntry<E> {
     val columns = mutableListOf<Column<E, *>>()
 
-    fun insert(vararg entries: E): List<JdbcStatement> {
-        val cols = columns.joinToString(",") { it.name }
-        val marks = columns.joinToString(",") { "?" }
-        val sql = "INSERT INTO $table ($cols) VALUES ($marks)"
+    val cols: String
+        get() = columns.joinToString(",") { it.name }
 
-        return entries.map { connection.write(sql, params(it)) }
+    val marks: String
+        get() = columns.joinToString(",") { "?" }
+
+    fun insert(vararg entries: E): List<JdbcStatement> {
+        return entries.map { doInsert(listOf(it)) }
     }
 
     fun bulkInsert(entries: List<E>): JdbcStatement {
-        val cols = columns.joinToString(",") { it.name }
-        val marks = columns.joinToString(",") { "?" }
-        val params = mutableListOf<Param<*>>()
+        return doInsert(entries)
+    }
 
-        val sql = StringBuilder().apply {
-            appendLine("INSERT INTO $table ($cols)")
-            appendLine("    VALUES")
-            appendLine(entries.joinToString(",\n") { params.addAll(params(it)).let { "        ($marks)" } })
-        }.toString().trim()
-
-        return connection.write(sql, params)
+    fun bulkInsertIgnore(entries: List<E>): JdbcStatement {
+        return doInsert(entries, ignore = true)
     }
 
     fun loadBy(where: Statement, order: OrderStatement<E> = emptyList()): E? = findBy(
@@ -108,4 +104,20 @@ abstract class Table<E>(
         appendLine("    ${columns.joinToString(",\n    ") { it.ddl() }}")
         appendLine(");")
     }.trim()
+
+    private fun doInsert(entries: List<E>, ignore: Boolean = false): JdbcStatement {
+        val insert = when (ignore) {
+            true -> "INSERT IGNORE"
+            false -> "INSERT"
+        }
+        val params = mutableListOf<Param<*>>()
+
+        val sql = StringBuilder().apply {
+            appendLine("$insert INTO $table ($cols)")
+            appendLine("VALUES")
+            appendLine(entries.joinToString(",\n") { params.addAll(params(it)).let { "($marks)" } })
+        }.toString().trim()
+
+        return connection.write(sql, params)
+    }
 }

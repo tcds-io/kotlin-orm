@@ -9,7 +9,6 @@ import io.tcds.orm.extension.trimSpacesAndLines
 import io.tcds.orm.param.BooleanParam
 import io.tcds.orm.param.InstantParam
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class EntityTableUpdateTest {
@@ -34,7 +33,7 @@ class EntityTableUpdateTest {
         every { connection.write(any(), any()) } returns mockk()
 
         val updated = address.updated(street = "new street", number = "new number", main = false)
-        runBlocking { table.update(updated) }
+        table.update(updated)
 
         verify {
             connection.write(
@@ -56,7 +55,7 @@ class EntityTableUpdateTest {
         every { connection.write(any(), any()) } returns mockk()
 
         val updated = address.updated(street = "new street", number = "new number", main = false)
-        runBlocking { table.update(updated) }
+        table.update(updated)
 
         verify {
             connection.write(

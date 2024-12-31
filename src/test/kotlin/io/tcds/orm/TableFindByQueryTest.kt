@@ -3,12 +3,9 @@ package io.tcds.orm
 import fixtures.Address
 import fixtures.AddressTable
 import fixtures.frozenClockAtApril
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -48,7 +45,7 @@ class TableFindByQueryTest {
             ),
         )
 
-        val result = runBlocking { table.findByQuery(QUERY, ColumnParam(table.street, "Galaxy%")).toList() }
+        val result = table.findByQuery(QUERY, ColumnParam(table.street, "Galaxy%")).toList()
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
         verify { connection.read(QUERY, listOf(ColumnParam(table.street, "Galaxy%"))) }

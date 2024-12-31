@@ -1,10 +1,7 @@
 package io.tcds.orm.connection
 
 import fixtures.connection.DummyNestedTransactionConnection
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import io.mockk.*
 import org.junit.jupiter.api.Test
 import java.sql.PreparedStatement
 import java.sql.Statement
@@ -28,10 +25,8 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
-        runBlocking {
-            connection.begin()
-            connection.commit()
-        }
+        connection.begin()
+        connection.commit()
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN", Statement.RETURN_GENERATED_KEYS) }
         verify(exactly = 1) { readWrite.prepareStatement("COMMIT", Statement.RETURN_GENERATED_KEYS) }
@@ -43,14 +38,12 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
-        runBlocking {
-            connection.begin()
-            connection.begin()
-            connection.begin()
-            connection.commit()
-            connection.commit()
-            connection.commit()
-        }
+        connection.begin()
+        connection.begin()
+        connection.begin()
+        connection.commit()
+        connection.commit()
+        connection.commit()
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN", Statement.RETURN_GENERATED_KEYS) }
         verify(exactly = 1) { readWrite.prepareStatement("SAVEPOINT LEVEL1", Statement.RETURN_GENERATED_KEYS) }
@@ -66,10 +59,8 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
-        runBlocking {
-            connection.begin()
-            connection.rollback()
-        }
+        connection.begin()
+        connection.rollback()
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN", Statement.RETURN_GENERATED_KEYS) }
         verify(exactly = 1) { readWrite.prepareStatement("ROLLBACK", Statement.RETURN_GENERATED_KEYS) }
@@ -81,14 +72,12 @@ class NestedTransactionConnectionTest {
         every { readWrite.prepareStatement(any(), Statement.RETURN_GENERATED_KEYS) } returns stmt
         every { stmt.execute() } returns true
 
-        runBlocking {
-            connection.begin()
-            connection.begin()
-            connection.begin()
-            connection.rollback()
-            connection.rollback()
-            connection.rollback()
-        }
+        connection.begin()
+        connection.begin()
+        connection.begin()
+        connection.rollback()
+        connection.rollback()
+        connection.rollback()
 
         verify(exactly = 1) { readWrite.prepareStatement("BEGIN", Statement.RETURN_GENERATED_KEYS) }
         verify(exactly = 1) { readWrite.prepareStatement("SAVEPOINT LEVEL1", Statement.RETURN_GENERATED_KEYS) }

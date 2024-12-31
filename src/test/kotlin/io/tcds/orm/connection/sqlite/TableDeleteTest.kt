@@ -6,7 +6,6 @@ import io.tcds.orm.extension.emptyParams
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -42,7 +41,7 @@ class TableDeleteTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given an entity when delete gets called then the entry gets deleted`() = runBlocking {
+    fun `given an entity when delete gets called then the entry gets deleted`() {
         val where = where(table.main equalsTo true)
 
         table.delete(where)

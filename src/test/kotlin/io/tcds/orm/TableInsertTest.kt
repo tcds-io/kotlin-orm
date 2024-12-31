@@ -8,7 +8,6 @@ import io.tcds.orm.extension.toInstant
 import io.tcds.orm.param.BooleanParam
 import io.tcds.orm.param.InstantParam
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class TableInsertTest {
@@ -21,11 +20,15 @@ class TableInsertTest {
     fun `given the entry then invoke write in the connection`() {
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking { table.insert(address) }
+        table.insert(address)
 
         verify {
             connection.write(
-                "INSERT INTO addresses (id,street,number,main,created_at) VALUES (?,?,?,?,?)",
+                """
+                    INSERT INTO addresses (id,street,number,main,created_at)
+                    VALUES
+                    (?,?,?,?,?)
+                """.trimIndent(),
                 listOf(
                     StringParam(table.id.name, address.id),
                     StringParam(table.street.name, address.street),

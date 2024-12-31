@@ -5,7 +5,6 @@ import fixtures.frozenClockAtApril
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,7 +29,7 @@ class TableExistsTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition when entry exists then exists returns true`() = runBlocking {
+    fun `given a condition when entry exists then exists returns true`() {
         val where = where(table.main equalsTo true)
 
         val exists = table.exists(where)
@@ -39,7 +38,7 @@ class TableExistsTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition when entry does not exist then exists returns false`() = runBlocking {
+    fun `given a condition when entry does not exist then exists returns false`() {
         val where = where(table.main equalsTo false)
 
         val exists = table.exists(where)

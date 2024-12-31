@@ -37,4 +37,11 @@ class TableValuesTest {
 
     @Test
     fun `given the values then return its entry`() = Assertions.assertEquals(company, table.entry(MapOrmResultSet(values)))
+
+    @Test
+    fun `table info`() {
+        Assertions.assertEquals("companies", table.table)
+        Assertions.assertEquals("id,name,status,employees,online,created_at", table.cols)
+        Assertions.assertEquals("?,?,?,?,?,?", table.marks)
+    }
 }

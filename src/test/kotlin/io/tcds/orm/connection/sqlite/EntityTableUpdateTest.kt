@@ -4,7 +4,6 @@ import fixtures.Address
 import fixtures.AddressEntityTable
 import fixtures.frozenClockAtApril
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,7 +30,7 @@ class EntityTableUpdateTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given an entity when update gets called then update in the database`() = runBlocking {
+    fun `given an entity when update gets called then update in the database`() {
         val address = Address.galaxyAvenue()
         val updated = address.updated("New Street")
 

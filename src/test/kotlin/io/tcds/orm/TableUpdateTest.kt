@@ -9,7 +9,6 @@ import io.tcds.orm.extension.isNotNull
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class TableUpdateTest {
@@ -20,12 +19,10 @@ class TableUpdateTest {
         val table = AddressTable(connection)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking {
-            table.update(
-                listOf(ColumnParam(table.street, "Galaxy Highway")),
-                where(table.id equalsTo "galaxy-avenue"),
-            )
-        }
+        table.update(
+            listOf(ColumnParam(table.street, "Galaxy Highway")),
+            where(table.id equalsTo "galaxy-avenue"),
+        )
 
         verify {
             connection.write(
@@ -43,12 +40,10 @@ class TableUpdateTest {
         val table = AddressTable(connection, true)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking {
-            table.update(
-                listOf(ColumnParam(table.street, "Galaxy Highway")),
-                where(table.id equalsTo "galaxy-avenue") and table.street.isNotNull(),
-            )
-        }
+        table.update(
+            listOf(ColumnParam(table.street, "Galaxy Highway")),
+            where(table.id equalsTo "galaxy-avenue") and table.street.isNotNull(),
+        )
 
         verify {
             connection.write(

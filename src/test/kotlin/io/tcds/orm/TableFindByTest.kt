@@ -8,7 +8,6 @@ import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -45,14 +44,12 @@ class TableFindByTest {
             ),
         )
 
-        val result = runBlocking {
-            table.findBy(
-                where = where(table.street like "Galaxy%"),
-                order = listOf(table.createdAt.desc()),
-                limit = 15,
-                offset = 30,
-            ).toList()
-        }
+        val result = table.findBy(
+            where = where(table.street like "Galaxy%"),
+            order = listOf(table.createdAt.desc()),
+            limit = 15,
+            offset = 30,
+        ).toList()
 
         Assertions.assertEquals(listOf(Address.galaxyHighway(), Address.galaxyAvenue()), result)
         verify { connection.read(EXPECTED_QUERY, listOf(StringParam(table.street.name, "Galaxy%"))) }

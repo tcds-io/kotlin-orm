@@ -5,7 +5,6 @@ import fixtures.frozenClockAtApril
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -52,7 +51,7 @@ class TableFindByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and ASC order when entries exist then select into the database`() = runBlocking {
+    fun `given a condition and ASC order when entries exist then select into the database`() {
         val where = where(table.main equalsTo true)
         val order = listOf(table.id.asc())
         val limit = 2
@@ -72,7 +71,7 @@ class TableFindByTest : SqLiteTestCase() {
         val limit = 2
         val offset = 1
 
-        val addresses = runBlocking { table.findBy(where, order, limit, offset) }
+        val addresses = table.findBy(where, order, limit, offset)
 
         Assertions.assertEquals(
             listOf("arthur-dent-address", "arthur-dent-address-another-address"),

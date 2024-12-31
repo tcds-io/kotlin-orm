@@ -9,7 +9,6 @@ import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.InstantParam
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class TableDeleteTest {
@@ -20,7 +19,7 @@ class TableDeleteTest {
         val table = AddressTable(connection)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking { table.delete(where(table.id equalsTo "galaxy-avenue")) }
+        table.delete(where(table.id equalsTo "galaxy-avenue"))
 
         verify {
             connection.write(
@@ -35,7 +34,7 @@ class TableDeleteTest {
         val table = AddressTable(connection, true)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking { table.delete(where(table.id equalsTo "galaxy-avenue")) }
+        table.delete(where(table.id equalsTo "galaxy-avenue"))
 
         verify {
             connection.write(

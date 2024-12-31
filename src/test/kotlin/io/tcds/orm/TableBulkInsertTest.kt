@@ -18,7 +18,7 @@ class TableBulkInsertTest {
     private val second = Address.galaxyAvenue()
 
     @Test
-    fun `given the entry then invoke write in the connection`() {
+    fun `bulk insert`() {
         every { connection.write(any(), any()) } returns mockk()
         val entries = listOf(first, second)
 
@@ -28,9 +28,42 @@ class TableBulkInsertTest {
             connection.write(
                 """
                     INSERT INTO addresses (id,street,number,main,created_at)
-                        VALUES
-                            (?,?,?,?,?),
-                            (?,?,?,?,?)
+                    VALUES
+                    (?,?,?,?,?),
+                    (?,?,?,?,?)
+                """.trimIndent(),
+                listOf(
+                    // first
+                    StringParam(table.id.name, first.id),
+                    StringParam(table.street.name, first.street),
+                    StringParam(table.number.name, first.number),
+                    BooleanParam(table.main.name, first.main),
+                    InstantParam(table.createdAt.name, first.createdAt.toInstant()),
+                    // second
+                    StringParam(table.id.name, second.id),
+                    StringParam(table.street.name, second.street),
+                    StringParam(table.number.name, second.number),
+                    BooleanParam(table.main.name, second.main),
+                    InstantParam(table.createdAt.name, second.createdAt.toInstant()),
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `bulk insert ignore`() {
+        every { connection.write(any(), any()) } returns mockk()
+        val entries = listOf(first, second)
+
+        table.bulkInsertIgnore(entries)
+
+        verify {
+            connection.write(
+                """
+                    INSERT IGNORE INTO addresses (id,street,number,main,created_at)
+                    VALUES
+                    (?,?,?,?,?),
+                    (?,?,?,?,?)
                 """.trimIndent(),
                 listOf(
                     // first

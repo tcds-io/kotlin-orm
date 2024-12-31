@@ -4,7 +4,6 @@ import fixtures.Address
 import fixtures.AddressEntityTable
 import fixtures.frozenClockAtApril
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,7 +30,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given and user id when user exists then loadById returns an user entity`() = runBlocking {
+    fun `given and user id when user exists then loadById returns an user entity`() {
         val id = "arthur-dent-address"
 
         val address = table.loadById(id)
@@ -49,7 +48,7 @@ class EntityTableLoadByIdTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given and user id when user does not exist then loadById returns null`() = runBlocking {
+    fun `given and user id when user does not exist then loadById returns null`() {
         val id = "another-user"
 
         val address = table.loadById(id)

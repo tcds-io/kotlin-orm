@@ -7,7 +7,6 @@ import io.tcds.orm.connection.Connection
 import io.tcds.orm.extension.like
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -33,7 +32,7 @@ class TableExistsTest {
             ),
         )
 
-        val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
+        val result = table.exists(where = where(table.street like "Galaxy%"))
 
         Assertions.assertTrue(result)
         verify { connection.read(EXPECTED_QUERY, listOf(StringParam(table.street.name, "Galaxy%"))) }
@@ -43,7 +42,7 @@ class TableExistsTest {
     fun `given a where when connection does not return entries then exist is false`() {
         every { connection.read(any(), any()) } returns emptySequence()
 
-        val result = runBlocking { table.exists(where = where(table.street like "Galaxy%")) }
+        val result = table.exists(where = where(table.street like "Galaxy%"))
 
         Assertions.assertFalse(result)
         verify { connection.read(EXPECTED_QUERY, listOf(StringParam(table.street.name, "Galaxy%"))) }

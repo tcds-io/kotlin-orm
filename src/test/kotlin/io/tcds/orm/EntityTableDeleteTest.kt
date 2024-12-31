@@ -8,7 +8,6 @@ import io.mockk.*
 import io.tcds.orm.connection.Connection
 import io.tcds.orm.param.InstantParam
 import io.tcds.orm.param.StringParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class EntityTableDeleteTest {
@@ -20,7 +19,7 @@ class EntityTableDeleteTest {
         val table = AddressEntityTable(connection)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking { table.delete(address) }
+        table.delete(address)
 
         verify { connection.write("DELETE FROM addresses WHERE id = ?", listOf(StringParam(table.id.name, "galaxy-avenue"))) }
     }
@@ -30,7 +29,7 @@ class EntityTableDeleteTest {
         val table = AddressEntityTable(connection, true)
         every { connection.write(any(), any()) } returns mockk()
 
-        runBlocking { table.delete(address) }
+        table.delete(address)
 
         verify {
             connection.write(

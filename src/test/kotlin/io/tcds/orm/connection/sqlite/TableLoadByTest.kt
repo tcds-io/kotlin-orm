@@ -5,7 +5,6 @@ import fixtures.frozenClockAtApril
 import io.tcds.orm.extension.equalsTo
 import io.tcds.orm.extension.where
 import io.tcds.orm.param.ColumnParam
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -41,7 +40,7 @@ class TableLoadByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and ASC order when entry exists then load into the entity`() = runBlocking {
+    fun `given a condition and ASC order when entry exists then load into the entity`() {
         val where = where(table.main equalsTo true)
         val order = listOf(table.id.asc())
 
@@ -51,7 +50,7 @@ class TableLoadByTest : SqLiteTestCase() {
     }
 
     @Test
-    fun `given a condition and DESC order when entry exists then load into the entity`() = runBlocking {
+    fun `given a condition and DESC order when entry exists then load into the entity`() {
         val where = where(table.main equalsTo true)
 
         val address = table.loadBy(where, order = listOf(table.id.desc()))
